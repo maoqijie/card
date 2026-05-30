@@ -6,7 +6,6 @@
   <meta name="description" content="Face Muse 根据脸型、肤色、发色和场合生成三套入门妆容。">
   <link rel="icon" href="data:,">
   <link rel="preload" as="image" href="./assets/4/main-face.webp" fetchpriority="high">
-  <link rel="preload" as="image" href="./assets/4/look-1-face.webp">
   <title>Face Muse - 三套适合你的入门妆</title>
   <style>
     :root {
@@ -63,8 +62,7 @@
       isolation: isolate;
       color: var(--ink);
       background:
-        linear-gradient(180deg, rgba(1, 15, 9, 0.24) 0%, rgba(5, 61, 34, 0.28) 31%, rgba(3, 52, 30, 0.96) 78%, #03100b 100%),
-        var(--hero-image) var(--hero-position) / var(--hero-size) no-repeat;
+        linear-gradient(180deg, rgba(1, 15, 9, 0.24) 0%, rgba(5, 61, 34, 0.28) 31%, rgba(3, 52, 30, 0.96) 78%, #03100b 100%);
     }
 
     .feed-screen::before,
@@ -335,244 +333,318 @@
       backdrop-filter: blur(8rem);
     }
 
-    .info-card {
+    .look-board {
       position: absolute;
       left: 45rem;
       right: 45rem;
       top: 508rem;
-      height: 407rem;
+      height: 392rem;
+      display: grid;
+      grid-template-columns: 252rem 1fr;
+      gap: 24rem;
       overflow: hidden;
+      padding: 22rem;
       border: 1rem solid rgba(255, 255, 255, 0.16);
       border-radius: 34rem;
-      background: linear-gradient(180deg, rgba(66, 112, 76, 0.64), rgba(18, 72, 43, 0.68));
-      box-shadow: 0 22rem 50rem rgba(0, 0, 0, 0.18), inset 0 1rem 0 rgba(255, 255, 255, 0.12);
+      background: linear-gradient(135deg, rgba(72, 113, 75, 0.68), rgba(14, 57, 37, 0.78));
+      box-shadow: 0 22rem 50rem rgba(0, 0, 0, 0.2), inset 0 1rem 0 rgba(255, 255, 255, 0.12);
       backdrop-filter: blur(14rem);
     }
 
-    .stat-grid {
+    .face-preview {
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+      border-radius: 24rem;
+      background: #15331f;
+    }
+
+    .face-preview img,
+    .look-photo img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .face-preview::after,
+    .look-photo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 48%, rgba(0, 0, 0, 0.38));
+      pointer-events: none;
+    }
+
+    .preview-chip {
+      position: absolute;
+      left: 18rem;
+      bottom: 18rem;
+      z-index: 1;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      height: 145rem;
-      background: rgba(255, 255, 255, 0.025);
+      gap: 4rem;
+      padding: 12rem 16rem;
+      border-radius: 14rem;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.28);
+      font-size: 24rem;
+      line-height: 1.08;
+      font-weight: 800;
+      letter-spacing: 0;
+      backdrop-filter: blur(8rem);
     }
 
-    .stat {
+    .preview-chip span {
+      color: rgba(255, 255, 255, 0.66);
+      font-size: 20rem;
+      font-weight: 700;
+    }
+
+    .profile-panel {
+      min-width: 0;
       display: grid;
-      align-content: center;
-      gap: 14rem;
-      padding: 0 22rem 0 32rem;
-      border-right: 1rem solid rgba(255, 255, 255, 0.035);
+      align-content: start;
+      gap: 12rem;
+      padding: 4rem 6rem 0 0;
     }
 
-    .stat:last-child {
-      border-right: 0;
-    }
-
-    .stat span {
-      color: rgba(255, 255, 255, 0.52);
+    .eyebrow,
+    .note-label {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.62);
       font-size: 28rem;
       line-height: 1;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0;
     }
 
-    .stat strong {
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10rem;
+    }
+
+    .profile-item {
+      display: grid;
+      gap: 6rem;
+      min-height: 61rem;
+      padding: 10rem 13rem;
+      border: 1rem solid rgba(255, 255, 255, 0.1);
+      border-radius: 16rem;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .profile-item span {
+      color: rgba(255, 255, 255, 0.52);
+      font-size: 19rem;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .profile-item strong {
       color: #fff;
-      font-size: 32rem;
+      font-size: 24rem;
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .board-copy {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 22rem;
+      line-height: 1.3;
+      font-weight: 650;
+      letter-spacing: 0;
+    }
+
+    .swatch-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10rem;
+    }
+
+    .swatch {
+      height: 30rem;
+      border: 1rem solid rgba(255, 255, 255, 0.16);
+      border-radius: 14rem;
+      background:
+        linear-gradient(90deg, var(--c1), var(--c2)),
+        rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 1rem 0 rgba(255, 255, 255, 0.16);
+    }
+
+    .look-gallery {
+      position: absolute;
+      left: 45rem;
+      right: 45rem;
+      top: 918rem;
+      height: 370rem;
+      display: grid;
+      grid-template-columns: 1.14fr 1fr 1fr;
+      gap: 16rem;
+    }
+
+    .look-card {
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+      border: 1rem solid rgba(255, 255, 255, 0.14);
+      border-radius: 28rem;
+      background: rgba(16, 55, 34, 0.64);
+      box-shadow: 0 18rem 42rem rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(12rem);
+    }
+
+    .look-card.featured {
+      display: grid;
+      grid-template-rows: 178rem 1fr;
+    }
+
+    .look-card.compact {
+      display: grid;
+      grid-template-rows: 142rem 1fr;
+    }
+
+    .look-photo {
+      position: relative;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .look-body {
+      display: grid;
+      align-content: start;
+      gap: 10rem;
+      padding: 15rem 16rem 16rem;
+    }
+
+    .look-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7rem;
+    }
+
+    .look-meta span {
+      padding: 7rem 9rem;
+      border-radius: 12rem;
+      color: rgba(255, 255, 255, 0.74);
+      background: rgba(255, 255, 255, 0.1);
+      font-size: 18rem;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .look-card h2 {
+      margin: 0;
+      color: #fff;
+      font-size: 28rem;
       line-height: 1.12;
       font-weight: 900;
       letter-spacing: 0;
     }
 
-    .card-copy {
-      position: relative;
-      min-height: 262rem;
-      padding: 49rem 246rem 34rem 37rem;
-      color: rgba(255, 255, 255, 0.94);
-      font-size: 31rem;
-      line-height: 1.62;
+    .look-card p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.66);
+      font-size: 19rem;
+      line-height: 1.24;
       font-weight: 650;
       letter-spacing: 0;
     }
 
-    .spark {
-      display: inline-block;
-      margin-right: 16rem;
-      font-size: 34rem;
-      color: #fff;
-      filter: drop-shadow(0 0 8rem rgba(255, 255, 255, 0.5));
-    }
-
-    .mini-route {
+    .product-shot {
       position: absolute;
-      right: 45rem;
-      bottom: 35rem;
-      width: 180rem;
-      height: 170rem;
-      opacity: 0.9;
+      right: 13rem;
+      top: 118rem;
+      width: 76rem;
+      height: 76rem;
+      overflow: hidden;
+      border: 2rem solid rgba(255, 255, 255, 0.5);
+      border-radius: 18rem;
+      background:
+        radial-gradient(circle at 72% 28%, rgba(255, 255, 255, 0.36), transparent 22rem),
+        linear-gradient(135deg, var(--p1), var(--p2));
+      box-shadow: 0 10rem 24rem rgba(0, 0, 0, 0.24);
     }
 
-    .route-path {
-      fill: none;
-      stroke: rgba(255, 255, 255, 0.72);
-      stroke-width: 3;
-      stroke-dasharray: 7 8;
-      stroke-linecap: round;
-    }
-
-    .route-dot {
-      fill: #fff;
-      stroke: rgba(255, 255, 255, 0.26);
-      stroke-width: 12;
-    }
-
-    .route-tag {
+    .product-shot::before,
+    .product-shot::after {
+      content: "";
       position: absolute;
-      display: inline-grid;
-      place-items: center;
-      min-width: 68rem;
-      height: 39rem;
-      padding: 0 11rem;
-      border-radius: 7rem;
-      color: rgba(255, 255, 255, 0.82);
-      background: rgba(255, 255, 255, 0.13);
-      font-size: 25rem;
-      line-height: 1;
-      font-weight: 900;
-      font-style: italic;
-      letter-spacing: 0;
-      transform: rotate(4deg);
+      border-radius: 999rem;
+      background: rgba(255, 255, 255, 0.42);
     }
 
-    .route-tag.first {
-      top: 27rem;
-      right: 0;
+    .product-shot::before {
+      left: 13rem;
+      bottom: 14rem;
+      width: 48rem;
+      height: 8rem;
     }
 
-    .route-tag.second {
-      left: 26rem;
-      bottom: 5rem;
-      transform: rotate(-4deg);
+    .product-shot::after {
+      right: 15rem;
+      top: 14rem;
+      width: 10rem;
+      height: 38rem;
     }
 
-    .creator-note {
+    .routine-panel {
       position: absolute;
       left: 47rem;
       right: 47rem;
-      top: 959rem;
-    }
-
-    .note-label {
-      margin: 0 0 26rem;
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 31rem;
-      line-height: 1;
-      letter-spacing: 0;
-    }
-
-    .quote-list {
+      top: 1300rem;
+      height: 224rem;
       display: grid;
-      gap: 20rem;
+      align-content: start;
+      gap: 18rem;
     }
 
-    .quote {
-      position: relative;
-      min-height: 160rem;
-      padding: 0 152rem 0 34rem;
-      border-left: 2rem dashed rgba(255, 255, 255, 0.14);
+    .routine-track {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14rem;
     }
 
-    .quote h2 {
-      margin: 0 0 12rem;
-      color: #fff;
-      font-size: 33rem;
-      line-height: 1.18;
+    .routine-step {
+      min-width: 0;
+      min-height: 162rem;
+      display: grid;
+      align-content: start;
+      gap: 12rem;
+      padding: 18rem;
+      border: 1rem solid rgba(255, 255, 255, 0.14);
+      border-radius: 24rem;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10rem);
+    }
+
+    .routine-step strong {
+      color: rgba(255, 255, 255, 0.42);
+      font-size: 25rem;
+      line-height: 1;
       font-weight: 900;
       letter-spacing: 0;
     }
 
-    .quote-mark {
-      position: absolute;
-      left: -5rem;
-      top: -10rem;
-      color: rgba(255, 255, 255, 0.42);
-      font-size: 56rem;
+    .routine-step span {
+      color: #fff;
+      font-size: 27rem;
       line-height: 1;
-      font-family: Georgia, serif;
-    }
-
-    .author-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 12rem;
-      color: rgba(255, 255, 255, 0.46);
-      font-size: 25rem;
-      line-height: 1.35;
-      font-weight: 600;
+      font-weight: 900;
       letter-spacing: 0;
     }
 
-    .quote p {
-      margin: 10rem 0 0;
-      max-width: 540rem;
-      color: rgba(255, 255, 255, 0.72);
-      font-size: 24rem;
-      line-height: 1.32;
-      font-weight: 600;
+    .routine-step p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 20rem;
+      line-height: 1.22;
+      font-weight: 650;
       letter-spacing: 0;
-    }
-
-    .avatar {
-      width: 35rem;
-      height: 35rem;
-      border: 2rem solid rgba(255, 255, 255, 0.58);
-      border-radius: 50%;
-      background: var(--avatar) center / cover no-repeat;
-      box-shadow: 0 0 0 2rem rgba(0, 0, 0, 0.16);
-    }
-
-    .thumb {
-      position: absolute;
-      right: 0;
-      top: 8rem;
-      width: 112rem;
-      height: 145rem;
-      overflow: hidden;
-      border-radius: 11rem;
-      background: var(--thumb) center / cover no-repeat;
-      box-shadow: 0 12rem 28rem rgba(0, 0, 0, 0.22);
-    }
-
-    .thumb::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.18));
-    }
-
-    .play {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      z-index: 1;
-      width: 39rem;
-      height: 39rem;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.95);
-      transform: translate(-50%, -50%);
-    }
-
-    .play::before {
-      content: "";
-      position: absolute;
-      left: 15rem;
-      top: 10rem;
-      width: 0;
-      height: 0;
-      border-top: 9rem solid transparent;
-      border-bottom: 9rem solid transparent;
-      border-left: 14rem solid rgba(40, 72, 46, 0.92);
     }
 
     .progress {
@@ -786,59 +858,86 @@
         <span class="ai-badge">AI推荐</span>
       </div>
 
-      <article class="info-card" aria-label="Face Muse 风格推荐">
-        <div class="stat-grid">
-          <div class="stat"><span>脸型</span><strong>偏圆</strong></div>
-          <div class="stat"><span>肤色</span><strong>暖调自然</strong></div>
-          <div class="stat"><span>发色</span><strong>深棕</strong></div>
-          <div class="stat"><span>场合</span><strong>通勤 / 约会 / 拍照</strong></div>
+      <article class="look-board" aria-label="Face Muse 入门妆容适配">
+        <div class="face-preview">
+          <img src="./assets/4/main-face.webp" alt="" decoding="async">
+          <div class="preview-chip">
+            <strong>新手友好</strong>
+            <span>低失误率妆面</span>
+          </div>
         </div>
-        <div class="card-copy">
-          <span class="spark">✦</span>AI 推荐：为你定制三套新手友好妆容。根据五官比例、肤色、发色和当天场合生成，轻松上手，放大你的自然美。
-          <div class="mini-route" aria-hidden="true">
-            <svg viewBox="0 0 180 170">
-              <path class="route-path" d="M28 48 C76 30 110 51 116 77 S77 95 95 124 S135 130 152 112"></path>
-              <circle class="route-dot" cx="28" cy="48" r="7"></circle>
-              <circle class="route-dot" cx="116" cy="77" r="7"></circle>
-              <circle class="route-dot" cx="95" cy="124" r="7"></circle>
-              <circle class="route-dot" cx="152" cy="112" r="7"></circle>
-            </svg>
-            <span class="route-tag first">上脸</span>
-            <span class="route-tag second">新手</span>
+        <div class="profile-panel">
+          <p class="eyebrow">适配画像</p>
+          <div class="profile-grid">
+            <div class="profile-item"><span>脸型</span><strong>偏圆</strong></div>
+            <div class="profile-item"><span>肤色</span><strong>暖调自然</strong></div>
+            <div class="profile-item"><span>发色</span><strong>深棕</strong></div>
+            <div class="profile-item"><span>场合</span><strong>通勤 / 约会 / 拍照</strong></div>
+          </div>
+          <p class="board-copy">AI 推荐：为你定制三套新手友好妆容。根据五官比例、肤色、发色和当天场合生成，轻松上手，放大自然美。</p>
+          <div class="swatch-row" aria-label="推荐色彩">
+            <span class="swatch" style="--c1: #f3c7b2; --c2: #b7796b"></span>
+            <span class="swatch" style="--c1: #f2aaa7; --c2: #9f4b52"></span>
+            <span class="swatch" style="--c1: #d6a483; --c2: #6f4231"></span>
+            <span class="swatch" style="--c1: #ece1d3; --c2: #9d8b77"></span>
           </div>
         </div>
       </article>
 
-      <section class="creator-note" aria-label="推荐妆容">
-        <p class="note-label">Face Muse 风格推荐</p>
-        <div class="quote-list">
-          <article class="quote">
-            <span class="quote-mark">“</span>
+      <section class="look-gallery" aria-label="三套推荐妆容">
+        <article class="look-card featured">
+          <div class="look-photo">
+            <img src="./assets/4/look-1-face.webp" alt="" loading="lazy" decoding="async" fetchpriority="low">
+          </div>
+          <div class="product-shot" style="--p1: #efb6a3; --p2: #8e4f42" aria-hidden="true"></div>
+          <div class="look-body">
+            <div class="look-meta"><span>18 分钟</span><span>少步骤</span></div>
             <h2>清透通勤妆</h2>
-            <div class="author-row">
-              <span>18 分钟</span><span>少步骤</span><span>推荐理由：低失误率</span>
-            </div>
-            <p>适合上班日常的轻透底妆、自然眉眼、豆沙裸粉唇。</p>
-            <div class="thumb" style="--thumb: url('./assets/4/look-1-face.webp')" aria-hidden="true"><span class="play"></span></div>
-          </article>
-          <article class="quote">
-            <span class="quote-mark">“</span>
+            <p>低失误率，适合上班日常的轻透底妆、自然眉眼、豆沙裸粉唇。</p>
+          </div>
+        </article>
+        <article class="look-card compact">
+          <div class="look-photo">
+            <img src="./assets/4/look-2-face.webp" alt="" loading="lazy" decoding="async" fetchpriority="low">
+          </div>
+          <div class="product-shot" style="--p1: #f0a3a0; --p2: #a34a55" aria-hidden="true"></div>
+          <div class="look-body">
+            <div class="look-meta"><span>26 分钟</span><span>唇腮同色</span></div>
             <h2>微甜约会妆</h2>
-            <div class="author-row">
-              <span>26 分钟</span><span>唇腮同色</span><span>推荐理由：眼线短拉</span>
-            </div>
-            <p>温柔甜美风，柔和腮红搭配同色系唇妆，约会心动加分。</p>
-            <div class="thumb" style="--thumb: url('./assets/4/look-2-face.webp')" aria-hidden="true"><span class="play"></span></div>
-          </article>
-          <article class="quote">
-            <span class="quote-mark">“</span>
+            <p>眼线短拉，柔和腮红搭配同色系唇妆。</p>
+          </div>
+        </article>
+        <article class="look-card compact">
+          <div class="look-photo">
+            <img src="./assets/4/look-3-face.webp" alt="" loading="lazy" decoding="async" fetchpriority="low">
+          </div>
+          <div class="product-shot" style="--p1: #d5a17e; --p2: #705044" aria-hidden="true"></div>
+          <div class="look-body">
+            <div class="look-meta"><span>32 分钟</span><span>提升轮廓</span></div>
             <h2>低饱和拍照妆</h2>
-            <div class="author-row">
-              <span>32 分钟</span><span>提升轮廓</span><span>推荐理由：镜头友好</span>
-            </div>
-            <p>低饱和高级感，轮廓更清晰，上镜立体，照片氛围感拉满。</p>
-            <div class="thumb" style="--thumb: url('./assets/4/look-3-face.webp')" aria-hidden="true"><span class="play"></span></div>
-          </article>
+            <p>镜头友好，轮廓更清晰，照片氛围感拉满。</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="routine-panel" aria-label="新手步骤拆解">
+        <p class="note-label">新手步骤拆解</p>
+        <div class="routine-track">
+          <div class="routine-step">
+            <strong>01</strong>
+            <span>底妆</span>
+            <p>少量叠加，保留光泽。</p>
+          </div>
+          <div class="routine-step">
+            <strong>02</strong>
+            <span>眉眼</span>
+            <p>短眼线，自然眉形。</p>
+          </div>
+          <div class="routine-step">
+            <strong>03</strong>
+            <span>唇腮</span>
+            <p>同色系收尾，统一妆面。</p>
+          </div>
         </div>
       </section>
 
@@ -851,8 +950,8 @@
       </div>
 
       <div class="action-row" aria-label="推荐操作">
-        <button class="action-button" type="button">查看三套妆造上脸预览</button>
-        <button class="action-button secondary" type="button">评论 89：通勤妆 18 分钟能出门</button>
+        <button class="action-button" type="button">不感兴趣</button>
+        <button class="action-button secondary" type="button">查看详情</button>
       </div>
 
       <div class="swipe-tip" aria-hidden="true">
@@ -885,17 +984,18 @@
       document.documentElement.dataset.gsapLoaded = "true";
 
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        gsap.set([".headline", ".info-card", ".quote", ".progress span", ".action-button", ".swipe-tip", ".bottom-link"], { opacity: 1, clearProps: "transform" });
+        gsap.set([".headline", ".look-board", ".look-card", ".routine-step", ".progress span", ".action-button", ".swipe-tip", ".bottom-link"], { opacity: 1, clearProps: "transform" });
         return;
       }
 
       gsap.from(".hero-grain", { scale: 1.08, duration: 1.1, ease: "power2.out" });
       gsap.from(".status-bar, .top-nav", { y: -16, autoAlpha: 0, duration: 0.42, stagger: 0.08, ease: "power3.out" });
       gsap.from(".headline", { y: 28, autoAlpha: 0, duration: 0.58, delay: 0.12, ease: "power3.out" });
-      gsap.from(".info-card", { y: 34, autoAlpha: 0, duration: 0.64, delay: 0.24, ease: "power3.out" });
-      gsap.from(".quote", { x: -24, autoAlpha: 0, duration: 0.5, delay: 0.46, stagger: 0.08, ease: "power3.out" });
-      gsap.from(".progress span, .action-button, .swipe-tip", { y: 16, duration: 0.42, delay: 0.66, stagger: 0.04, ease: "power2.out" });
-      gsap.from(".bottom-link", { y: 16, duration: 0.38, delay: 0.72, stagger: 0.035, ease: "power2.out" });
+      gsap.from(".look-board", { y: 34, autoAlpha: 0, duration: 0.64, delay: 0.24, ease: "power3.out" });
+      gsap.from(".look-card", { y: 28, autoAlpha: 0, duration: 0.52, delay: 0.42, stagger: 0.07, ease: "power3.out" });
+      gsap.from(".routine-step", { y: 18, autoAlpha: 0, duration: 0.42, delay: 0.58, stagger: 0.05, ease: "power2.out" });
+      gsap.from(".progress span, .action-button, .swipe-tip", { y: 16, duration: 0.42, delay: 0.7, stagger: 0.04, ease: "power2.out" });
+      gsap.from(".bottom-link", { y: 16, duration: 0.38, delay: 0.76, stagger: 0.035, ease: "power2.out" });
       gsap.to(".hero-grain", { scale: 1.045, duration: 7, repeat: -1, yoyo: true, ease: "sine.inOut" });
 
       document.querySelectorAll("button, .bottom-link").forEach((item) => {
