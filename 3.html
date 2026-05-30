@@ -1072,12 +1072,18 @@
     <span class="home-indicator" aria-hidden="true"></span>
   </main>
 
+  <script src="./assets/gsap.min.js" defer></script>
   <script>
     window.addEventListener("DOMContentLoaded", () => {
+      if (!window.gsap) {
+        document.documentElement.dataset.gsapLoaded = "false";
+        return;
+      }
+
+      document.documentElement.dataset.gsapLoaded = "true";
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const previewCards = Array.from(document.querySelectorAll(".preview-card"));
       const matchCopy = document.querySelector(".match-copy");
-      const blendHandle = document.querySelector(".blend-handle span");
 
       const selectPreview = (activeCard) => {
         previewCards.forEach((card) => {
@@ -1090,24 +1096,13 @@
           matchCopy.textContent = activeCard.dataset.copy;
         }
 
-        if (reduceMotion || typeof activeCard.animate !== "function") {
+        if (reduceMotion) {
           return;
         }
 
-        activeCard.animate(
-          [
-            { transform: activeCard.classList.contains("self") ? "translateY(-8rem) rotate(2deg) scale(1.01)" : "translateY(-8rem) rotate(-2deg) scale(1.01)" },
-            { transform: activeCard.classList.contains("self") ? "translateY(-10rem) rotate(2deg) scale(1.03)" : "translateY(-10rem) rotate(-2deg) scale(1.03)" }
-          ],
-          { duration: 240, easing: "cubic-bezier(.2,.8,.2,1)" }
-        );
-
-        if (blendHandle) {
-          blendHandle.animate(
-            [{ transform: "translateX(-5rem)" }, { transform: "translateX(5rem)" }, { transform: "translateX(0)" }],
-            { duration: 360, easing: "ease-in-out" }
-          );
-        }
+        gsap.fromTo(activeCard.querySelector(".preview-image"), { scale: 1.04 }, { scale: 1.1, duration: 0.32, repeat: 1, yoyo: true, ease: "power2.out" });
+        gsap.fromTo(".fit-chip", { y: 5, autoAlpha: 0.72 }, { y: 0, autoAlpha: 1, duration: 0.28, stagger: 0.035, ease: "power2.out" });
+        gsap.fromTo(".blend-handle span", { x: -5 }, { x: 5, duration: 0.32, repeat: 1, yoyo: true, ease: "sine.inOut" });
       };
 
       previewCards.forEach((card) => {
@@ -1118,6 +1113,32 @@
           }
           event.preventDefault();
           selectPreview(card);
+        });
+      });
+
+      if (reduceMotion) {
+        return;
+      }
+
+      gsap.from(".hero-grain", { scale: 1.08, duration: 1.1, ease: "power2.out" });
+      gsap.from(".status-bar, .top-nav", { y: -16, autoAlpha: 0, duration: 0.42, stagger: 0.08, ease: "power3.out" });
+      gsap.from(".headline", { y: 28, autoAlpha: 0, duration: 0.58, delay: 0.12, ease: "power3.out" });
+      gsap.from(".info-card", { y: 34, autoAlpha: 0, duration: 0.64, delay: 0.24, ease: "power3.out" });
+      gsap.from(".preview-card", { y: 14, autoAlpha: 0, duration: 0.34, delay: 0.38, stagger: 0.05, ease: "power3.out" });
+      gsap.from(".match-panel > *", { y: 10, autoAlpha: 0, duration: 0.32, delay: 0.44, stagger: 0.035, ease: "power2.out" });
+      gsap.from(".fit-chip, .tap-pill", { y: 8, autoAlpha: 0, duration: 0.28, delay: 0.54, stagger: 0.025, ease: "power2.out" });
+      gsap.from(".quote", { x: -18, autoAlpha: 0, duration: 0.5, delay: 0.48, stagger: 0.09, ease: "power3.out" });
+      gsap.from(".progress span, .action-button, .swipe-tip", { y: 16, duration: 0.42, delay: 0.66, stagger: 0.04, ease: "power2.out" });
+      gsap.from(".bottom-link", { y: 16, duration: 0.38, delay: 0.72, stagger: 0.035, ease: "power2.out" });
+      gsap.to(".hero-grain", { scale: 1.045, duration: 7, repeat: -1, yoyo: true, ease: "sine.inOut" });
+      gsap.to(".match-meter", { scale: 1.035, duration: 1.3, repeat: -1, yoyo: true, ease: "sine.inOut" });
+      gsap.to(".blend-handle span", { x: 5, duration: 0.95, repeat: -1, yoyo: true, ease: "sine.inOut" });
+      gsap.to(".chevrons", { y: -7, duration: 0.9, repeat: -1, yoyo: true, ease: "sine.inOut" });
+
+      document.querySelectorAll("button, .bottom-link").forEach((item) => {
+        item.addEventListener("click", (event) => {
+          event.preventDefault();
+          gsap.fromTo(item, { scale: 0.96 }, { scale: 1, duration: 0.32, ease: "back.out(2.4)" });
         });
       });
     });
