@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="Face Muse 高分化妆师与妆造档案首页，提供附近高分化妆师、造型工作室推荐和个人妆造档案。">
   <link rel="icon" href="data:,">
+  <link rel="preload" as="image" href="./assets/face-muse-5-card-1.webp">
+  <link rel="preload" as="image" href="./assets/face-muse-5-card-2.webp">
+  <link rel="preload" as="image" href="./assets/face-muse-5-archive-stack.webp">
   <title>Face Muse - 高分化妆师与妆造档案</title>
   <style>
     :root {
@@ -1451,20 +1454,20 @@
 
       const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
       intro
-        .from(".status-bar", { y: -10, opacity: 0, duration: 0.22 }, 0)
-        .from(".icon-btn", { scale: 0.9, opacity: 0, duration: 0.24, stagger: 0.03 }, 0.03)
-        .from(".brand", { y: 10, opacity: 0, duration: 0.24 }, 0.04)
-        .from("h1", { y: 10, opacity: 0, duration: 0.28 }, 0.08)
-        .from(".tagline", { y: 8, opacity: 0, duration: 0.24 }, 0.12)
-        .from(".search-panel", { y: 12, scale: 0.992, opacity: 0, duration: 0.26 }, 0.16)
-        .from(".chip", { y: 8, opacity: 0, duration: 0.22, stagger: 0.03 }, 0.2)
-        .from(".locator", { scale: 0.78, opacity: 0, duration: 0.24 }, 0.22)
-        .from(".pin", { y: -10, opacity: 0, duration: 0.28, stagger: 0.04, ease: "back.out(1.5)" }, 0.24)
-        .from(".recommend-title", { x: -8, opacity: 0, duration: 0.22 }, 0.3)
-        .from(".metric-strip", { y: 10, opacity: 0, duration: 0.24 }, 0.32)
-        .from(".artist-card", { y: 14, opacity: 0, duration: 0.28, stagger: 0.04 }, 0.34)
-        .from(".archive", { y: 14, opacity: 0, duration: 0.28 }, 0.38)
-        .from(".nav-item", { y: 8, opacity: 0, duration: 0.22, stagger: 0.02 }, 0.4);
+        .from(".status-bar", { y: -10, duration: 0.18 }, 0)
+        .from(".icon-btn", { scale: 0.94, duration: 0.2, stagger: 0.03 }, 0.03)
+        .from(".brand", { y: 8, duration: 0.2 }, 0.04)
+        .from("h1", { y: 8, duration: 0.22 }, 0.08)
+        .from(".tagline", { y: 6, duration: 0.2 }, 0.12)
+        .from(".search-panel", { y: 10, scale: 0.995, duration: 0.22 }, 0.16)
+        .from(".chip", { y: 6, duration: 0.18, stagger: 0.03 }, 0.2)
+        .from(".locator", { scale: 0.86, duration: 0.2 }, 0.22)
+        .from(".pin", { y: -8, duration: 0.24, stagger: 0.04, ease: "back.out(1.5)" }, 0.24)
+        .from(".recommend-title", { x: -6, duration: 0.18 }, 0.3)
+        .from(".metric-strip", { y: 8, duration: 0.2 }, 0.32)
+        .from(".artist-card", { y: 10, duration: 0.22, stagger: 0.04 }, 0.34)
+        .from(".archive", { y: 10, duration: 0.22 }, 0.38)
+        .from(".nav-item", { y: 6, duration: 0.18, stagger: 0.02 }, 0.4);
 
       gsap.to(".scan", {
         scale: 1.32,
