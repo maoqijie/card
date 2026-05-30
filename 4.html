@@ -91,18 +91,27 @@
       inset: -28rem;
       z-index: 0;
       overflow: hidden;
+      background: #06140e;
+    }
+
+    .hero-image {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: var(--hero-position);
+      transform-origin: center;
     }
 
     .hero-grain::before {
       content: "";
       position: absolute;
       inset: 0;
-      transform: scale(1.015);
-      transform-origin: center;
+      z-index: 1;
+      pointer-events: none;
       background:
         radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.08), transparent 18%),
-        radial-gradient(circle at 78% 38%, rgba(159, 217, 165, 0.12), transparent 20%),
-        var(--hero-image) var(--hero-position) / var(--hero-size) no-repeat;
+        radial-gradient(circle at 78% 38%, rgba(159, 217, 165, 0.12), transparent 20%);
     }
 
     .status-bar {
@@ -923,7 +932,9 @@
 </head>
 <body>
   <main class="feed-screen" aria-labelledby="page-title">
-    <div class="hero-grain" aria-hidden="true"></div>
+    <div class="hero-grain" aria-hidden="true">
+      <img class="hero-image" src="./assets/4/main-face.webp" alt="" width="408" height="476" loading="eager" decoding="sync" fetchpriority="high">
+    </div>
 
     <div class="status-bar" aria-hidden="true">
       <span>9:41</span>
@@ -1225,7 +1236,7 @@
       gsap.from(".progress span, .action-button", { y: 16, duration: 0.42, delay: 0.7, stagger: 0.04, ease: "power2.out" });
       gsap.from(".swipe-tip", { autoAlpha: 0, duration: 0.36, delay: 0.82, ease: "power2.out" });
       gsap.from(".bottom-link", { y: 10, duration: 0.3, delay: 0.32, stagger: 0.025, ease: "power2.out" });
-      gsap.to(".hero-grain", { scale: 1.045, duration: 7, delay: 2.8, repeat: -1, yoyo: true, ease: "sine.inOut" });
+      gsap.to(".hero-image", { scale: 1.035, duration: 7, delay: 2.8, repeat: -1, yoyo: true, ease: "sine.inOut" });
 
       document.querySelectorAll("button, .bottom-link, .invite-task").forEach((item) => {
         item.addEventListener("click", (event) => {
