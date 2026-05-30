@@ -482,7 +482,7 @@
       top: 918rem;
       height: 370rem;
       display: grid;
-      grid-template-columns: 1.14fr 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 16rem;
     }
 
@@ -495,16 +495,13 @@
       background: rgba(16, 55, 34, 0.64);
       box-shadow: 0 18rem 42rem rgba(0, 0, 0, 0.18);
       backdrop-filter: blur(12rem);
-    }
-
-    .look-card.featured {
       display: grid;
-      grid-template-rows: 178rem 1fr;
+      grid-template-rows: 160rem 1fr;
     }
 
+    .look-card.featured,
     .look-card.compact {
-      display: grid;
-      grid-template-rows: 142rem 1fr;
+      grid-template-rows: 160rem 1fr;
     }
 
     .look-photo {
@@ -558,7 +555,7 @@
     .product-shot {
       position: absolute;
       right: 13rem;
-      top: 118rem;
+      top: 124rem;
       width: 76rem;
       height: 76rem;
       overflow: hidden;
