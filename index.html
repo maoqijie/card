@@ -143,48 +143,6 @@
       pointer-events: none;
     }
 
-    .guide-layer {
-      position: absolute;
-      left: 23.5%;
-      top: 21.5%;
-      z-index: 4;
-      width: 49%;
-      height: 52%;
-      overflow: visible;
-      pointer-events: none;
-      opacity: 0.22;
-      mix-blend-mode: screen;
-    }
-
-    .guide-layer .guide-stroke {
-      fill: none;
-      stroke: rgba(255, 255, 255, 0.9);
-      stroke-width: 0.52;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .guide-layer .dash {
-      stroke-dasharray: 2.6 2.4;
-    }
-
-    .guide-layer .corner {
-      stroke-width: 1.45;
-    }
-
-    .guide-layer .gold-zone {
-      fill: var(--gold);
-      stroke: rgba(251, 220, 157, 0.72);
-      stroke-width: 0.24;
-    }
-
-    .guide-layer .purple {
-      stroke: #c391ff;
-      stroke-width: 0.62;
-      fill: none;
-      filter: drop-shadow(0 0 0.25cqw rgba(195, 145, 255, 0.52));
-    }
-
     .top-ui {
       position: absolute;
       inset: 0 0 auto;
@@ -324,53 +282,6 @@
       width: 3.95cqw;
       height: 3.95cqw;
       fill: currentColor;
-    }
-
-    .scan-corners {
-      position: absolute;
-      left: 28.5%;
-      top: 31.1%;
-      z-index: 5;
-      width: 44%;
-      height: 45%;
-      pointer-events: none;
-      opacity: 0.35;
-    }
-
-    .scan-corners span {
-      position: absolute;
-      width: 5.4cqw;
-      height: 5.4cqw;
-      border-color: rgba(255, 244, 230, 0.94);
-      border-style: solid;
-    }
-
-    .scan-corners span:nth-child(1) {
-      left: 0;
-      top: 0;
-      border-width: 0.55cqw 0 0 0.55cqw;
-      border-radius: 2.05cqw 0 0;
-    }
-
-    .scan-corners span:nth-child(2) {
-      right: 0;
-      top: 0;
-      border-width: 0.55cqw 0.55cqw 0 0;
-      border-radius: 0 2.05cqw 0 0;
-    }
-
-    .scan-corners span:nth-child(3) {
-      left: -4%;
-      bottom: 0;
-      border-width: 0 0 0.55cqw 0.55cqw;
-      border-radius: 0 0 0 2.05cqw;
-    }
-
-    .scan-corners span:nth-child(4) {
-      right: 2%;
-      bottom: 0;
-      border-width: 0 0.55cqw 0.55cqw 0;
-      border-radius: 0 0 2.05cqw;
     }
 
     .panel {

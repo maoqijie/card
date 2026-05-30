@@ -325,7 +325,7 @@
       border: 0;
       border-radius: 999px;
       color: #f4ece1;
-      background: rgba(62, 57, 52, 0.94);
+      background: #5f5851;
       font-size: clamp(15px, 2.6vw, 30px);
       font-weight: 600;
       cursor: pointer;
@@ -757,6 +757,15 @@
       overflow: visible;
     }
 
+    .step-img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
     .step-label {
       position: absolute;
       left: 0;
@@ -1037,13 +1046,7 @@
           <div class="step-no">01</div>
           <div class="done" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></div>
           <div class="step-art face-art" aria-hidden="true">
-            <svg viewBox="0 0 160 132">
-              <ellipse cx="80" cy="65" rx="49" ry="58" fill="#e5c3b6" stroke="#e7b6ad" stroke-width="3"/>
-              <path d="M38 77C50 51 111 51 123 77" fill="none" stroke="#2f3d34" stroke-width="3"/>
-              <path d="M55 55q12-7 25 0M83 55q13-7 26 0" fill="none" stroke="#6a5048" stroke-width="4" stroke-linecap="round"/>
-              <path d="M64 87q16 12 33 0" fill="none" stroke="#904d4c" stroke-width="4" stroke-linecap="round"/>
-              <path class="draw-line" d="M23 73C38 50 61 48 72 66C55 88 35 91 23 73ZM90 66C105 47 130 50 139 75C123 93 103 89 90 66Z" fill="rgba(236,151,151,.22)" stroke="#f7dccf" stroke-dasharray="6 5" stroke-width="2"/>
-            </svg>
+            <img class="step-img" src="assets/step-01.png" alt="">
           </div>
           <div class="step-label">底妆明度拉平</div>
         </article>
@@ -1052,15 +1055,7 @@
           <div class="step-no">02</div>
           <div class="done" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></div>
           <div class="step-art eye-art" aria-hidden="true">
-            <svg viewBox="0 0 180 118">
-              <defs><radialGradient id="iris" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#090806"/><stop offset=".45" stop-color="#4f2d1d"/><stop offset="1" stop-color="#96705a"/></radialGradient></defs>
-              <path d="M15 66C48 21 126 18 166 56C133 95 55 102 15 66Z" fill="#eee1d6"/>
-              <circle cx="92" cy="60" r="26" fill="url(#iris)"/>
-              <circle cx="85" cy="50" r="6" fill="#fff" opacity=".7"/>
-              <path d="M13 67C48 20 127 18 168 57" fill="none" stroke="#231b18" stroke-width="6" stroke-linecap="round"/>
-              <path d="M28 82C61 100 125 95 157 64" fill="none" stroke="#6d4b44" stroke-width="3" opacity=".55"/>
-              <path class="draw-line" d="M15 66C50 25 134 20 170 55C143 87 55 94 15 66Z" fill="none" stroke="#f5c9c1" stroke-dasharray="7 6" stroke-width="3"/>
-            </svg>
+            <img class="step-img" src="assets/step-02.png" alt="">
           </div>
           <div class="step-label">眼影范围缩小</div>
         </article>
@@ -1069,15 +1064,7 @@
           <div class="step-no">03</div>
           <div class="done" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></div>
           <div class="step-art cheek-art" aria-hidden="true">
-            <svg viewBox="0 0 178 142">
-              <path d="M89 12C48 12 38 55 40 82C42 116 68 128 89 128C110 128 136 116 138 82C140 55 130 12 89 12Z" fill="none" stroke="#8a7861" stroke-width="2"/>
-              <path d="M62 61q15-8 28 0M91 61q15-8 28 0" fill="none" stroke="#c59686" stroke-width="5" stroke-linecap="round"/>
-              <path d="M78 104q12 9 25 0" fill="none" stroke="#9d6d5d" stroke-width="3" stroke-linecap="round"/>
-              <ellipse class="draw-line" cx="63" cy="82" rx="18" ry="22" fill="rgba(236,151,151,.25)" stroke="#f5c9c1" stroke-dasharray="6 5" stroke-width="2"/>
-              <ellipse class="draw-line" cx="116" cy="82" rx="18" ry="22" fill="rgba(236,151,151,.25)" stroke="#f5c9c1" stroke-dasharray="6 5" stroke-width="2"/>
-              <path d="M148 58c12 18 12 34 1 52" fill="none" stroke="#cd888c" stroke-width="5" stroke-linecap="round"/>
-              <path d="m149 57 9 13M149 57l-10 13" fill="none" stroke="#cd888c" stroke-width="5" stroke-linecap="round"/>
-            </svg>
+            <img class="step-img" src="assets/step-03.png" alt="">
           </div>
           <div class="step-label">腮红位置上移</div>
         </article>
@@ -1086,11 +1073,7 @@
           <div class="step-no">04</div>
           <div class="done" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></div>
           <div class="step-art lip-art" aria-hidden="true">
-            <svg viewBox="0 0 176 118">
-              <path d="M20 59C42 31 60 32 80 45C102 30 130 32 156 59C123 94 55 94 20 59Z" fill="#c86f70" stroke="#71413d" stroke-width="4"/>
-              <path d="M21 60c44 9 91 9 134 0" fill="none" stroke="#6f3f3d" stroke-width="4" stroke-linecap="round"/>
-              <path class="draw-line" d="M12 58C38 23 61 23 82 39C105 21 133 26 164 58C131 99 45 99 12 58Z" fill="none" stroke="#f5decf" stroke-dasharray="8 6" stroke-width="3"/>
-            </svg>
+            <img class="step-img" src="assets/step-04.png" alt="">
           </div>
           <div class="step-label">唇线边界柔化</div>
         </article>
