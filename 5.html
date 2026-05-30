@@ -1237,12 +1237,8 @@
         <path class="route-core route-line" d="M575 620 C640 690 700 745 772 790"></path>
         <path class="route-base route-line" d="M575 620 C483 650 390 670 286 686"></path>
         <path class="route-core route-line" d="M575 620 C483 650 390 670 286 686"></path>
-        <circle class="route-dot" r="5">
-          <animateMotion dur="3.8s" repeatCount="indefinite" path="M575 620 C650 560 738 533 838 512"></animateMotion>
-        </circle>
-        <circle class="route-dot" r="5">
-          <animateMotion dur="4.4s" repeatCount="indefinite" path="M575 620 C640 690 700 745 772 790"></animateMotion>
-        </circle>
+        <circle class="route-dot route-dot-top" cx="838" cy="512" r="5"></circle>
+        <circle class="route-dot route-dot-bottom" cx="772" cy="790" r="5"></circle>
       </svg>
     </section>
 
@@ -1473,16 +1469,16 @@
       gsap.to(".scan", {
         scale: 1.32,
         opacity: 0,
-        duration: 1.8,
-        repeat: -1,
+        duration: 0.8,
+        repeat: 1,
         ease: "power1.out",
         transformOrigin: "50% 50%"
       });
 
       gsap.to(".pin-shape", {
-        y: -7,
-        duration: 1.8,
-        repeat: -1,
+        y: -5,
+        duration: 0.45,
+        repeat: 1,
         yoyo: true,
         ease: "sine.inOut",
         stagger: 0.18
