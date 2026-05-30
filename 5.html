@@ -1,0 +1,1511 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Face Muse 高分化妆师与妆造档案首页，提供附近高分化妆师、造型工作室推荐和个人妆造档案。">
+  <link rel="icon" href="data:,">
+  <title>Face Muse - 高分化妆师与妆造档案</title>
+  <style>
+    :root {
+      --design-width: 1152;
+      --design-height: 2048;
+      --page-bg: #06130f;
+      --ink: #18201c;
+      --cream: #fff9ef;
+      --cream-2: #f5ecdf;
+      --muted: #8b7c69;
+      --gold: #eac494;
+      --gold-2: #d88f34;
+      --green: #08241e;
+      --green-2: #12392f;
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      background: var(--page-bg);
+    }
+
+    html {
+      font-size: calc(min(100vw, 1152px) / 1152);
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      overflow-x: hidden;
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", Arial, sans-serif;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    .screen {
+      position: relative;
+      width: min(100vw, 1152px);
+      height: auto;
+      min-height: 2048rem;
+      overflow: hidden;
+      isolation: isolate;
+      background:
+        radial-gradient(circle at 26% 20%, rgba(45, 91, 66, 0.38), transparent 22%),
+        radial-gradient(circle at 82% 35%, rgba(71, 90, 63, 0.28), transparent 24%),
+        linear-gradient(180deg, #04100e 0%, #0c241e 43%, #042019 100%);
+      color: #fff4e7;
+    }
+
+    .screen::before,
+    .screen::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .screen::before {
+      background:
+        linear-gradient(180deg, rgba(2, 9, 8, 0.92) 0%, rgba(2, 12, 10, 0.28) 18%, transparent 39%),
+        linear-gradient(0deg, rgba(1, 16, 13, 0.95) 0%, rgba(1, 24, 19, 0.55) 18%, transparent 42%);
+      mix-blend-mode: multiply;
+    }
+
+    .screen::after {
+      background:
+        radial-gradient(ellipse at center, transparent 45%, rgba(0, 8, 7, 0.42) 100%),
+        linear-gradient(90deg, rgba(0, 16, 13, 0.2), transparent 15%, transparent 85%, rgba(0, 16, 13, 0.2));
+    }
+
+    .map-backdrop {
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 980rem;
+      z-index: 1;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 23% 46%, rgba(52, 103, 68, 0.6), transparent 14%),
+        radial-gradient(circle at 41% 32%, rgba(105, 123, 101, 0.38), transparent 17%),
+        radial-gradient(circle at 72% 34%, rgba(130, 135, 118, 0.32), transparent 18%),
+        linear-gradient(140deg, #53635d 0%, #203f36 28%, #60716a 45%, #2e453e 62%, #74776c 100%);
+      filter: saturate(0.82) contrast(1.08);
+    }
+
+    .map-backdrop::before {
+      content: "";
+      position: absolute;
+      inset: -80rem -40rem;
+      opacity: 0.62;
+      background-image:
+        linear-gradient(24deg, transparent 0 47%, rgba(230, 232, 217, 0.22) 48% 50%, transparent 51% 100%),
+        linear-gradient(118deg, transparent 0 44%, rgba(238, 239, 220, 0.2) 45% 48%, transparent 49% 100%),
+        linear-gradient(87deg, transparent 0 46%, rgba(25, 34, 31, 0.28) 47% 51%, transparent 52% 100%),
+        linear-gradient(0deg, rgba(255, 255, 255, 0.07) 1rem, transparent 2rem),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1rem, transparent 2rem);
+      background-size: 340rem 190rem, 380rem 230rem, 260rem 210rem, 86rem 86rem, 86rem 86rem;
+      transform: rotate(-8deg) scale(1.1);
+    }
+
+    .map-backdrop::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0, 8, 8, 0.78) 0%, rgba(0, 12, 10, 0.08) 22%, rgba(0, 10, 9, 0.52) 92%, rgba(0, 14, 11, 0.92) 100%),
+        radial-gradient(circle at 52% 60%, rgba(255, 247, 220, 0.2), transparent 18%);
+    }
+
+    .map-svg,
+    .route-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .map-svg {
+      z-index: 2;
+      opacity: 0.72;
+    }
+
+    .route-svg {
+      z-index: 8;
+      overflow: visible;
+    }
+
+    .river {
+      fill: none;
+      stroke: rgba(53, 105, 115, 0.9);
+      stroke-width: 62;
+      stroke-linecap: round;
+    }
+
+    .road {
+      fill: none;
+      stroke: rgba(235, 225, 199, 0.24);
+      stroke-width: 12;
+      stroke-linecap: round;
+    }
+
+    .road.thin {
+      stroke-width: 6;
+      opacity: 0.65;
+    }
+
+    .park {
+      fill: rgba(42, 89, 57, 0.6);
+      stroke: rgba(218, 222, 193, 0.16);
+      stroke-width: 2;
+    }
+
+    .route-base {
+      fill: none;
+      stroke: rgba(255, 235, 194, 0.65);
+      stroke-width: 7;
+      stroke-linecap: round;
+      filter: url("#routeGlow");
+    }
+
+    .route-core {
+      fill: none;
+      stroke: #ffd18f;
+      stroke-width: 2.6;
+      stroke-linecap: round;
+    }
+
+    .route-dot {
+      fill: #fff1c7;
+      filter: url("#routeGlow");
+    }
+
+    .app-layer {
+      position: relative;
+      z-index: 10;
+      height: 2048rem;
+    }
+
+    .status-bar {
+      position: absolute;
+      top: 27rem;
+      left: 62rem;
+      right: 47rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 32rem;
+      font-weight: 700;
+      letter-spacing: 0;
+      color: #fff;
+    }
+
+    .system-icons {
+      display: flex;
+      align-items: center;
+      gap: 14rem;
+    }
+
+    .signal {
+      display: flex;
+      align-items: end;
+      gap: 5rem;
+      height: 31rem;
+    }
+
+    .signal span {
+      width: 7rem;
+      border-radius: 9rem;
+      background: #fff;
+    }
+
+    .signal span:nth-child(1) { height: 12rem; }
+    .signal span:nth-child(2) { height: 18rem; }
+    .signal span:nth-child(3) { height: 25rem; }
+    .signal span:nth-child(4) { height: 31rem; }
+
+    .wifi {
+      position: relative;
+      width: 38rem;
+      height: 29rem;
+    }
+
+    .wifi::before,
+    .wifi::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      border: 6rem solid transparent;
+      border-top-color: #fff;
+      border-radius: 50%;
+      transform: translateX(-50%);
+    }
+
+    .wifi::before {
+      top: 0;
+      width: 35rem;
+      height: 35rem;
+    }
+
+    .wifi::after {
+      top: 10rem;
+      width: 18rem;
+      height: 18rem;
+    }
+
+    .wifi i {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 8rem;
+      height: 8rem;
+      border-radius: 50%;
+      background: #fff;
+      transform: translateX(-50%);
+    }
+
+    .battery {
+      position: relative;
+      width: 54rem;
+      height: 28rem;
+      border: 3rem solid rgba(255, 255, 255, 0.9);
+      border-radius: 8rem;
+      box-shadow: inset 0 0 0 3rem rgba(255, 255, 255, 0.18);
+    }
+
+    .battery::before {
+      content: "";
+      position: absolute;
+      top: 5rem;
+      left: 5rem;
+      width: 38rem;
+      height: 12rem;
+      border-radius: 3rem;
+      background: #fff;
+    }
+
+    .battery::after {
+      content: "";
+      position: absolute;
+      top: 8rem;
+      right: -8rem;
+      width: 4rem;
+      height: 11rem;
+      border-radius: 0 4rem 4rem 0;
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    .icon-btn {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 78rem;
+      height: 78rem;
+      border: 1.4rem solid rgba(236, 207, 161, 0.42);
+      border-radius: 50%;
+      background: rgba(9, 23, 19, 0.64);
+      color: #ffe5c1;
+      box-shadow: inset 0 0 24rem rgba(255, 226, 184, 0.08), 0 8rem 28rem rgba(0, 0, 0, 0.22);
+      backdrop-filter: blur(8rem);
+    }
+
+    .icon-btn svg {
+      width: 43rem;
+      height: 43rem;
+      fill: currentColor;
+      stroke: currentColor;
+      stroke-width: 1.7;
+    }
+
+    .profile-btn {
+      top: 106rem;
+      left: 38rem;
+    }
+
+    .favorite-btn {
+      top: 106rem;
+      right: 38rem;
+    }
+
+    .hero {
+      position: absolute;
+      top: 78rem;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: "Noto Serif SC", "Songti SC", "STSong", SimSun, serif;
+    }
+
+    .brand {
+      margin: 0 0 12rem;
+      font-size: 41rem;
+      line-height: 1;
+      color: #eac494;
+      text-shadow: 0 0 20rem rgba(231, 188, 128, 0.18);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 63rem;
+      line-height: 1.16;
+      font-weight: 700;
+      letter-spacing: 2rem;
+      color: #fff4e8;
+      text-shadow: 0 2rem 16rem rgba(0, 0, 0, 0.3);
+    }
+
+    .tagline {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 18rem;
+      margin-top: 18rem;
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 28rem;
+      letter-spacing: 3rem;
+      color: rgba(255, 238, 216, 0.88);
+    }
+
+    .tagline::before,
+    .tagline::after {
+      content: "";
+      width: 66rem;
+      height: 1rem;
+      background: linear-gradient(90deg, transparent, rgba(234, 196, 148, 0.6));
+    }
+
+    .tagline::after {
+      background: linear-gradient(90deg, rgba(234, 196, 148, 0.6), transparent);
+    }
+
+    .spark {
+      color: #f7d3a2;
+      font-size: 23rem;
+      line-height: 1;
+    }
+
+    .search-panel {
+      position: absolute;
+      top: 282rem;
+      left: 128rem;
+      width: 896rem;
+      height: 98rem;
+      display: flex;
+      align-items: center;
+      gap: 24rem;
+      padding: 0 18rem 0 31rem;
+      border: 2rem solid rgba(219, 165, 99, 0.78);
+      border-radius: 50rem;
+      background: linear-gradient(90deg, rgba(255, 253, 248, 0.96), rgba(249, 239, 225, 0.96));
+      box-shadow: 0 18rem 36rem rgba(0, 0, 0, 0.28), inset 0 1rem 0 rgba(255, 255, 255, 0.92);
+    }
+
+    .search-panel svg {
+      flex: 0 0 auto;
+      width: 48rem;
+      height: 48rem;
+      color: #5d5b58;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+    }
+
+    .placeholder {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-size: 29rem;
+      font-weight: 600;
+      letter-spacing: 1.5rem;
+      color: #85807b;
+    }
+
+    .filter-btn {
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      width: 86rem;
+      height: 86rem;
+      border: 0;
+      border-radius: 50%;
+      background: linear-gradient(140deg, #ded2c2, #f5ebdc);
+      color: #3f3024;
+      box-shadow: inset 0 1rem 0 rgba(255, 255, 255, 0.7);
+    }
+
+    .filter-btn svg {
+      width: 45rem;
+      height: 45rem;
+      color: inherit;
+    }
+
+    .chips {
+      position: absolute;
+      top: 419rem;
+      left: 97rem;
+      display: flex;
+      gap: 22rem;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 13rem;
+      height: 58rem;
+      padding: 0 24rem;
+      border: 1.3rem solid rgba(238, 220, 190, 0.5);
+      border-radius: 32rem;
+      background: rgba(18, 42, 36, 0.68);
+      color: #fff7ea;
+      box-shadow: inset 0 1rem 0 rgba(255, 255, 255, 0.08), 0 10rem 26rem rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(7rem);
+      font-size: 24rem;
+      font-weight: 700;
+      letter-spacing: 1rem;
+    }
+
+    .chip svg {
+      width: 28rem;
+      height: 28rem;
+      fill: #f2bd75;
+      stroke: #f2bd75;
+      stroke-width: 1.5;
+    }
+
+    .locator {
+      position: absolute;
+      z-index: 11;
+      left: 575rem;
+      top: 620rem;
+      width: 48rem;
+      height: 48rem;
+      transform: translate(-50%, -50%);
+    }
+
+    .locator::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 214rem;
+      height: 214rem;
+      border: 2rem solid rgba(255, 245, 221, 0.74);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.17);
+      transform: translate(-50%, -50%);
+    }
+
+    .locator .scan {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 214rem;
+      height: 214rem;
+      border: 1rem solid rgba(255, 234, 196, 0.5);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .locator .dot {
+      position: absolute;
+      inset: 4rem;
+      border: 8rem solid #fff8eb;
+      border-radius: 50%;
+      background: #4094f1;
+      box-shadow: 0 0 0 2rem rgba(64, 148, 241, 0.2), 0 0 28rem rgba(64, 148, 241, 0.65);
+    }
+
+    .pin {
+      position: absolute;
+      z-index: 12;
+      width: 92rem;
+      height: 122rem;
+      transform: translate(-50%, -100%);
+    }
+
+    .pin::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -13rem;
+      width: 84rem;
+      height: 24rem;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 196, 111, 0.86), rgba(255, 196, 111, 0) 68%);
+      filter: blur(4rem);
+      transform: translateX(-50%);
+    }
+
+    .pin-shape {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 84rem;
+      height: 84rem;
+      display: grid;
+      place-items: center;
+      border: 7rem solid #fff6ea;
+      border-radius: 50% 50% 50% 8%;
+      background: linear-gradient(145deg, #f1ad4c, #cf741d);
+      box-shadow: 0 12rem 24rem rgba(0, 0, 0, 0.24), 0 0 24rem rgba(246, 172, 77, 0.54);
+      transform: translateX(-50%) rotate(-45deg);
+    }
+
+    .pin svg {
+      width: 43rem;
+      height: 43rem;
+      color: #fff8eb;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transform: rotate(45deg);
+    }
+
+    .pin-left { left: 286rem; top: 686rem; }
+    .pin-top { left: 838rem; top: 512rem; }
+    .pin-bottom { left: 772rem; top: 790rem; }
+
+    .recommend-title {
+      position: absolute;
+      top: 823rem;
+      left: 54rem;
+      display: flex;
+      align-items: center;
+      gap: 14rem;
+      font-family: "Noto Serif SC", "Songti SC", SimSun, serif;
+      font-size: 36rem;
+      font-weight: 700;
+      color: #fff2de;
+      text-shadow: 0 2rem 8rem rgba(0, 0, 0, 0.35);
+    }
+
+    .recommend-title .spark {
+      font-size: 28rem;
+    }
+
+    .metric-strip {
+      position: absolute;
+      z-index: 18;
+      top: 799rem;
+      right: 48rem;
+      width: 590rem;
+      height: 94rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28rem;
+      border: 1.6rem solid rgba(225, 165, 93, 0.8);
+      border-bottom: 0;
+      border-radius: 42rem 42rem 0 0;
+      background: linear-gradient(100deg, rgba(255, 250, 240, 0.96), rgba(247, 237, 224, 0.96));
+      color: #30251c;
+      box-shadow: 0 -10rem 26rem rgba(0, 0, 0, 0.12);
+    }
+
+    .metric {
+      display: flex;
+      align-items: baseline;
+      gap: 16rem;
+      font-size: 22rem;
+      color: #8a7967;
+      white-space: nowrap;
+    }
+
+    .metric strong {
+      font-size: 34rem;
+      color: #38281d;
+      font-weight: 600;
+    }
+
+    .metric + .metric {
+      padding-left: 28rem;
+      border-left: 1.3rem solid rgba(101, 79, 58, 0.34);
+    }
+
+    .cards {
+      position: absolute;
+      top: 886rem;
+      left: 54rem;
+      right: 47rem;
+      display: grid;
+      gap: 29rem;
+    }
+
+    .artist-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 52% 48%;
+      height: 333rem;
+      overflow: hidden;
+      border: 2rem solid rgba(226, 167, 98, 0.78);
+      border-radius: 24rem;
+      background: var(--cream);
+      box-shadow: 0 18rem 40rem rgba(0, 0, 0, 0.28);
+    }
+
+    .artist-card.compact {
+      height: 323rem;
+    }
+
+    .photo-scene {
+      position: relative;
+      overflow: hidden;
+      background: #30261f;
+    }
+
+    .photo-scene::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 55%, rgba(255, 249, 238, 0.96) 100%);
+      z-index: 8;
+    }
+
+    .makeup-photo {
+      background:
+        radial-gradient(circle at 16% 20%, #fff9df 0 3%, transparent 3.8%),
+        radial-gradient(circle at 25% 15%, #fff9df 0 3%, transparent 3.8%),
+        radial-gradient(circle at 35% 20%, #fff9df 0 3%, transparent 3.8%),
+        linear-gradient(100deg, #372d27 0 25%, #e0d2c0 26% 45%, #b98b6f 46% 67%, #f0ded0 68% 100%);
+    }
+
+    .vanity-photo {
+      background:
+        radial-gradient(circle at 9% 14%, #fff6cc 0 2.8%, transparent 3.4%),
+        radial-gradient(circle at 16% 12%, #fff6cc 0 2.8%, transparent 3.4%),
+        radial-gradient(circle at 24% 12%, #fff6cc 0 2.8%, transparent 3.4%),
+        radial-gradient(circle at 6% 26%, #fff6cc 0 2.8%, transparent 3.4%),
+        linear-gradient(110deg, #776958 0 20%, #d8c9b6 21% 44%, #3c3027 45% 73%, #efe3d0 74% 100%);
+    }
+
+    .photo-scene.real-photo {
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    .photo-scene.real-photo > * {
+      display: none;
+    }
+
+    .makeup-photo.real-photo {
+      background-image: url("./assets/face-muse-5-card-1.webp");
+    }
+
+    .vanity-photo.real-photo {
+      background-image: url("./assets/face-muse-5-card-2.webp");
+    }
+
+    .mirror {
+      position: absolute;
+      left: 23rem;
+      top: 32rem;
+      width: 166rem;
+      height: 228rem;
+      border: 8rem solid rgba(255, 247, 222, 0.72);
+      border-radius: 12rem;
+      box-shadow: 0 0 24rem rgba(255, 233, 185, 0.9);
+    }
+
+    .table {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 94rem;
+      background: linear-gradient(180deg, rgba(245, 235, 219, 0.94), rgba(179, 154, 130, 0.9));
+    }
+
+    .palette {
+      position: absolute;
+      left: 52rem;
+      bottom: 25rem;
+      width: 134rem;
+      height: 45rem;
+      border-radius: 8rem;
+      background:
+        linear-gradient(90deg, #2a1d18 0 16%, #b16e4e 16% 32%, #e7b47a 32% 48%, #6f4936 48% 64%, #1f1815 64% 80%, #d3a073 80% 100%);
+      box-shadow: 0 3rem 8rem rgba(0, 0, 0, 0.34);
+    }
+
+    .brushes {
+      position: absolute;
+      left: 195rem;
+      bottom: 32rem;
+      display: flex;
+      gap: 9rem;
+      align-items: end;
+    }
+
+    .brushes i {
+      display: block;
+      width: 8rem;
+      height: 80rem;
+      border-radius: 8rem;
+      background: linear-gradient(180deg, #c99e6a 0 20%, #1d1714 20% 100%);
+      transform-origin: bottom;
+    }
+
+    .brushes i:nth-child(2) { height: 106rem; transform: rotate(8deg); }
+    .brushes i:nth-child(3) { height: 68rem; transform: rotate(-9deg); }
+    .brushes i:nth-child(4) { height: 95rem; transform: rotate(5deg); }
+
+    .person {
+      position: absolute;
+      bottom: 55rem;
+      border-radius: 50% 50% 38% 38%;
+    }
+
+    .person.artist {
+      left: 256rem;
+      width: 120rem;
+      height: 190rem;
+      background: linear-gradient(180deg, #1a1614 0 45%, #141414 45% 100%);
+      transform: rotate(-9deg);
+    }
+
+    .person.client {
+      left: 360rem;
+      width: 140rem;
+      height: 182rem;
+      background: linear-gradient(180deg, #2b1f1a 0 30%, #ecd9c5 31% 100%);
+    }
+
+    .face {
+      position: absolute;
+      top: 28rem;
+      left: 50%;
+      width: 64rem;
+      height: 78rem;
+      border-radius: 48% 48% 45% 45%;
+      background: #e9c0a1;
+      transform: translateX(-50%);
+    }
+
+    .mask {
+      position: absolute;
+      left: 50%;
+      top: 55rem;
+      width: 58rem;
+      height: 22rem;
+      border-radius: 4rem 4rem 18rem 18rem;
+      background: rgba(255, 255, 255, 0.78);
+      transform: translateX(-50%);
+    }
+
+    .wand {
+      position: absolute;
+      left: 334rem;
+      top: 134rem;
+      width: 102rem;
+      height: 5rem;
+      border-radius: 5rem;
+      background: #d79d55;
+      transform: rotate(-23deg);
+      z-index: 6;
+    }
+
+    .card-info {
+      position: relative;
+      padding: 42rem 38rem 34rem 49rem;
+      background: linear-gradient(90deg, rgba(255, 249, 238, 0.82), #fff9ef 26%, #fffaf4 100%);
+      color: var(--ink);
+    }
+
+    .rank {
+      display: inline-flex;
+      align-items: center;
+      gap: 10rem;
+      height: 38rem;
+      padding: 0 15rem;
+      border-radius: 19rem;
+      background: linear-gradient(90deg, #f9eddc, #d9b17b);
+      color: #7d5731;
+      font-size: 21rem;
+      font-weight: 700;
+    }
+
+    .rank svg {
+      width: 23rem;
+      height: 23rem;
+      fill: #b98645;
+    }
+
+    .heart-line {
+      position: absolute;
+      top: 40rem;
+      right: 37rem;
+      width: 50rem;
+      height: 50rem;
+      border: 0;
+      color: #6d5840;
+      background: transparent;
+      padding: 0;
+    }
+
+    .heart-line svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+    }
+
+    .distance {
+      margin-top: 19rem;
+      font-size: 49rem;
+      line-height: 1;
+      font-weight: 400;
+      letter-spacing: -1rem;
+    }
+
+    .distance small {
+      font-size: 32rem;
+    }
+
+    .studio {
+      margin-top: 10rem;
+      font-size: 34rem;
+      line-height: 1.12;
+      font-weight: 800;
+      color: #080908;
+    }
+
+    .score {
+      display: flex;
+      align-items: center;
+      gap: 10rem;
+      margin-top: 21rem;
+      color: #a28261;
+      font-size: 23rem;
+      white-space: nowrap;
+    }
+
+    .score svg {
+      width: 25rem;
+      height: 25rem;
+      fill: #d18922;
+      color: #d18922;
+    }
+
+    .score strong {
+      color: #c87e16;
+      font-size: 27rem;
+      font-weight: 800;
+    }
+
+    .tags {
+      display: flex;
+      gap: 17rem;
+      margin-top: 25rem;
+      overflow: hidden;
+    }
+
+    .tags span {
+      flex: 0 0 auto;
+      min-width: 96rem;
+      height: 36rem;
+      padding: 0 17rem;
+      border-radius: 18rem;
+      background: #eee3d5;
+      color: #907d6a;
+      font-size: 20rem;
+      line-height: 36rem;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .archive {
+      position: absolute;
+      top: 1601rem;
+      left: 52rem;
+      width: 1054rem;
+      height: 288rem;
+      border: 1.4rem solid rgba(227, 198, 160, 0.28);
+      border-radius: 24rem;
+      background: linear-gradient(135deg, rgba(21, 55, 45, 0.84), rgba(8, 35, 30, 0.88));
+      box-shadow: inset 0 1rem 0 rgba(255, 255, 255, 0.05), 0 16rem 38rem rgba(0, 0, 0, 0.22);
+      backdrop-filter: blur(8rem);
+    }
+
+    .archive h2 {
+      margin: 24rem 0 0 49rem;
+      font-family: "Noto Serif SC", "Songti SC", SimSun, serif;
+      font-size: 34rem;
+      line-height: 1;
+      color: #eac494;
+      letter-spacing: 1rem;
+    }
+
+    .archive-stats {
+      position: absolute;
+      left: 26rem;
+      top: 83rem;
+      width: 535rem;
+      height: 134rem;
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr;
+      align-items: center;
+      padding: 0 34rem;
+      border: 1.2rem solid rgba(232, 220, 195, 0.18);
+      border-radius: 21rem;
+      background: rgba(255, 255, 255, 0.045);
+      color: #fff2df;
+    }
+
+    .divider {
+      width: 1rem;
+      height: 70rem;
+      background: rgba(232, 210, 177, 0.42);
+    }
+
+    .stat-item {
+      display: grid;
+      grid-template-columns: 62rem 1fr;
+      align-items: center;
+      gap: 18rem;
+    }
+
+    .stat-item svg {
+      width: 56rem;
+      height: 56rem;
+      color: #e8caa1;
+      fill: rgba(232, 202, 161, 0.82);
+      stroke: currentColor;
+      stroke-width: 1.7;
+    }
+
+    .stat-num {
+      display: flex;
+      align-items: baseline;
+      gap: 10rem;
+      font-size: 62rem;
+      line-height: 0.85;
+      font-weight: 800;
+      color: #f4d5ac;
+    }
+
+    .stat-num small {
+      font-size: 27rem;
+    }
+
+    .stat-label {
+      margin-top: 9rem;
+      font-size: 24rem;
+      font-weight: 700;
+      color: #fff7e8;
+    }
+
+    .archive-copy {
+      position: absolute;
+      left: 34rem;
+      bottom: 22rem;
+      margin: 0;
+      font-size: 23rem;
+      font-weight: 700;
+      letter-spacing: 2rem;
+      color: rgba(255, 234, 204, 0.93);
+    }
+
+    .photo-stack {
+      position: absolute;
+      top: 18rem;
+      right: 87rem;
+      width: 356rem;
+      height: 230rem;
+    }
+
+    .photo-stack.real-stack {
+      background: url("./assets/face-muse-5-archive-stack.webp") center / contain no-repeat;
+    }
+
+    .photo-stack.real-stack .portrait {
+      display: none;
+    }
+
+    .portrait {
+      position: absolute;
+      bottom: 26rem;
+      width: 150rem;
+      height: 205rem;
+      border: 1.4rem solid rgba(235, 197, 143, 0.9);
+      border-radius: 13rem;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 36%, #f2c4a9 0 18%, transparent 19%),
+        radial-gradient(circle at 50% 22%, #2d211d 0 20%, transparent 21%),
+        linear-gradient(180deg, #6d5b52, #e6d2bf 62%, #4c372e 100%);
+      box-shadow: 0 13rem 20rem rgba(0, 0, 0, 0.24);
+    }
+
+    .portrait::before,
+    .portrait::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: 0 0 11rem rgba(255, 255, 255, 0.5);
+    }
+
+    .portrait::before {
+      left: 39rem;
+      top: 46rem;
+      width: 12rem;
+      height: 12rem;
+    }
+
+    .portrait::after {
+      right: 37rem;
+      top: 47rem;
+      width: 12rem;
+      height: 12rem;
+    }
+
+    .portrait.side-left {
+      left: 0;
+      transform: rotate(-12deg) scale(0.88);
+      opacity: 0.72;
+    }
+
+    .portrait.mid-left {
+      left: 74rem;
+      transform: rotate(-4deg) scale(0.94);
+      opacity: 0.86;
+    }
+
+    .portrait.main {
+      left: 150rem;
+      z-index: 4;
+      transform: translateX(-50%) scale(1.08);
+      background:
+        radial-gradient(circle at 50% 38%, #f7cbb4 0 18%, transparent 19%),
+        radial-gradient(circle at 49% 23%, #261c19 0 21%, transparent 22%),
+        linear-gradient(145deg, #74675d, #f4e4d6 56%, #2d2521 100%);
+    }
+
+    .portrait.side-right {
+      right: 0;
+      transform: rotate(11deg) scale(0.9);
+      opacity: 0.72;
+    }
+
+    .archive-next {
+      position: absolute;
+      right: 30rem;
+      top: 121rem;
+      display: grid;
+      place-items: center;
+      width: 58rem;
+      height: 58rem;
+      border: 1.3rem solid rgba(230, 210, 178, 0.4);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff3dd;
+    }
+
+    .archive-next svg {
+      width: 28rem;
+      height: 28rem;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+    }
+
+    .bottom-nav {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 139rem;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      padding: 12rem 42rem 12rem;
+      background: linear-gradient(180deg, rgba(4, 25, 21, 0.62), rgba(3, 19, 15, 0.98));
+      box-shadow: 0 -20rem 45rem rgba(0, 0, 0, 0.28);
+    }
+
+    .nav-item {
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      gap: 9rem;
+      color: #f0d8bf;
+      font-size: 24rem;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .nav-item svg {
+      width: 48rem;
+      height: 48rem;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.1;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-item.active {
+      color: #ffd39d;
+      text-shadow: 0 0 18rem rgba(255, 199, 126, 0.75);
+    }
+
+    .nav-item.active svg {
+      fill: rgba(255, 211, 157, 0.35);
+      filter: drop-shadow(0 0 10rem rgba(255, 197, 118, 0.8));
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:focus-visible,
+    a:focus-visible {
+      outline: 3rem solid rgba(255, 224, 178, 0.85);
+      outline-offset: 5rem;
+    }
+
+    @media (max-width: 430px) {
+      h1 {
+        font-size: 58rem;
+        letter-spacing: 0.8rem;
+      }
+
+      .brand {
+        font-size: 39rem;
+      }
+
+      .placeholder {
+        font-size: 27rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="screen" aria-labelledby="page-title">
+    <section class="map-backdrop" aria-hidden="true">
+      <svg class="map-svg" viewBox="0 0 1152 980" preserveAspectRatio="none">
+        <path class="river" d="M526 -80 C460 145 570 252 510 425 C451 598 528 774 486 1060"></path>
+        <path class="park" d="M65 423 C190 372 295 420 357 538 C297 642 173 692 62 639 C29 558 23 475 65 423Z"></path>
+        <path class="park" d="M850 615 C947 570 1054 588 1115 670 C1076 762 966 820 858 777 C805 716 798 654 850 615Z"></path>
+        <path class="road" d="M-40 690 C178 670 334 650 490 574 C655 494 824 466 1190 424"></path>
+        <path class="road" d="M-30 505 C179 534 328 586 488 651 C650 718 822 755 1188 812"></path>
+        <path class="road" d="M80 315 C253 329 375 373 481 456 C638 579 773 612 1060 580"></path>
+        <path class="road thin" d="M70 225 L1082 720"></path>
+        <path class="road thin" d="M236 840 C310 682 386 512 482 330 C545 209 610 110 720 12"></path>
+        <path class="road thin" d="M774 162 C706 332 691 520 712 912"></path>
+        <path class="road thin" d="M905 80 C867 265 886 466 955 820"></path>
+      </svg>
+      <svg class="route-svg" viewBox="0 0 1152 980" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <filter id="routeGlow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="5" result="blur"></feGaussianBlur>
+            <feMerge>
+              <feMergeNode in="blur"></feMergeNode>
+              <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+          </filter>
+        </defs>
+        <path class="route-base route-line" d="M575 620 C650 560 738 533 838 512"></path>
+        <path class="route-core route-line" d="M575 620 C650 560 738 533 838 512"></path>
+        <path class="route-base route-line" d="M575 620 C640 690 700 745 772 790"></path>
+        <path class="route-core route-line" d="M575 620 C640 690 700 745 772 790"></path>
+        <path class="route-base route-line" d="M575 620 C483 650 390 670 286 686"></path>
+        <path class="route-core route-line" d="M575 620 C483 650 390 670 286 686"></path>
+        <circle class="route-dot" r="5">
+          <animateMotion dur="3.8s" repeatCount="indefinite" path="M575 620 C650 560 738 533 838 512"></animateMotion>
+        </circle>
+        <circle class="route-dot" r="5">
+          <animateMotion dur="4.4s" repeatCount="indefinite" path="M575 620 C640 690 700 745 772 790"></animateMotion>
+        </circle>
+      </svg>
+    </section>
+
+    <div class="app-layer">
+      <div class="status-bar" aria-hidden="true">
+        <span>9:41</span>
+        <div class="system-icons">
+          <span class="signal"><span></span><span></span><span></span><span></span></span>
+          <span class="wifi"><i></i></span>
+          <span class="battery"></span>
+        </div>
+      </div>
+
+      <button class="icon-btn profile-btn" type="button" aria-label="个人资料">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="24" cy="15" r="8"></circle>
+          <path d="M9 41c3-10 10-15 15-15s12 5 15 15Z"></path>
+        </svg>
+      </button>
+      <button class="icon-btn favorite-btn" type="button" aria-label="我的收藏">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M24 40S7 30 7 17c0-6 4-10 10-10 4 0 7 2 7 6 0-4 3-6 7-6 6 0 10 4 10 10 0 13-17 23-17 23Z"></path>
+        </svg>
+      </button>
+
+      <header class="hero">
+        <p class="brand">Face Muse</p>
+        <h1 id="page-title">高分化妆师与妆造档案</h1>
+        <p class="tagline"><span class="spark">✦</span>发现身边高口碑的化妆师与造型工作室<span class="spark">✦</span></p>
+      </header>
+
+      <section class="search-panel" aria-label="搜索化妆师、工作室或风格">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="21" cy="21" r="14"></circle>
+          <path d="M32 32 43 43"></path>
+        </svg>
+        <span class="placeholder">搜索化妆师 / 工作室 / 风格</span>
+        <button class="filter-btn" type="button" aria-label="打开筛选">
+          <svg viewBox="0 0 48 48" aria-hidden="true">
+            <path d="M7 14h20M35 14h6M7 34h8M23 34h18M7 24h26M41 24h0"></path>
+            <circle cx="31" cy="14" r="4"></circle>
+            <circle cx="19" cy="34" r="4"></circle>
+            <circle cx="37" cy="24" r="4"></circle>
+          </svg>
+        </button>
+      </section>
+
+      <div class="chips" aria-label="筛选标签">
+        <span class="chip">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 43c9-4 14-10 14-19 0-8-5-13-8-17-1 8-7 9-7 17-4-4-5-9-3-15C13 15 9 21 9 28c0 8 6 13 15 15Z"></path></svg>
+          人流热度
+        </span>
+        <span class="chip">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="m24 5 5 13 14 1-11 9 4 14-12-8-12 8 4-14-11-9 14-1Z"></path></svg>
+          平台评分
+        </span>
+        <span class="chip">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6c-10 0-18 7-18 16 0 8 7 14 15 14h3c3 0 3 6 8 6 7 0 10-7 10-16C42 15 34 6 24 6Z"></path><circle cx="16" cy="21" r="2.5"></circle><circle cx="24" cy="16" r="2.5"></circle><circle cx="32" cy="22" r="2.5"></circle></svg>
+          作品风格
+        </span>
+      </div>
+
+      <div class="locator" aria-hidden="true">
+        <span class="scan"></span>
+        <span class="dot"></span>
+      </div>
+
+      <div class="pin pin-left" aria-label="附近化妆工作室">
+        <span class="pin-shape">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 21h28l-3-9H13Zm3 0v17h22V21M17 38V28h14v10M12 21c0 4 4 6 7 3 2 4 8 4 10 0 3 3 7 1 7-3"></path></svg>
+        </span>
+      </div>
+      <div class="pin pin-top" aria-label="附近化妆工作室">
+        <span class="pin-shape">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 21h28l-3-9H13Zm3 0v17h22V21M17 38V28h14v10M12 21c0 4 4 6 7 3 2 4 8 4 10 0 3 3 7 1 7-3"></path></svg>
+        </span>
+      </div>
+      <div class="pin pin-bottom" aria-label="附近化妆工作室">
+        <span class="pin-shape">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 21h28l-3-9H13Zm3 0v17h22V21M17 38V28h14v10M12 21c0 4 4 6 7 3 2 4 8 4 10 0 3 3 7 1 7-3"></path></svg>
+        </span>
+      </div>
+
+      <h2 class="recommend-title"><span class="spark">✦</span>为你推荐</h2>
+      <aside class="metric-strip" aria-label="推荐匹配信息">
+        <span class="metric">匹配 <strong>92</strong></span>
+        <span class="metric">评分 <strong>4.8</strong></span>
+        <span class="metric">距离 <strong>1.6km</strong></span>
+      </aside>
+
+      <section class="cards" aria-label="推荐化妆师与工作室">
+        <article class="artist-card">
+          <div class="photo-scene makeup-photo real-photo" aria-hidden="true">
+            <span class="mirror"></span>
+            <span class="table"></span>
+            <span class="palette"></span>
+            <span class="brushes"><i></i><i></i><i></i><i></i></span>
+            <span class="person artist"><span class="face"></span><span class="mask"></span></span>
+            <span class="person client"><span class="face"></span></span>
+            <span class="wand"></span>
+          </div>
+          <div class="card-info">
+            <span class="rank">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="m8 18 10 8 6-16 6 16 10-8-4 20H12Z"></path></svg>
+              TOP 01
+            </span>
+            <button class="heart-line" type="button" aria-label="收藏云朵造型工作室">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 40S7 30 7 17c0-6 4-10 10-10 4 0 7 2 7 6 0-4 3-6 7-6 6 0 10 4 10 10 0 13-17 23-17 23Z"></path></svg>
+            </button>
+            <div class="distance">1.6<small>km</small></div>
+            <div class="studio">云朵造型工作室</div>
+            <div class="score">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="m24 5 5 13 14 1-11 9 4 14-12-8-12 8 4-14-11-9 14-1Z"></path></svg>
+              <strong>4.8</strong> 分 · 约妆 126 次
+            </div>
+            <div class="tags"><span>清新自然</span><span>韩系妆容</span><span>新娘妆造</span></div>
+          </div>
+        </article>
+
+        <article class="artist-card compact">
+          <div class="photo-scene vanity-photo real-photo" aria-hidden="true">
+            <span class="mirror"></span>
+            <span class="table"></span>
+            <span class="palette"></span>
+            <span class="brushes"><i></i><i></i><i></i><i></i></span>
+          </div>
+          <div class="card-info">
+            <span class="rank">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="m8 18 10 8 6-16 6 16 10-8-4 20H12Z"></path></svg>
+              TOP 02
+            </span>
+            <button class="heart-line" type="button" aria-label="收藏 Lin 私人化妆间">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 40S7 30 7 17c0-6 4-10 10-10 4 0 7 2 7 6 0-4 3-6 7-6 6 0 10 4 10 10 0 13-17 23-17 23Z"></path></svg>
+            </button>
+            <div class="distance">2.4<small>km</small></div>
+            <div class="studio">Lin 私人化妆间</div>
+            <div class="score">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M16 41H9V22h7Zm4-1h14c4 0 6-2 7-6l3-12c1-4-1-7-5-7H28l2-7c1-3-2-5-5-3l-2 2-7 15v17Z"></path></svg>
+              新手跟妆好评 92%
+            </div>
+            <div class="tags"><span>日常妆容</span><span>氛围感妆</span><span>妆面定制</span></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="archive" aria-labelledby="archive-title">
+        <h2 id="archive-title">我的妆造档案 ✦</h2>
+        <div class="archive-stats" aria-label="妆造档案统计">
+          <div class="stat-item">
+            <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 10h30v28H9Z"></path><path d="m15 32 8-10 6 7 4-4 7 7"></path><circle cx="18" cy="18" r="3"></circle></svg>
+            <div><div class="stat-num">7<small>次</small></div><div class="stat-label">历史妆造</div></div>
+          </div>
+          <span class="divider"></span>
+          <div class="stat-item">
+            <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 5 39 11v11c0 10-6 17-15 21C15 39 9 32 9 22V11Z"></path><path d="m16 24 5 5 11-12"></path></svg>
+            <div><div class="stat-num">3<small>条</small></div><div class="stat-label">避坑建议</div></div>
+          </div>
+        </div>
+        <div class="photo-stack real-stack" aria-hidden="true">
+          <span class="portrait side-left"></span>
+          <span class="portrait mid-left"></span>
+          <span class="portrait main"></span>
+          <span class="portrait side-right"></span>
+        </div>
+        <button class="archive-next" type="button" aria-label="查看下一组档案照片">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="m18 10 14 14-14 14"></path></svg>
+        </button>
+        <p class="archive-copy">每次试妆都会沉淀到个人档案里，让推荐越来越准。</p>
+      </section>
+
+      <nav class="bottom-nav" aria-label="底部导航">
+        <a class="nav-item active" href="#" aria-current="page">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 22 24 9l16 13v18H29V28H19v12H8Z"></path></svg>
+          首页
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18"></circle><path d="m31 17-5 12-12 5 5-12Z"></path></svg>
+          发现
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 15h15l4 5h15v20H7Z"></path></svg>
+          档案
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 11h30v23H21l-9 7v-7H9Z"></path><path d="M18 23h1M24 23h1M30 23h1"></path></svg>
+          消息
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="16" r="9"></circle><path d="M8 42c3-11 10-17 16-17s13 6 16 17"></path></svg>
+          我的
+        </a>
+      </nav>
+    </div>
+  </main>
+
+  <script src="./assets/gsap.min.js"></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      if (!window.gsap) {
+        document.documentElement.dataset.gsapLoaded = "false";
+        return;
+      }
+      document.documentElement.dataset.gsapLoaded = "true";
+
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduceMotion) {
+        gsap.set([".hero", ".search-panel", ".chip", ".pin", ".artist-card", ".archive", ".bottom-nav"], { opacity: 1, clearProps: "transform" });
+        return;
+      }
+
+      const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
+      intro
+        .from(".status-bar", { y: -16, opacity: 0, duration: 0.5 }, 0)
+        .from(".icon-btn", { scale: 0.82, opacity: 0, duration: 0.55, stagger: 0.08 }, 0.08)
+        .from(".brand", { y: 18, opacity: 0, duration: 0.55 }, 0.12)
+        .from("h1", { y: 18, opacity: 0, duration: 0.62 }, 0.22)
+        .from(".tagline", { y: 14, opacity: 0, duration: 0.5 }, 0.33)
+        .from(".search-panel", { y: 22, scale: 0.985, opacity: 0, duration: 0.62 }, 0.48)
+        .from(".chip", { y: 16, opacity: 0, duration: 0.45, stagger: 0.08 }, 0.62)
+        .from(".locator", { scale: 0.55, opacity: 0, duration: 0.5 }, 0.78)
+        .from(".pin", { y: -22, opacity: 0, duration: 0.55, stagger: 0.08, ease: "back.out(1.7)" }, 0.9)
+        .from(".recommend-title", { x: -18, opacity: 0, duration: 0.48 }, 1.05)
+        .from(".metric-strip", { y: 24, opacity: 0, duration: 0.5 }, 1.1)
+        .from(".artist-card", { y: 36, opacity: 0, duration: 0.62, stagger: 0.13 }, 1.18)
+        .from(".archive", { y: 38, opacity: 0, duration: 0.62 }, 1.38)
+        .from(".nav-item", { y: 18, opacity: 0, duration: 0.48, stagger: 0.05 }, 1.5);
+
+      gsap.to(".scan", {
+        scale: 1.32,
+        opacity: 0,
+        duration: 1.8,
+        repeat: -1,
+        ease: "power1.out",
+        transformOrigin: "50% 50%"
+      });
+
+      gsap.to(".pin-shape", {
+        y: -7,
+        duration: 1.8,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        stagger: 0.18
+      });
+
+      document.querySelectorAll(".route-line").forEach((path) => {
+        const length = path.getTotalLength();
+        gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+        gsap.to(path, { strokeDashoffset: 0, duration: 1.6, delay: 0.85, ease: "power2.out" });
+      });
+
+      document.querySelectorAll(".heart-line, .archive-next, .filter-btn").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          event.preventDefault();
+          gsap.fromTo(button, { scale: 0.88 }, { scale: 1, duration: 0.42, ease: "elastic.out(1, 0.45)" });
+        });
+      });
+
+      document.querySelector(".archive-next").addEventListener("click", () => {
+        gsap.fromTo(".portrait.main", { x: 26, opacity: 0.65 }, { x: 0, opacity: 1, duration: 0.46, ease: "power2.out" });
+        gsap.to(".portrait.side-left, .portrait.side-right", { rotate: "+=3", duration: 0.46, yoyo: true, repeat: 1, ease: "sine.inOut" });
+      });
+    });
+  </script>
+</body>
+</html>

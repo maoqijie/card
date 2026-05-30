@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>眉眼精修路线</title>
+  <link rel="preload" as="image" href="./参考图/图二.webp" type="image/webp">
+  <style>
+    :root {
+      background: #0b0c09;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: #0b0c09;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    canvas,
+    noscript img {
+      display: block;
+      width: min(100vw, 1152px);
+      height: auto;
+      aspect-ratio: 1152 / 2048;
+    }
+  </style>
+</head>
+<body>
+  <canvas width="1152" height="2048" role="img" aria-label="Face Muse 眉眼精修路线"></canvas>
+  <noscript>
+    <img src="./参考图/图二.png" alt="Face Muse 眉眼精修路线" width="1152" height="2048">
+  </noscript>
+  <script>
+    const canvas = document.querySelector("canvas");
+    const context = canvas.getContext("2d", { alpha: false });
+    const image = new Image();
+
+    image.decoding = "async";
+    image.onload = () => {
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    };
+    image.src = "./参考图/图二.webp";
+  </script>
+</body>
+</html>
