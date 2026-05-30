@@ -1455,20 +1455,20 @@
 
       const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
       intro
-        .from(".status-bar", { y: -16, opacity: 0, duration: 0.5 }, 0)
-        .from(".icon-btn", { scale: 0.82, opacity: 0, duration: 0.55, stagger: 0.08 }, 0.08)
-        .from(".brand", { y: 18, opacity: 0, duration: 0.55 }, 0.12)
-        .from("h1", { y: 18, opacity: 0, duration: 0.62 }, 0.22)
-        .from(".tagline", { y: 14, opacity: 0, duration: 0.5 }, 0.33)
-        .from(".search-panel", { y: 22, scale: 0.985, opacity: 0, duration: 0.62 }, 0.48)
-        .from(".chip", { y: 16, opacity: 0, duration: 0.45, stagger: 0.08 }, 0.62)
-        .from(".locator", { scale: 0.55, opacity: 0, duration: 0.5 }, 0.78)
-        .from(".pin", { y: -22, opacity: 0, duration: 0.55, stagger: 0.08, ease: "back.out(1.7)" }, 0.9)
-        .from(".recommend-title", { x: -18, opacity: 0, duration: 0.48 }, 1.05)
-        .from(".metric-strip", { y: 24, opacity: 0, duration: 0.5 }, 1.1)
-        .from(".artist-card", { y: 36, opacity: 0, duration: 0.62, stagger: 0.13 }, 1.18)
-        .from(".archive", { y: 38, opacity: 0, duration: 0.62 }, 1.38)
-        .from(".nav-item", { y: 18, opacity: 0, duration: 0.48, stagger: 0.05 }, 1.5);
+        .from(".status-bar", { y: -10, opacity: 0, duration: 0.22 }, 0)
+        .from(".icon-btn", { scale: 0.9, opacity: 0, duration: 0.24, stagger: 0.03 }, 0.03)
+        .from(".brand", { y: 10, opacity: 0, duration: 0.24 }, 0.04)
+        .from("h1", { y: 10, opacity: 0, duration: 0.28 }, 0.08)
+        .from(".tagline", { y: 8, opacity: 0, duration: 0.24 }, 0.12)
+        .from(".search-panel", { y: 12, scale: 0.992, opacity: 0, duration: 0.26 }, 0.16)
+        .from(".chip", { y: 8, opacity: 0, duration: 0.22, stagger: 0.03 }, 0.2)
+        .from(".locator", { scale: 0.78, opacity: 0, duration: 0.24 }, 0.22)
+        .from(".pin", { y: -10, opacity: 0, duration: 0.28, stagger: 0.04, ease: "back.out(1.5)" }, 0.24)
+        .from(".recommend-title", { x: -8, opacity: 0, duration: 0.22 }, 0.3)
+        .from(".metric-strip", { y: 10, opacity: 0, duration: 0.24 }, 0.32)
+        .from(".artist-card", { y: 14, opacity: 0, duration: 0.28, stagger: 0.04 }, 0.34)
+        .from(".archive", { y: 14, opacity: 0, duration: 0.28 }, 0.38)
+        .from(".nav-item", { y: 8, opacity: 0, duration: 0.22, stagger: 0.02 }, 0.4);
 
       gsap.to(".scan", {
         scale: 1.32,
@@ -1491,7 +1491,7 @@
       document.querySelectorAll(".route-line").forEach((path) => {
         const length = path.getTotalLength();
         gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
-        gsap.to(path, { strokeDashoffset: 0, duration: 1.6, delay: 0.85, ease: "power2.out" });
+        gsap.to(path, { strokeDashoffset: 0, duration: 0.7, delay: 0.2, ease: "power2.out" });
       });
 
       document.querySelectorAll(".heart-line, .archive-next, .filter-btn").forEach((button) => {
