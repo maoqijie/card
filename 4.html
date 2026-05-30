@@ -1,25 +1,32 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Face Muse 根据脸型、肤色、发色和场合生成三套入门妆容。">
+  <link rel="icon" href="data:,">
+  <link rel="preload" as="image" href="./assets/4/main-face.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="./assets/4/look-1-face.webp">
   <title>Face Muse - 三套适合你的入门妆</title>
   <style>
     :root {
-      --unit: calc(100vw / 1152);
-      --gold: #ead8b7;
-      --gold-deep: #d5ae76;
-      --cream: #f4e3c8;
-      --muted: #b8ad99;
-      --pink: #df8990;
-      --green: #06251f;
-      --line: rgba(207, 166, 103, .66);
-    }
-
-    @media (min-width: 1152px) {
-      :root {
-        --unit: 1px;
-      }
+      color-scheme: dark;
+      --screen-w: 887;
+      --screen-h: 1920;
+      --page-bg: #020907;
+      --ink: #ffffff;
+      --muted: rgba(255, 255, 255, 0.56);
+      --soft: rgba(255, 255, 255, 0.78);
+      --line: rgba(255, 255, 255, 0.18);
+      --panel: rgba(36, 85, 56, 0.66);
+      --panel-strong: rgba(31, 80, 52, 0.78);
+      --accent: #ffffff;
+      --cta: rgba(88, 128, 91, 0.72);
+      --hero-image: url("./assets/4/main-face.webp");
+      --hero-position: 50% 38%;
+      --hero-size: cover;
+      --headline-size: 57rem;
+      font-size: calc(min(100vw, calc(100vh * 887 / 1920), 887px) / 887);
     }
 
     * {
@@ -28,95 +35,132 @@
 
     html,
     body {
-      margin: 0;
+      width: 100%;
       min-height: 100%;
-      background: #031812;
+      margin: 0;
+      background: var(--page-bg);
     }
 
     body {
-      display: flex;
-      justify-content: center;
-      color: var(--cream);
-      font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
-    }
-
-    .screen {
-      position: relative;
-      width: calc(1152 * var(--unit));
-      height: calc(2048 * var(--unit));
-      min-width: 320px;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
       overflow: hidden;
-      background:
-        radial-gradient(circle at 46% 8%, rgba(21, 82, 61, .55) 0 14%, transparent 38%),
-        radial-gradient(circle at 51% 51%, rgba(19, 105, 75, .42) 0 19%, transparent 44%),
-        radial-gradient(circle at 20% 74%, rgba(4, 69, 55, .66) 0 24%, transparent 49%),
-        linear-gradient(152deg, #031a14 0%, #06271f 32%, #084236 58%, #03231d 100%);
-      isolation: isolate;
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", Arial, sans-serif;
     }
 
-    .screen::before,
-    .screen::after {
+    button,
+    a {
+      font: inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .feed-screen {
+      position: relative;
+      width: calc(var(--screen-w) * 1rem);
+      height: calc(var(--screen-h) * 1rem);
+      overflow: hidden;
+      isolation: isolate;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(1, 15, 9, 0.24) 0%, rgba(5, 61, 34, 0.28) 31%, rgba(3, 52, 30, 0.96) 78%, #03100b 100%),
+        var(--hero-image) var(--hero-position) / var(--hero-size) no-repeat;
+    }
+
+    .feed-screen::before,
+    .feed-screen::after {
       content: "";
       position: absolute;
       inset: 0;
       pointer-events: none;
-      z-index: -1;
+      z-index: 1;
     }
 
-    .screen::before {
+    .feed-screen::before {
       background:
-        radial-gradient(ellipse at 50% 37%, rgba(37, 139, 101, .18), transparent 33%),
-        repeating-linear-gradient(118deg, rgba(255, 255, 255, .025) 0 1px, transparent 1px 15px);
-      filter: blur(calc(8 * var(--unit)));
+        linear-gradient(180deg, rgba(0, 0, 0, 0.34) 0%, rgba(0, 0, 0, 0.08) 21%, rgba(7, 78, 43, 0.34) 47%, rgba(2, 47, 27, 0.96) 87%, #000 100%),
+        radial-gradient(ellipse at 50% 13%, rgba(255, 255, 255, 0.12), transparent 34%);
+      backdrop-filter: saturate(0.95);
     }
 
-    .screen::after {
-      box-shadow: inset 0 0 calc(145 * var(--unit)) rgba(0, 0, 0, .55);
+    .feed-screen::after {
+      background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.32), transparent 20%, transparent 80%, rgba(0, 0, 0, 0.28)),
+        radial-gradient(ellipse at center, transparent 42%, rgba(0, 0, 0, 0.28) 100%);
     }
 
-    .status {
+    .hero-grain {
       position: absolute;
-      top: calc(39 * var(--unit));
-      left: calc(72 * var(--unit));
-      right: calc(47 * var(--unit));
+      inset: -28rem;
+      z-index: 0;
+      overflow: hidden;
+      filter: saturate(0.86) contrast(1.04);
+      transform: scale(1.02);
+    }
+
+    .hero-grain::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      transform: scale(1.015);
+      transform-origin: center;
+      background:
+        radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.08), transparent 18%),
+        radial-gradient(circle at 78% 38%, rgba(159, 217, 165, 0.12), transparent 20%),
+        var(--hero-image) var(--hero-position) / var(--hero-size) no-repeat;
+      animation: hero-breathe 7s 1.1s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+
+    @keyframes hero-breathe {
+      from { transform: scale(1.015); }
+      to { transform: scale(1.045); }
+    }
+
+    .status-bar {
+      position: absolute;
+      top: 44rem;
+      left: 80rem;
+      right: 39rem;
+      z-index: 4;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      color: #fff;
-      font-size: calc(30 * var(--unit));
-      font-weight: 700;
+      font-size: 34rem;
       line-height: 1;
+      font-weight: 700;
+      letter-spacing: 0;
     }
 
-    .system {
+    .system-icons {
       display: flex;
       align-items: center;
-      gap: calc(12 * var(--unit));
+      gap: 14rem;
     }
 
     .signal {
       display: flex;
       align-items: end;
-      gap: calc(5 * var(--unit));
-      height: calc(29 * var(--unit));
+      gap: 5rem;
+      width: 42rem;
+      height: 31rem;
     }
 
     .signal span {
-      width: calc(6 * var(--unit));
-      border-radius: calc(4 * var(--unit));
+      width: 7rem;
+      border-radius: 7rem;
       background: #fff;
     }
 
-    .signal span:nth-child(1) { height: calc(9 * var(--unit)); }
-    .signal span:nth-child(2) { height: calc(15 * var(--unit)); }
-    .signal span:nth-child(3) { height: calc(22 * var(--unit)); }
-    .signal span:nth-child(4) { height: calc(29 * var(--unit)); }
+    .signal span:nth-child(1) { height: 12rem; }
+    .signal span:nth-child(2) { height: 18rem; }
+    .signal span:nth-child(3) { height: 25rem; }
+    .signal span:nth-child(4) { height: 31rem; }
 
     .wifi {
       position: relative;
-      width: calc(38 * var(--unit));
-      height: calc(28 * var(--unit));
-      overflow: hidden;
+      width: 39rem;
+      height: 31rem;
     }
 
     .wifi::before,
@@ -124,632 +168,742 @@
       content: "";
       position: absolute;
       left: 50%;
-      border: calc(5 * var(--unit)) solid #fff;
-      border-color: #fff transparent transparent transparent;
+      border: 6rem solid transparent;
+      border-top-color: #fff;
       border-radius: 50%;
       transform: translateX(-50%);
     }
 
     .wifi::before {
-      top: calc(2 * var(--unit));
-      width: calc(42 * var(--unit));
-      height: calc(42 * var(--unit));
+      top: 1rem;
+      width: 36rem;
+      height: 36rem;
     }
 
     .wifi::after {
-      top: calc(12 * var(--unit));
-      width: calc(24 * var(--unit));
-      height: calc(24 * var(--unit));
+      top: 11rem;
+      width: 18rem;
+      height: 18rem;
+    }
+
+    .wifi i {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 8rem;
+      height: 8rem;
+      border-radius: 50%;
+      background: #fff;
+      transform: translateX(-50%);
     }
 
     .battery {
       position: relative;
-      display: grid;
-      place-items: center;
-      width: calc(58 * var(--unit));
-      height: calc(33 * var(--unit));
-      border-radius: calc(10 * var(--unit));
+      width: 51rem;
+      height: 28rem;
+      border: 3rem solid rgba(255, 255, 255, 0.92);
+      border-radius: 7rem;
+    }
+
+    .battery::before {
+      content: "";
+      position: absolute;
+      inset: 5rem 7rem;
+      border-radius: 3rem;
       background: #fff;
-      color: #101513;
-      font-size: calc(23 * var(--unit));
-      font-weight: 800;
     }
 
     .battery::after {
       content: "";
       position: absolute;
-      right: calc(-5 * var(--unit));
-      top: calc(10 * var(--unit));
-      width: calc(5 * var(--unit));
-      height: calc(13 * var(--unit));
-      border-radius: 0 calc(4 * var(--unit)) calc(4 * var(--unit)) 0;
-      background: #fff;
+      right: -8rem;
+      top: 8rem;
+      width: 4rem;
+      height: 11rem;
+      border-radius: 0 4rem 4rem 0;
+      background: rgba(255, 255, 255, 0.86);
     }
 
-    .nav {
+    .top-nav {
       position: absolute;
-      top: calc(107 * var(--unit));
-      left: calc(60 * var(--unit));
-      right: calc(58 * var(--unit));
+      top: 127rem;
+      left: 38rem;
+      right: 38rem;
+      z-index: 4;
       display: grid;
-      grid-template-columns: 1fr auto 1fr;
+      grid-template-columns: 58rem 1fr 58rem;
       align-items: center;
+      gap: 24rem;
     }
 
-    .menu {
-      width: calc(40 * var(--unit));
+    .icon-button {
       display: grid;
-      gap: calc(14 * var(--unit));
+      place-items: center;
+      width: 58rem;
+      height: 58rem;
+      border: 0;
+      padding: 0;
+      color: #fff;
+      background: transparent;
+      cursor: pointer;
     }
 
-    .menu span {
-      height: calc(4 * var(--unit));
-      border-radius: 999px;
-      background: rgba(255, 255, 255, .82);
-    }
-
-    .brand {
-      color: var(--gold);
-      font-family: Georgia, "Times New Roman", "SimSun", serif;
-      font-size: calc(54 * var(--unit));
-      font-weight: 700;
-      line-height: 1;
-      text-shadow: 0 calc(4 * var(--unit)) calc(12 * var(--unit)) rgba(0, 0, 0, .35);
-    }
-
-    .bell {
-      position: relative;
-      justify-self: end;
-      width: calc(54 * var(--unit));
-      height: calc(58 * var(--unit));
-    }
-
-    .bell svg {
-      width: 100%;
-      height: 100%;
+    .icon-button svg {
+      width: 54rem;
+      height: 54rem;
       fill: none;
-      stroke: var(--gold);
-      stroke-width: 4.5;
+      stroke: currentColor;
+      stroke-width: 4.4;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
 
-    .bell::after {
-      content: "";
-      position: absolute;
-      top: calc(-3 * var(--unit));
-      right: calc(-4 * var(--unit));
-      width: calc(18 * var(--unit));
-      height: calc(18 * var(--unit));
-      border-radius: 50%;
-      background: var(--pink);
-    }
-
-    .hero {
-      position: absolute;
-      top: calc(203 * var(--unit));
-      left: calc(59 * var(--unit));
-    }
-
-    .hero h1 {
-      margin: 0;
-      color: var(--gold);
-      font-family: "STSong", "Songti SC", "SimSun", serif;
-      font-size: calc(72 * var(--unit));
+    .channels {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: repeat(6, max-content);
+      justify-content: space-between;
+      align-items: center;
+      gap: 15rem;
+      color: rgba(255, 255, 255, 0.54);
+      font-size: 31rem;
+      line-height: 1;
       font-weight: 700;
-      line-height: 1.18;
       letter-spacing: 0;
-      text-shadow: 0 calc(6 * var(--unit)) calc(16 * var(--unit)) rgba(0, 0, 0, .32);
     }
 
-    .hero .shine {
-      position: absolute;
-      left: calc(668 * var(--unit));
-      top: calc(-7 * var(--unit));
-      color: var(--gold);
-      font-family: Georgia, serif;
-      font-size: calc(61 * var(--unit));
-      font-weight: 400;
-    }
-
-    .hero p {
-      margin: calc(28 * var(--unit)) 0 0;
-      color: var(--muted);
-      font-size: calc(30 * var(--unit));
-      font-weight: 600;
-      line-height: 1.2;
-    }
-
-    .photo-main {
-      position: absolute;
-      margin: 0;
-      left: calc(60 * var(--unit));
-      top: calc(386 * var(--unit));
-      width: calc(408 * var(--unit));
-      height: calc(476 * var(--unit));
-      overflow: hidden;
-      border-radius: calc(18 * var(--unit));
-      box-shadow: 0 calc(11 * var(--unit)) calc(18 * var(--unit)) rgba(0, 0, 0, .24);
-    }
-
-    .photo-main img,
-    .look-photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .recommend {
-      position: absolute;
-      top: calc(388 * var(--unit));
-      left: calc(493 * var(--unit));
-      width: calc(598 * var(--unit));
-      height: calc(474 * var(--unit));
-      padding: calc(29 * var(--unit)) calc(19 * var(--unit));
-      border: calc(2 * var(--unit)) solid var(--line);
-      border-radius: calc(24 * var(--unit));
-      background: linear-gradient(145deg, rgba(5, 54, 46, .9), rgba(4, 44, 37, .76));
-      box-shadow: inset 0 0 calc(45 * var(--unit)) rgba(26, 120, 86, .16);
-    }
-
-    .recommend h2 {
-      display: flex;
-      align-items: center;
-      gap: calc(20 * var(--unit));
-      margin: 0 0 calc(18 * var(--unit));
-      color: var(--gold);
-      font-family: Georgia, "SimSun", serif;
-      font-size: calc(38 * var(--unit));
-      font-weight: 700;
-      line-height: 1;
-    }
-
-    .spark {
-      color: #fff2d9;
-      font-family: Georgia, serif;
-      font-size: calc(43 * var(--unit));
-      line-height: 1;
-    }
-
-    .traits {
-      display: grid;
-      gap: calc(7 * var(--unit));
-    }
-
-    .trait {
-      display: grid;
-      grid-template-columns: calc(52 * var(--unit)) calc(86 * var(--unit)) 1fr;
-      align-items: center;
-      height: calc(59 * var(--unit));
-      padding: 0 calc(18 * var(--unit));
-      border: calc(1.5 * var(--unit)) solid rgba(217, 190, 142, .23);
-      border-radius: calc(30 * var(--unit));
-      background: rgba(2, 55, 46, .36);
-      color: rgba(241, 225, 197, .76);
-      font-size: calc(25 * var(--unit));
-      font-weight: 600;
-      line-height: 1;
-    }
-
-    .trait svg {
-      width: calc(35 * var(--unit));
-      height: calc(35 * var(--unit));
-      fill: none;
-      stroke: rgba(241, 225, 197, .76);
-      stroke-width: 2.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .trait b {
-      color: var(--gold);
-      font-weight: 700;
-    }
-
-    .ai-tip {
-      margin-top: calc(14 * var(--unit));
-      min-height: calc(100 * var(--unit));
-      display: grid;
-      grid-template-columns: calc(50 * var(--unit)) 1fr;
-      align-items: start;
-      padding: calc(20 * var(--unit)) calc(22 * var(--unit));
-      border-radius: calc(23 * var(--unit));
-      background: linear-gradient(118deg, rgba(24, 101, 78, .86), rgba(32, 86, 74, .78));
-      color: rgba(248, 232, 203, .88);
-      font-size: calc(25 * var(--unit));
-      font-weight: 600;
-      line-height: 1.54;
-    }
-
-    .ai-tip b {
-      color: #f2d498;
-      font-size: calc(27 * var(--unit));
-      font-weight: 800;
-    }
-
-    .ai-tip .spark {
-      color: #f2d498;
-      font-size: calc(31 * var(--unit));
-      text-align: center;
-    }
-
-    .looks {
-      position: absolute;
-      left: calc(60 * var(--unit));
-      top: calc(890 * var(--unit));
-      width: calc(1032 * var(--unit));
-      display: grid;
-      gap: calc(18 * var(--unit));
-    }
-
-    .look-card {
+    .channel {
       position: relative;
-      height: calc(302 * var(--unit));
-      overflow: hidden;
-      border: calc(2 * var(--unit)) solid var(--line);
-      border-radius: calc(20 * var(--unit));
-      background: linear-gradient(111deg, rgba(5, 51, 44, .9), rgba(5, 69, 56, .78));
-      box-shadow: 0 calc(8 * var(--unit)) calc(15 * var(--unit)) rgba(0, 0, 0, .24), inset 0 0 calc(42 * var(--unit)) rgba(27, 116, 82, .16);
-    }
-
-    .look-photo {
-      position: absolute;
-      margin: 0;
-      inset: 0 auto 0 0;
-      width: calc(394 * var(--unit));
-      height: 100%;
-      overflow: hidden;
-      border-radius: calc(18 * var(--unit)) 0 0 calc(18 * var(--unit));
-    }
-
-    .look-body {
-      position: absolute;
-      left: calc(429 * var(--unit));
-      top: calc(27 * var(--unit));
-      width: calc(386 * var(--unit));
-    }
-
-    .look-body h2 {
-      margin: 0 0 calc(10 * var(--unit));
-      color: var(--gold);
-      font-family: "STSong", "Songti SC", "SimSun", serif;
-      font-size: calc(47 * var(--unit));
-      font-weight: 700;
-      line-height: 1.1;
-      letter-spacing: 0;
-    }
-
-    .chips {
-      display: flex;
-      align-items: center;
-      gap: calc(17 * var(--unit));
-      margin-bottom: calc(14 * var(--unit));
-    }
-
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      height: calc(47 * var(--unit));
-      min-width: calc(130 * var(--unit));
-      padding: 0 calc(17 * var(--unit));
-      border-radius: calc(24 * var(--unit));
-      color: #171714;
-      background: #f1d395;
-      font-size: calc(27 * var(--unit));
-      font-weight: 800;
       white-space: nowrap;
     }
 
-    .chip svg {
-      width: calc(28 * var(--unit));
-      height: calc(28 * var(--unit));
-      margin-right: calc(9 * var(--unit));
-      fill: none;
-      stroke: #171714;
-      stroke-width: 3;
+    .channel.active {
+      color: #fff;
+      font-size: 39rem;
+      text-shadow: 0 4rem 18rem rgba(0, 0, 0, 0.24);
     }
 
-    .chip.tag {
-      min-width: calc(118 * var(--unit));
-      color: #fff2e9;
-      background: var(--pink);
-      font-size: calc(24 * var(--unit));
-      font-weight: 700;
+    .channel.active::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -24rem;
+      width: 70rem;
+      height: 5rem;
+      border-radius: 999rem;
+      background: #fff;
+      transform: translateX(-50%);
     }
 
-    .reason {
+    .content {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+    }
+
+    .headline {
+      position: absolute;
+      left: 47rem;
+      right: 44rem;
+      top: 397rem;
       display: flex;
       align-items: center;
-      gap: calc(12 * var(--unit));
-      margin: 0 0 calc(18 * var(--unit));
-      color: var(--cream);
-      font-size: calc(25 * var(--unit));
-      font-weight: 800;
-      line-height: 1.2;
+      gap: 24rem;
     }
 
-    .reason svg {
-      width: calc(31 * var(--unit));
-      height: calc(31 * var(--unit));
-      fill: #f1d395;
-      stroke: #f1d395;
-      flex: 0 0 auto;
-    }
-
-    .desc {
+    h1 {
+      flex: 1;
       margin: 0;
-      width: calc(365 * var(--unit));
-      color: rgba(246, 231, 207, .88);
-      font-size: calc(25 * var(--unit));
-      font-weight: 500;
-      line-height: 1.44;
+      color: #fff;
+      font-size: var(--headline-size);
+      line-height: 1.16;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-shadow: 0 8rem 28rem rgba(0, 0, 0, 0.42);
     }
 
-    .products {
+    .ai-badge {
+      flex: 0 0 auto;
+      padding: 11rem 16rem 12rem;
+      border: 1rem solid rgba(255, 255, 255, 0.28);
+      border-radius: 8rem;
+      color: rgba(255, 255, 255, 0.72);
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 26rem;
+      line-height: 1;
+      letter-spacing: 0;
+      backdrop-filter: blur(8rem);
+    }
+
+    .info-card {
       position: absolute;
-      object-fit: contain;
-      display: block;
-      filter: drop-shadow(0 calc(9 * var(--unit)) calc(10 * var(--unit)) rgba(0, 0, 0, .24));
+      left: 45rem;
+      right: 45rem;
+      top: 508rem;
+      height: 407rem;
+      overflow: hidden;
+      border: 1rem solid rgba(255, 255, 255, 0.16);
+      border-radius: 34rem;
+      background: linear-gradient(180deg, rgba(66, 112, 76, 0.64), rgba(18, 72, 43, 0.68));
+      box-shadow: 0 22rem 50rem rgba(0, 0, 0, 0.18), inset 0 1rem 0 rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(14rem);
     }
 
-    .look-1 .products {
-      top: calc(51 * var(--unit));
-      right: calc(75 * var(--unit));
-      width: calc(178 * var(--unit));
-      height: calc(216 * var(--unit));
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      height: 145rem;
+      background: rgba(255, 255, 255, 0.025);
     }
 
-    .look-2 .products {
-      top: calc(57 * var(--unit));
-      right: calc(70 * var(--unit));
-      width: calc(176 * var(--unit));
-      height: calc(216 * var(--unit));
+    .stat {
+      display: grid;
+      align-content: center;
+      gap: 14rem;
+      padding: 0 22rem 0 32rem;
+      border-right: 1rem solid rgba(255, 255, 255, 0.035);
     }
 
-    .look-3 .products {
-      top: calc(55 * var(--unit));
-      right: calc(72 * var(--unit));
-      width: calc(176 * var(--unit));
-      height: calc(221 * var(--unit));
+    .stat:last-child {
+      border-right: 0;
     }
 
-    .arrow {
+    .stat span {
+      color: rgba(255, 255, 255, 0.52);
+      font-size: 28rem;
+      line-height: 1;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    .stat strong {
+      color: #fff;
+      font-size: 32rem;
+      line-height: 1.12;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .card-copy {
+      position: relative;
+      min-height: 262rem;
+      padding: 49rem 246rem 34rem 37rem;
+      color: rgba(255, 255, 255, 0.94);
+      font-size: 31rem;
+      line-height: 1.62;
+      font-weight: 650;
+      letter-spacing: 0;
+    }
+
+    .spark {
+      display: inline-block;
+      margin-right: 16rem;
+      font-size: 34rem;
+      color: #fff;
+      filter: drop-shadow(0 0 8rem rgba(255, 255, 255, 0.5));
+    }
+
+    .mini-route {
       position: absolute;
-      right: calc(28 * var(--unit));
-      bottom: calc(29 * var(--unit));
+      right: 45rem;
+      bottom: 35rem;
+      width: 180rem;
+      height: 170rem;
+      opacity: 0.9;
+    }
+
+    .route-path {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.72);
+      stroke-width: 3;
+      stroke-dasharray: 7 8;
+      stroke-linecap: round;
+    }
+
+    .route-dot {
+      fill: #fff;
+      stroke: rgba(255, 255, 255, 0.26);
+      stroke-width: 12;
+    }
+
+    .route-tag {
+      position: absolute;
+      display: inline-grid;
+      place-items: center;
+      min-width: 68rem;
+      height: 39rem;
+      padding: 0 11rem;
+      border-radius: 7rem;
+      color: rgba(255, 255, 255, 0.82);
+      background: rgba(255, 255, 255, 0.13);
+      font-size: 25rem;
+      line-height: 1;
+      font-weight: 900;
+      font-style: italic;
+      letter-spacing: 0;
+      transform: rotate(4deg);
+    }
+
+    .route-tag.first {
+      top: 27rem;
+      right: 0;
+    }
+
+    .route-tag.second {
+      left: 26rem;
+      bottom: 5rem;
+      transform: rotate(-4deg);
+    }
+
+    .creator-note {
+      position: absolute;
+      left: 47rem;
+      right: 47rem;
+      top: 959rem;
+    }
+
+    .note-label {
+      margin: 0 0 26rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 31rem;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .quote-list {
+      display: grid;
+      gap: 20rem;
+    }
+
+    .quote {
+      position: relative;
+      min-height: 160rem;
+      padding: 0 152rem 0 34rem;
+      border-left: 2rem dashed rgba(255, 255, 255, 0.14);
+    }
+
+    .quote h2 {
+      margin: 0 0 12rem;
+      color: #fff;
+      font-size: 33rem;
+      line-height: 1.18;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .quote-mark {
+      position: absolute;
+      left: -5rem;
+      top: -10rem;
+      color: rgba(255, 255, 255, 0.42);
+      font-size: 56rem;
+      line-height: 1;
+      font-family: Georgia, serif;
+    }
+
+    .author-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12rem;
+      color: rgba(255, 255, 255, 0.46);
+      font-size: 25rem;
+      line-height: 1.35;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    .quote p {
+      margin: 10rem 0 0;
+      max-width: 540rem;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 24rem;
+      line-height: 1.32;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    .avatar {
+      width: 35rem;
+      height: 35rem;
+      border: 2rem solid rgba(255, 255, 255, 0.58);
+      border-radius: 50%;
+      background: var(--avatar) center / cover no-repeat;
+      box-shadow: 0 0 0 2rem rgba(0, 0, 0, 0.16);
+    }
+
+    .thumb {
+      position: absolute;
+      right: 0;
+      top: 8rem;
+      width: 112rem;
+      height: 145rem;
+      overflow: hidden;
+      border-radius: 11rem;
+      background: var(--thumb) center / cover no-repeat;
+      box-shadow: 0 12rem 28rem rgba(0, 0, 0, 0.22);
+    }
+
+    .thumb::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.18));
+    }
+
+    .play {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 1;
+      width: 39rem;
+      height: 39rem;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.95);
+      transform: translate(-50%, -50%);
+    }
+
+    .play::before {
+      content: "";
+      position: absolute;
+      left: 15rem;
+      top: 10rem;
+      width: 0;
+      height: 0;
+      border-top: 9rem solid transparent;
+      border-bottom: 9rem solid transparent;
+      border-left: 14rem solid rgba(40, 72, 46, 0.92);
+    }
+
+    .progress {
+      position: absolute;
+      left: 46rem;
+      right: 46rem;
+      top: 1554rem;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10rem;
+    }
+
+    .progress span {
+      position: relative;
+      height: 6rem;
+      overflow: hidden;
+      border-radius: 999rem;
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .progress span::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--fill, 0%);
+      border-radius: inherit;
+      background: rgba(255, 255, 255, 0.68);
+    }
+
+    .action-row {
+      position: absolute;
+      left: 46rem;
+      right: 46rem;
+      top: 1595rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20rem;
+    }
+
+    .action-button {
+      height: 99rem;
+      border: 0;
+      border-radius: 17rem;
+      color: rgba(255, 255, 255, 0.92);
+      background: rgba(99, 139, 97, 0.72);
+      font-size: 34rem;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0;
+      cursor: pointer;
+      backdrop-filter: blur(8rem);
+    }
+
+    .action-button.secondary {
+      color: rgba(255, 255, 255, 0.55);
+      background: rgba(93, 138, 93, 0.44);
+    }
+
+    .swipe-tip {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 1732rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10rem;
+      color: rgba(255, 255, 255, 0.53);
+      font-size: 27rem;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .chevrons {
+      position: relative;
+      width: 25rem;
+      height: 25rem;
+    }
+
+    .chevrons::before,
+    .chevrons::after {
+      content: "";
+      position: absolute;
+      left: 5rem;
+      width: 16rem;
+      height: 16rem;
+      border-left: 4rem solid rgba(255, 255, 255, 0.55);
+      border-top: 4rem solid rgba(255, 255, 255, 0.55);
+      transform: rotate(45deg);
+    }
+
+    .chevrons::before { top: 6rem; }
+    .chevrons::after { top: -3rem; opacity: 0.7; }
+
+    .bottom-nav {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 5;
+      height: 190rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.08fr 1fr 1fr;
+      align-items: start;
+      padding: 35rem 34rem 0;
+      background: #000;
+      box-shadow: 0 -20rem 40rem rgba(0, 0, 0, 0.22);
+    }
+
+    .bottom-link {
+      display: grid;
+      justify-items: center;
+      gap: 11rem;
+      color: rgba(255, 255, 255, 0.46);
+      text-decoration: none;
+      font-size: 33rem;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .bottom-link.active {
+      color: #fff;
+    }
+
+    .plus-button {
       display: grid;
       place-items: center;
-      width: calc(62 * var(--unit));
-      height: calc(62 * var(--unit));
-      border: calc(3 * var(--unit)) solid var(--line);
-      border-radius: 50%;
-      background: rgba(8, 66, 54, .18);
+      justify-self: center;
+      width: 82rem;
+      height: 58rem;
+      margin-top: -9rem;
+      border: 6rem solid #fff;
+      border-radius: 20rem;
+      color: #fff;
+      background: #000;
+      box-shadow: -5rem 0 0 #21f4ee, 5rem 0 0 #fe2c55;
     }
 
-    .arrow svg {
-      width: calc(36 * var(--unit));
-      height: calc(36 * var(--unit));
-      fill: none;
-      stroke: #fff;
+    .plus-button svg {
+      width: 38rem;
+      height: 38rem;
+      stroke: currentColor;
       stroke-width: 5;
       stroke-linecap: round;
-      stroke-linejoin: round;
     }
 
-    .cta {
+    .home-indicator {
       position: absolute;
-      left: calc(60 * var(--unit));
-      top: calc(1847 * var(--unit));
-      width: calc(1032 * var(--unit));
-      height: calc(87 * var(--unit));
-      display: grid;
-      grid-template-columns: calc(292 * var(--unit)) 1fr calc(96 * var(--unit));
-      align-items: center;
-      border: calc(2 * var(--unit)) solid rgba(255, 247, 225, .92);
-      border-radius: calc(44 * var(--unit));
-      background: linear-gradient(100deg, #dba35f 0%, #f4d395 49%, #d7a25e 100%);
-      color: #061712;
-      font-size: calc(35 * var(--unit));
-      font-weight: 800;
-      letter-spacing: calc(1.5 * var(--unit));
-      text-decoration: none;
-      box-shadow: 0 calc(11 * var(--unit)) calc(18 * var(--unit)) rgba(0, 0, 0, .28), inset 0 calc(2 * var(--unit)) calc(8 * var(--unit)) rgba(255, 255, 255, .34);
+      left: 50%;
+      bottom: 17rem;
+      z-index: 6;
+      width: 298rem;
+      height: 7rem;
+      border-radius: 999rem;
+      background: #fff;
+      transform: translateX(-50%);
     }
 
-    .cta-star {
-      justify-self: end;
-      padding-right: calc(23 * var(--unit));
-      font-family: Georgia, serif;
-      font-size: calc(38 * var(--unit));
-      font-weight: 400;
+    button:focus-visible,
+    a:focus-visible {
+      outline: 3rem solid rgba(255, 255, 255, 0.8);
+      outline-offset: 5rem;
     }
 
-    .cta svg {
-      width: calc(37 * var(--unit));
-      height: calc(37 * var(--unit));
-      fill: none;
-      stroke: #061712;
-      stroke-width: 3.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .comments {
-      position: absolute;
-      left: calc(60 * var(--unit));
-      top: calc(1958 * var(--unit));
-      width: calc(1032 * var(--unit));
-      height: calc(70 * var(--unit));
-      display: grid;
-      grid-template-columns: calc(72 * var(--unit)) 1fr calc(75 * var(--unit));
-      align-items: center;
-      border: calc(2 * var(--unit)) solid rgba(207, 166, 103, .62);
-      border-radius: calc(35 * var(--unit));
-      background: rgba(4, 45, 38, .76);
-      color: rgba(255, 238, 210, .9);
-      font-size: calc(26 * var(--unit));
-      font-weight: 500;
-      text-decoration: none;
-    }
-
-    .comments svg {
-      justify-self: end;
-      width: calc(45 * var(--unit));
-      height: calc(45 * var(--unit));
-      fill: none;
-      stroke: #fff5dc;
-      stroke-width: 3;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .comments .chev {
-      justify-self: center;
-      width: calc(31 * var(--unit));
-      height: calc(31 * var(--unit));
-      stroke-width: 4;
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
     }
   </style>
 </head>
 <body>
-  <main class="screen" aria-label="Face Muse 三套适合你的入门妆">
-    <div class="status" data-animate="top">
+  <main class="feed-screen" aria-labelledby="page-title">
+    <div class="hero-grain" aria-hidden="true"></div>
+
+    <div class="status-bar" aria-hidden="true">
       <span>9:41</span>
-      <div class="system" aria-hidden="true">
+      <div class="system-icons">
         <span class="signal"><span></span><span></span><span></span><span></span></span>
-        <span class="wifi"></span>
-        <span class="battery">100</span>
+        <span class="wifi"><i></i></span>
+        <span class="battery"></span>
       </div>
     </div>
 
-    <nav class="nav" data-animate="top" aria-label="主导航">
-      <div class="menu" aria-hidden="true"><span></span><span></span><span></span></div>
-      <div class="brand">Face Muse</div>
-      <div class="bell" aria-label="通知">
-        <svg viewBox="0 0 56 56" aria-hidden="true"><path d="M17 38h22M19 38V24a9 9 0 0 1 18 0v14M24 44c2 3 6 3 8 0"/></svg>
+    <nav class="top-nav" aria-label="频道导航">
+      <button class="icon-button" type="button" aria-label="打开菜单">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 14h34M7 24h34M7 34h34"></path></svg>
+      </button>
+      <div class="channels" aria-label="内容频道">
+        <span class="channel">团购</span>
+        <span class="channel">经验</span>
+        <span class="channel">北京</span>
+        <span class="channel">关注</span>
+        <span class="channel">商城</span>
+        <span class="channel active">推荐</span>
       </div>
+      <button class="icon-button" type="button" aria-label="搜索">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="21" cy="21" r="13"></circle><path d="M31.5 31.5 42 42"></path></svg>
+      </button>
     </nav>
 
-    <section class="hero" data-animate="hero">
-      <h1>三套适合你的入门妆</h1>
-      <span class="shine" aria-hidden="true">✧</span>
-      <p>根据五官比例、肤色、发色和当天场合生成。</p>
-    </section>
-
-    <figure class="photo-main" data-animate="panel">
-      <img src="./assets/4/main-face.webp" width="408" height="476" alt="用户面部照片">
-    </figure>
-
-    <section class="recommend" data-animate="panel" aria-label="Face Muse 风格推荐">
-      <h2><span class="spark">✦</span><span>Face Muse 风格推荐</span></h2>
-      <div class="traits">
-        <div class="trait">
-          <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M7 19c0-8 4-12 11-12s11 4 11 12-4 12-11 12S7 27 7 19Z"/><path d="M8 20H5m23 0h3M13 17h1m8 0h1M13 25c3 2 7 2 10 0"/></svg>
-          <b>脸型：</b><span>偏圆</span>
-        </div>
-        <div class="trait">
-          <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M10 25c-3-5-1-12 5-15 7-3 14 1 14 8 0 6-5 11-12 11-3 0-5-1-7-4Z"/><circle cx="15" cy="16" r="2"/><circle cx="22" cy="15" r="2"/><circle cx="18" cy="23" r="2"/><circle cx="25" cy="21" r="2"/></svg>
-          <b>肤色：</b><span>暖调自然</span>
-        </div>
-        <div class="trait">
-          <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 5c-7 3-10 9-8 18 1 5 4 8 8 8s7-3 8-8c2-9-1-15-8-18Z"/><path d="M18 8c-1 6-4 8-8 10m8-10c1 6 4 8 8 10M14 28c-2 2-4 3-6 3m14-3c2 2 4 3 6 3"/></svg>
-          <b>发色：</b><span>深棕</span>
-        </div>
-        <div class="trait">
-          <svg viewBox="0 0 36 36" aria-hidden="true"><rect x="8" y="10" width="20" height="20" rx="3"/><path d="M12 6v7m12-7v7M8 17h20M13 23h2m6 0h2"/></svg>
-          <b>场合：</b><span>通勤 / 约会 / 拍照</span>
-        </div>
+    <section class="content" aria-label="推荐内容">
+      <div class="headline">
+        <h1 id="page-title">三套适合你的入门妆</h1>
+        <span class="ai-badge">AI推荐</span>
       </div>
-      <div class="ai-tip">
-        <span class="spark">✦</span>
-        <span><b>AI 推荐：为你定制三套新手友好妆容</b><br>轻松上手，放大你的自然美。</span>
+
+      <article class="info-card" aria-label="Face Muse 风格推荐">
+        <div class="stat-grid">
+          <div class="stat"><span>脸型</span><strong>偏圆</strong></div>
+          <div class="stat"><span>肤色</span><strong>暖调自然</strong></div>
+          <div class="stat"><span>发色</span><strong>深棕</strong></div>
+          <div class="stat"><span>场合</span><strong>通勤 / 约会 / 拍照</strong></div>
+        </div>
+        <div class="card-copy">
+          <span class="spark">✦</span>AI 推荐：为你定制三套新手友好妆容。根据五官比例、肤色、发色和当天场合生成，轻松上手，放大你的自然美。
+          <div class="mini-route" aria-hidden="true">
+            <svg viewBox="0 0 180 170">
+              <path class="route-path" d="M28 48 C76 30 110 51 116 77 S77 95 95 124 S135 130 152 112"></path>
+              <circle class="route-dot" cx="28" cy="48" r="7"></circle>
+              <circle class="route-dot" cx="116" cy="77" r="7"></circle>
+              <circle class="route-dot" cx="95" cy="124" r="7"></circle>
+              <circle class="route-dot" cx="152" cy="112" r="7"></circle>
+            </svg>
+            <span class="route-tag first">上脸</span>
+            <span class="route-tag second">新手</span>
+          </div>
+        </div>
+      </article>
+
+      <section class="creator-note" aria-label="推荐妆容">
+        <p class="note-label">Face Muse 风格推荐</p>
+        <div class="quote-list">
+          <article class="quote">
+            <span class="quote-mark">“</span>
+            <h2>清透通勤妆</h2>
+            <div class="author-row">
+              <span>18 分钟</span><span>少步骤</span><span>推荐理由：低失误率</span>
+            </div>
+            <p>适合上班日常的轻透底妆、自然眉眼、豆沙裸粉唇。</p>
+            <div class="thumb" style="--thumb: url('./assets/4/look-1-face.webp')" aria-hidden="true"><span class="play"></span></div>
+          </article>
+          <article class="quote">
+            <span class="quote-mark">“</span>
+            <h2>微甜约会妆</h2>
+            <div class="author-row">
+              <span>26 分钟</span><span>唇腮同色</span><span>推荐理由：眼线短拉</span>
+            </div>
+            <p>温柔甜美风，柔和腮红搭配同色系唇妆，约会心动加分。</p>
+            <div class="thumb" style="--thumb: url('./assets/4/look-2-face.webp')" aria-hidden="true"><span class="play"></span></div>
+          </article>
+          <article class="quote">
+            <span class="quote-mark">“</span>
+            <h2>低饱和拍照妆</h2>
+            <div class="author-row">
+              <span>32 分钟</span><span>提升轮廓</span><span>推荐理由：镜头友好</span>
+            </div>
+            <p>低饱和高级感，轮廓更清晰，上镜立体，照片氛围感拉满。</p>
+            <div class="thumb" style="--thumb: url('./assets/4/look-3-face.webp')" aria-hidden="true"><span class="play"></span></div>
+          </article>
+        </div>
+      </section>
+
+      <div class="progress" aria-hidden="true">
+        <span style="--fill: 100%"></span>
+        <span style="--fill: 100%"></span>
+        <span style="--fill: 100%"></span>
+        <span style="--fill: 82%"></span>
+        <span style="--fill: 0%"></span>
+      </div>
+
+      <div class="action-row" aria-label="推荐操作">
+        <button class="action-button" type="button">查看三套妆造上脸预览</button>
+        <button class="action-button secondary" type="button">评论 89：通勤妆 18 分钟能出门</button>
+      </div>
+
+      <div class="swipe-tip" aria-hidden="true">
+        <span class="chevrons"></span>
+        <span>通勤妆 18 分钟能出门</span>
       </div>
     </section>
 
-    <section class="looks" aria-label="推荐妆容">
-      <article class="look-card look-1" data-animate="card">
-        <figure class="look-photo"><img src="./assets/4/look-1-face.webp" width="394" height="298" alt="清透通勤妆效果"></figure>
-        <div class="look-body">
-          <h2>清透通勤妆</h2>
-          <div class="chips">
-            <span class="chip"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12"/><path d="M16 9v8l5 3"/></svg>18 分钟</span>
-            <span class="chip tag">少步骤</span>
-          </div>
-          <p class="reason"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M12 27h11c3 0 5-3 4-6l-2-7h-7l1-6c0-2-2-3-4-2l-6 10v11Z"/><path d="M5 15h5v12H5z"/></svg>推荐理由：低失误率</p>
-          <p class="desc">适合上班日常的轻透底妆、自然眉眼、豆沙裸粉唇。</p>
-        </div>
-        <img class="products" src="./assets/4/look-1-products.webp" width="135" height="213" alt="">
-        <span class="arrow" aria-hidden="true"><svg viewBox="0 0 36 36"><path d="M8 18h20M20 10l8 8-8 8"/></svg></span>
-      </article>
-
-      <article class="look-card look-2" data-animate="card">
-        <figure class="look-photo"><img src="./assets/4/look-2-face.webp" width="394" height="298" alt="微甜约会妆效果"></figure>
-        <div class="look-body">
-          <h2>微甜约会妆</h2>
-          <div class="chips">
-            <span class="chip"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12"/><path d="M16 9v8l5 3"/></svg>26 分钟</span>
-            <span class="chip tag">唇腮同色</span>
-          </div>
-          <p class="reason"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M12 27h11c3 0 5-3 4-6l-2-7h-7l1-6c0-2-2-3-4-2l-6 10v11Z"/><path d="M5 15h5v12H5z"/></svg>推荐理由：眼线短拉</p>
-          <p class="desc">温柔甜美风，柔和腮红搭配同色系唇妆，约会心动加分。</p>
-        </div>
-        <img class="products" src="./assets/4/look-2-products.webp" width="128" height="200" alt="">
-        <span class="arrow" aria-hidden="true"><svg viewBox="0 0 36 36"><path d="M8 18h20M20 10l8 8-8 8"/></svg></span>
-      </article>
-
-      <article class="look-card look-3" data-animate="card">
-        <figure class="look-photo"><img src="./assets/4/look-3-face.webp" width="394" height="298" alt="低饱和拍照妆效果"></figure>
-        <div class="look-body">
-          <h2>低饱和拍照妆</h2>
-          <div class="chips">
-            <span class="chip"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12"/><path d="M16 9v8l5 3"/></svg>32 分钟</span>
-            <span class="chip tag">提升轮廓</span>
-          </div>
-          <p class="reason"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M12 27h11c3 0 5-3 4-6l-2-7h-7l1-6c0-2-2-3-4-2l-6 10v11Z"/><path d="M5 15h5v12H5z"/></svg>推荐理由：镜头友好</p>
-          <p class="desc">低饱和高级感，轮廓更清晰，上镜立体，照片氛围感拉满。</p>
-        </div>
-        <img class="products" src="./assets/4/look-3-products.webp" width="136" height="195" alt="">
-        <span class="arrow" aria-hidden="true"><svg viewBox="0 0 36 36"><path d="M8 18h20M20 10l8 8-8 8"/></svg></span>
-      </article>
-    </section>
-
-    <a class="cta" href="#" data-animate="bottom" aria-label="查看三套妆造上脸预览">
-      <span class="cta-star">✧</span>
-      <span>查看三套妆造上脸预览</span>
-      <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M14 8l10 10-10 10"/></svg>
-    </a>
-
-    <a class="comments" href="#" data-animate="bottom" aria-label="查看评论：通勤妆 18 分钟能出门">
-      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 23c0-8 7-14 16-14s16 6 16 14-7 14-16 14c-3 0-5 0-8-2l-7 3 2-7c-2-2-3-5-3-8Z"/><path d="M17 23h.1M24 23h.1M31 23h.1"/></svg>
-      <span>评论 89：通勤妆 18 分钟能出门</span>
-      <svg class="chev" viewBox="0 0 36 36" aria-hidden="true"><path d="M14 9l9 9-9 9"/></svg>
-    </a>
+    <nav class="bottom-nav" aria-label="底部导航">
+      <a class="bottom-link active" href="#">首页</a>
+      <a class="bottom-link" href="#">朋友</a>
+      <a class="bottom-link" href="#" aria-label="发布">
+        <span class="plus-button">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 12v24M12 24h24"></path></svg>
+        </span>
+      </a>
+      <a class="bottom-link" href="#">消息</a>
+      <a class="bottom-link" href="#">我</a>
+    </nav>
+    <div class="home-indicator" aria-hidden="true"></div>
   </main>
 
-  <script src="./gsap.min.js"></script>
+  <script src="./assets/gsap.min.js"></script>
   <script>
-    window.addEventListener("load", function () {
+    window.addEventListener("DOMContentLoaded", () => {
       if (!window.gsap) {
+        document.documentElement.dataset.gsapLoaded = "false";
+        return;
+      }
+      document.documentElement.dataset.gsapLoaded = "true";
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        gsap.set([".headline", ".info-card", ".quote", ".progress span", ".action-button", ".swipe-tip", ".bottom-link"], { opacity: 1, clearProps: "transform" });
         return;
       }
 
-      gsap.defaults({ ease: "power3.out", duration: 0.5 });
-      const timeline = gsap.timeline({
-        defaults: { clearProps: "transform,opacity" },
-        onComplete: function () {
-          gsap.set("[data-animate]", { clearProps: "transform,opacity" });
-        }
-      });
+      gsap.from(".hero-grain", { scale: 1.08, duration: 1.1, ease: "power2.out" });
+      gsap.from(".status-bar, .top-nav", { y: -16, autoAlpha: 0, duration: 0.42, stagger: 0.08, ease: "power3.out" });
+      gsap.from(".headline", { y: 28, autoAlpha: 0, duration: 0.58, delay: 0.12, ease: "power3.out" });
+      gsap.from(".info-card", { y: 34, autoAlpha: 0, duration: 0.64, delay: 0.24, ease: "power3.out" });
+      gsap.from(".quote", { x: -24, autoAlpha: 0, duration: 0.5, delay: 0.46, stagger: 0.08, ease: "power3.out" });
+      gsap.from(".progress span, .action-button, .swipe-tip", { y: 16, duration: 0.42, delay: 0.66, stagger: 0.04, ease: "power2.out" });
+      gsap.from(".bottom-link", { y: 16, duration: 0.38, delay: 0.72, stagger: 0.035, ease: "power2.out" });
+      gsap.to(".hero-grain", { scale: 1.045, duration: 7, repeat: -1, yoyo: true, ease: "sine.inOut" });
 
-      timeline
-        .from('[data-animate="top"]', { opacity: 0, y: -18, stagger: 0.08 })
-        .from('[data-animate="hero"]', { opacity: 0, y: 24 }, "-=0.42")
-        .from('[data-animate="panel"]', { opacity: 0, y: 20, stagger: 0.1 }, "-=0.38")
-        .from('[data-animate="card"]', { opacity: 0, y: 28, stagger: 0.11 }, "-=0.34")
-        .from(".products", { opacity: 0, scale: 0.94, stagger: 0.08, transformOrigin: "50% 50%" }, "-=0.45")
-        .from('[data-animate="bottom"]', { opacity: 0, y: 18, stagger: 0.08 }, "-=0.28");
+      document.querySelectorAll("button, .bottom-link").forEach((item) => {
+        item.addEventListener("click", (event) => {
+          event.preventDefault();
+          gsap.fromTo(item, { scale: 0.94 }, { scale: 1, duration: 0.34, ease: "back.out(2.2)" });
+        });
+      });
     });
   </script>
 </body>
