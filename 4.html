@@ -552,41 +552,18 @@
       letter-spacing: 0;
     }
 
-    .product-shot {
-      position: absolute;
-      right: 13rem;
-      top: 124rem;
-      width: 76rem;
-      height: 76rem;
-      overflow: hidden;
-      border: 2rem solid rgba(255, 255, 255, 0.5);
-      border-radius: 18rem;
-      background:
-        radial-gradient(circle at 72% 28%, rgba(255, 255, 255, 0.36), transparent 22rem),
-        linear-gradient(135deg, var(--p1), var(--p2));
-      box-shadow: 0 10rem 24rem rgba(0, 0, 0, 0.24);
+    .look-palette {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr 0.8fr;
+      gap: 6rem;
+      height: 12rem;
+      margin-top: 2rem;
     }
 
-    .product-shot::before,
-    .product-shot::after {
-      content: "";
-      position: absolute;
+    .look-palette span {
       border-radius: 999rem;
-      background: rgba(255, 255, 255, 0.42);
-    }
-
-    .product-shot::before {
-      left: 13rem;
-      bottom: 14rem;
-      width: 48rem;
-      height: 8rem;
-    }
-
-    .product-shot::after {
-      right: 15rem;
-      top: 14rem;
-      width: 10rem;
-      height: 38rem;
+      background: var(--tone);
+      box-shadow: inset 0 1rem 0 rgba(255, 255, 255, 0.28);
     }
 
     .routine-panel {
@@ -886,33 +863,45 @@
           <div class="look-photo">
             <img src="./assets/4/look-1-face.webp" alt="" loading="lazy" decoding="async" fetchpriority="low">
           </div>
-          <div class="product-shot" style="--p1: #efb6a3; --p2: #8e4f42" aria-hidden="true"></div>
           <div class="look-body">
             <div class="look-meta"><span>18 分钟</span><span>少步骤</span></div>
             <h2>清透通勤妆</h2>
             <p>低失误率，适合上班日常的轻透底妆、自然眉眼、豆沙裸粉唇。</p>
+            <div class="look-palette" aria-hidden="true">
+              <span style="--tone: #f2c0a8"></span>
+              <span style="--tone: #cf7b72"></span>
+              <span style="--tone: #8e4f42"></span>
+            </div>
           </div>
         </article>
         <article class="look-card compact">
           <div class="look-photo">
             <img src="./assets/4/look-2-face.webp" alt="" loading="lazy" decoding="async" fetchpriority="low">
           </div>
-          <div class="product-shot" style="--p1: #f0a3a0; --p2: #a34a55" aria-hidden="true"></div>
           <div class="look-body">
             <div class="look-meta"><span>26 分钟</span><span>唇腮同色</span></div>
             <h2>微甜约会妆</h2>
             <p>眼线短拉，柔和腮红搭配同色系唇妆。</p>
+            <div class="look-palette" aria-hidden="true">
+              <span style="--tone: #f3aaa7"></span>
+              <span style="--tone: #c75d74"></span>
+              <span style="--tone: #8d4757"></span>
+            </div>
           </div>
         </article>
         <article class="look-card compact">
           <div class="look-photo">
             <img src="./assets/4/look-3-face.webp" alt="" loading="lazy" decoding="async" fetchpriority="low">
           </div>
-          <div class="product-shot" style="--p1: #d5a17e; --p2: #705044" aria-hidden="true"></div>
           <div class="look-body">
             <div class="look-meta"><span>32 分钟</span><span>提升轮廓</span></div>
             <h2>低饱和拍照妆</h2>
             <p>镜头友好，轮廓更清晰，照片氛围感拉满。</p>
+            <div class="look-palette" aria-hidden="true">
+              <span style="--tone: #d3aa8f"></span>
+              <span style="--tone: #9a6d5f"></span>
+              <span style="--tone: #6f5044"></span>
+            </div>
           </div>
         </article>
       </section>
