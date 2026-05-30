@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#06130f">
+  <meta name="description" content="Face Muse 眉眼精修路线，使用动态标注和组件化卡片展示眉峰定位、睫毛夹角和实时播报。">
+  <title>Face Muse - 眉眼精修路线</title>
+  <link rel="icon" href="data:,">
+  <link rel="preload" as="image" href="./assets/face-muse-2-hero-clean.webp" type="image/webp" fetchpriority="high">
+  <link rel="preload" as="script" href="./assets/gsap.min.js">
+  <style>
+    :root {
+      --cream: #f2dfca;
+      --cream-soft: #d8c6b7;
+      --line: rgba(242, 223, 202, 0.28);
+      --line-strong: rgba(242, 223, 202, 0.48);
+      --green-950: #03100c;
+      --green-900: #061811;
+      --green-800: #0b261d;
+      --green-700: #12362a;
+      --peach: #ffc0ad;
+      --pink: #ffb2b2;
+      --gold: #e7b46c;
+      background: var(--green-950);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(39, 76, 56, 0.34), transparent 32%),
+        linear-gradient(180deg, #0b120d 0%, #020705 100%);
+      color: var(--cream);
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: start center;
+      overflow-x: hidden;
+    }
+
+    .app {
+      container-type: inline-size;
+      position: relative;
+      width: min(100vw, 1152px);
+      aspect-ratio: 9 / 16;
+      overflow: hidden;
+      isolation: isolate;
+      background: #090c08;
+      box-shadow: 0 2cqw 7cqw rgba(0, 0, 0, 0.48);
+    }
+
+    .hero {
+      position: absolute;
+      inset: 0 0 auto;
+      height: 47.2%;
+      background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.08), transparent 52%, rgba(9, 13, 9, 0.2)),
+        url("./assets/face-muse-2-hero-clean.webp") center top / cover no-repeat;
+      transform-origin: 50% 32%;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 63% 42%, transparent 0 34%, rgba(0, 0, 0, 0.08) 58%, rgba(0, 0, 0, 0.2) 100%),
+        linear-gradient(180deg, transparent 0 78%, rgba(0, 0, 0, 0.34) 100%);
+    }
+
+    .guide {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      color: var(--pink);
+    }
+
+    .guide-line {
+      position: absolute;
+      opacity: 0.92;
+    }
+
+    .guide-line.horizontal {
+      left: 16%;
+      top: 13.8%;
+      width: 64.5%;
+      border-top: 0.18cqw dashed rgba(255, 184, 174, 0.86);
+    }
+
+    .guide-line.vertical {
+      left: 43.8%;
+      top: 9.8%;
+      height: 7.1%;
+      border-left: 0.18cqw dashed rgba(255, 184, 174, 0.86);
+    }
+
+    .guide-dot {
+      position: absolute;
+      width: 1.42cqw;
+      height: 1.42cqw;
+      border-radius: 50%;
+      background: var(--peach);
+      box-shadow: 0 0 0 0.35cqw rgba(255, 198, 187, 0.28);
+    }
+
+    .guide-dot.peak {
+      left: 43.3%;
+      top: 13.35%;
+    }
+
+    .guide-dot.angle {
+      left: 66.8%;
+      top: 19.6%;
+      background: #ffc97b;
+      box-shadow: none;
+    }
+
+    .guide-dot.tail {
+      left: 76.7%;
+      top: 21.45%;
+      width: 1.08cqw;
+      height: 1.08cqw;
+      box-shadow: none;
+    }
+
+    .guide-label {
+      position: absolute;
+      color: #ffc7bf;
+      font-size: 1.7cqw;
+      line-height: 1;
+      font-weight: 700;
+      text-shadow: 0 0.22cqw 0.75cqw rgba(50, 17, 11, 0.44);
+      white-space: nowrap;
+    }
+
+    .guide-label.peak {
+      left: 39.5%;
+      top: 8.15%;
+    }
+
+    .guide-label.align {
+      right: 6.6%;
+      top: 13.55%;
+    }
+
+    .guide-label.next {
+      left: 43.2%;
+      top: 23.1%;
+      color: rgba(255, 226, 218, 0.94);
+      font-size: 1.95cqw;
+      font-weight: 500;
+    }
+
+    .guide-label.angle {
+      right: 13.4%;
+      top: 19.8%;
+      color: #ffe0bf;
+      font-size: 1.72cqw;
+    }
+
+    .guide-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 47.2%;
+      overflow: visible;
+    }
+
+    .guide-svg path,
+    .guide-svg polyline {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .magnifier {
+      position: absolute;
+      z-index: 3;
+      right: 6.6%;
+      top: 25.1%;
+      width: 24.6%;
+      height: 14.3%;
+      padding: 1.15cqw;
+      border: 0.22cqw solid rgba(255, 235, 225, 0.9);
+      border-radius: 3.3cqw;
+      overflow: hidden;
+      display: grid;
+      align-items: end;
+      justify-items: center;
+      background:
+        linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.4)),
+        url("./assets/face-muse-2-brow.webp") center / cover no-repeat;
+      box-shadow: 0 1.2cqw 3.2cqw rgba(0, 0, 0, 0.22);
+    }
+
+    .magnifier b {
+      z-index: 1;
+      color: #fff0e4;
+      font-size: 2.15cqw;
+      font-weight: 600;
+      line-height: 1;
+      margin-bottom: 3.1cqw;
+    }
+
+    .dots {
+      position: absolute;
+      z-index: 1;
+      bottom: 2.05cqw;
+      display: flex;
+      gap: 1.15cqw;
+    }
+
+    .dots i {
+      width: 1.08cqw;
+      height: 1.08cqw;
+      border-radius: 50%;
+      background: rgba(244, 233, 219, 0.46);
+    }
+
+    .dots i:first-child {
+      background: var(--peach);
+    }
+
+    .panel {
+      position: absolute;
+      z-index: 4;
+      left: 3.7%;
+      right: 3.7%;
+      bottom: 2.05%;
+      min-height: 56.9%;
+      padding: 3.7cqw 4.75cqw 3.2cqw;
+      border: 0.15cqw solid rgba(239, 224, 202, 0.34);
+      border-radius: 3.7cqw;
+      background:
+        radial-gradient(54cqw 35cqw at 28% 7%, rgba(51, 83, 63, 0.48), transparent 68%),
+        linear-gradient(140deg, rgba(12, 41, 31, 0.94), rgba(4, 24, 18, 0.95) 46%, rgba(2, 18, 14, 0.94));
+      box-shadow:
+        inset 0 0.2cqw 1.1cqw rgba(255, 255, 255, 0.08),
+        0 -0.45cqw 4cqw rgba(0, 0, 0, 0.24);
+      backdrop-filter: blur(18px) saturate(1.08);
+    }
+
+    .brand {
+      margin: 0 0 1.8cqw;
+      color: var(--cream);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 2.25cqw;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      margin: 0;
+      color: #f3ddc9;
+      font-family: "STSong", "SimSun", "Songti SC", "Noto Serif CJK SC", serif;
+      font-size: 6.9cqw;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: 0;
+      white-space: nowrap;
+      text-shadow: 0 0.35cqw 1.35cqw rgba(0, 0, 0, 0.25);
+    }
+
+    .chips {
+      display: grid;
+      grid-template-columns: 1fr 1.18fr 1.05fr;
+      gap: 2.05cqw;
+      margin-top: 3.25cqw;
+    }
+
+    .chip {
+      min-width: 0;
+      height: 6.1cqw;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.15cqw;
+      padding: 0 1.15cqw;
+      border: 0.13cqw solid rgba(239, 224, 202, 0.24);
+      border-radius: 1.65cqw;
+      color: #efe0cd;
+      background: rgba(255, 255, 255, 0.045);
+      box-shadow: inset 0 0.35cqw 1.4cqw rgba(255, 255, 255, 0.04);
+      font-size: 2.35cqw;
+      font-weight: 500;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .chip svg,
+    .voice-mark svg,
+    .mini-icon svg {
+      width: 2.8cqw;
+      height: 2.8cqw;
+      flex: 0 0 auto;
+      stroke: currentColor;
+      stroke-width: 2.1;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .chip .strong {
+      color: var(--gold);
+      font-size: 3.05cqw;
+      font-weight: 700;
+    }
+
+    .chip .live-dot {
+      width: 1.05cqw;
+      height: 1.05cqw;
+      border-radius: 50%;
+      background: var(--peach);
+    }
+
+    .voice {
+      min-height: 9.2cqw;
+      margin-top: 3.45cqw;
+      padding: 1.35cqw 3.25cqw 1.35cqw 1.45cqw;
+      border: 0.13cqw solid rgba(239, 224, 202, 0.22);
+      border-radius: 5.3cqw;
+      display: grid;
+      grid-template-columns: 9cqw minmax(0, 1fr) 29cqw;
+      align-items: center;
+      gap: 2.05cqw;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.018)),
+        rgba(20, 59, 45, 0.58);
+      box-shadow: inset 0 0.25cqw 1.6cqw rgba(255, 255, 255, 0.045);
+    }
+
+    .avatar {
+      position: relative;
+      width: 7.4cqw;
+      height: 7.4cqw;
+      border-radius: 50%;
+      background: url("./assets/face-muse-2-avatar.webp") center / cover no-repeat;
+      box-shadow: 0 0 0 0.7cqw rgba(255, 255, 255, 0.13);
+    }
+
+    .avatar::after {
+      content: "";
+      position: absolute;
+      right: -1.25cqw;
+      bottom: 0.55cqw;
+      width: 2.2cqw;
+      height: 1.9cqw;
+      background:
+        linear-gradient(90deg, var(--cream) 0 0.16cqw, transparent 0) 0 50% / 0.55cqw 1.45cqw repeat-x;
+      opacity: 0.95;
+    }
+
+    .voice p {
+      margin: 0;
+      color: #f0dfcf;
+      font-size: 2.55cqw;
+      line-height: 1.54;
+      letter-spacing: 0;
+    }
+
+    .wave {
+      height: 4.8cqw;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.33cqw;
+      color: var(--peach);
+    }
+
+    .wave i {
+      width: 0.27cqw;
+      height: calc(var(--h) * 1cqw);
+      border-radius: 999px;
+      background: currentColor;
+      box-shadow: 0 0 0.55cqw rgba(255, 181, 165, 0.34);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2.15cqw;
+      margin-top: 2.8cqw;
+    }
+
+    .card {
+      min-width: 0;
+      border: 0.13cqw solid rgba(239, 224, 202, 0.22);
+      border-radius: 1.75cqw;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)),
+        rgba(17, 57, 43, 0.74);
+      box-shadow: inset 0 0.2cqw 1.5cqw rgba(255, 255, 255, 0.03);
+    }
+
+    .card.large {
+      min-height: 17.2cqw;
+      padding: 1.6cqw 1.45cqw 1.35cqw;
+    }
+
+    .card.small {
+      min-height: 10.2cqw;
+      padding: 1.35cqw;
+    }
+
+    .card-title {
+      min-height: 4.05cqw;
+      display: flex;
+      align-items: center;
+      gap: 1.2cqw;
+      color: #eadbcb;
+      font-size: 2.35cqw;
+      line-height: 1.22;
+      white-space: nowrap;
+    }
+
+    .mini-icon {
+      width: 3.65cqw;
+      height: 3.65cqw;
+      border: 0.13cqw solid rgba(239, 224, 202, 0.62);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      color: #f3e4d2;
+    }
+
+    .thumb {
+      position: relative;
+      margin-top: 1.15cqw;
+      min-height: 11cqw;
+      border-radius: 1.15cqw;
+      overflow: hidden;
+      background: #251913 center / cover no-repeat;
+    }
+
+    .thumb.lash {
+      background-image: url("./assets/face-muse-2-lash.webp");
+    }
+
+    .thumb.before {
+      background-image: url("./assets/face-muse-2-before-after.webp");
+    }
+
+    .thumb.compare {
+      margin-top: 0.9cqw;
+      min-height: 6.1cqw;
+      background-image: url("./assets/face-muse-2-compare.webp");
+    }
+
+    .thumb.brow {
+      min-height: 6.1cqw;
+      margin-top: 0;
+      background-image: url("./assets/face-muse-2-brow.webp");
+    }
+
+    .play {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      width: 6.2cqw;
+      height: 6.2cqw;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff2e4;
+      background: rgba(32, 29, 24, 0.7);
+      border: 0.16cqw solid rgba(255, 242, 228, 0.62);
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0.6cqw 1.7cqw rgba(0, 0, 0, 0.3);
+    }
+
+    .play::before {
+      content: "";
+      width: 0;
+      height: 0;
+      margin-left: 0.45cqw;
+      border-top: 1.15cqw solid transparent;
+      border-bottom: 1.15cqw solid transparent;
+      border-left: 1.85cqw solid currentColor;
+    }
+
+    .angle-mark {
+      position: absolute;
+      right: 2.35cqw;
+      top: 1.95cqw;
+      color: var(--gold);
+      font-size: 3.15cqw;
+      font-weight: 700;
+    }
+
+    .angle-mark::after {
+      content: "";
+      position: absolute;
+      left: 1.1cqw;
+      top: 3.4cqw;
+      width: 10cqw;
+      border-top: 0.14cqw dashed rgba(231, 180, 108, 0.8);
+      transform: rotate(15deg);
+      transform-origin: left center;
+    }
+
+    .split-btn {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      width: 3.2cqw;
+      height: 3.2cqw;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: rgba(31, 39, 32, 0.76);
+      border: 0.15cqw solid rgba(255, 255, 255, 0.72);
+      transform: translate(-50%, -50%);
+      font-size: 2.3cqw;
+      line-height: 1;
+    }
+
+    .caption-row {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0.7cqw;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      color: rgba(46, 44, 38, 0.88);
+      font-size: 1.8cqw;
+      text-align: center;
+    }
+
+    .small-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 1.55cqw;
+      align-items: center;
+    }
+
+    .small-copy {
+      margin: 0;
+      color: #f0dfca;
+      font-size: 2.08cqw;
+      line-height: 1.34;
+    }
+
+    .small-dots {
+      margin-top: 1.15cqw;
+      display: flex;
+      gap: 1.1cqw;
+    }
+
+    .small-dots i {
+      width: 1.08cqw;
+      height: 1.08cqw;
+      border-radius: 50%;
+      background: rgba(244, 233, 219, 0.42);
+    }
+
+    .small-dots i:first-child {
+      background: var(--peach);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app" aria-labelledby="page-title">
+    <section class="hero" aria-label="眉眼精修照片">
+      <div class="guide" aria-hidden="true">
+        <span class="guide-line horizontal"></span>
+        <span class="guide-line vertical"></span>
+        <span class="guide-dot peak"></span>
+        <span class="guide-dot angle"></span>
+        <span class="guide-dot tail"></span>
+        <span class="guide-label peak">眉峰定位点</span>
+        <span class="guide-label align">眉尾高度对齐线</span>
+        <span class="guide-label next">下一笔方向</span>
+        <span class="guide-label angle">睫毛夹角 42°</span>
+        <svg class="guide-svg" viewBox="0 0 100 47.2" preserveAspectRatio="none">
+          <path class="draw-line" d="M45 12.7 C48 10.9 52 10.2 56.5 10.6" stroke="rgba(255,188,178,.72)" stroke-width=".16"/>
+          <path class="draw-line" d="M47 13.4 C51.4 11.4 56.3 11.8 60 13.7" stroke="rgba(255,188,178,.58)" stroke-width=".14"/>
+          <polyline class="draw-line" points="73,20.3 78.2,18.8 81,21.7" stroke="rgba(255,203,126,.82)" stroke-width=".14"/>
+          <polyline class="draw-line" points="43,20.8 36.6,21.8 40.1,23.2 40.1,25.2" stroke="rgba(255,196,151,.72)" stroke-width=".13"/>
+        </svg>
+      </div>
+
+      <aside class="magnifier" aria-label="眉部放大">
+        <b>眉部放大</b>
+        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      </aside>
+    </section>
+
+    <section class="panel" aria-labelledby="page-title">
+      <p class="brand">Face Muse</p>
+      <h1 id="page-title">眉眼精修路线</h1>
+
+      <div class="chips" aria-label="当前状态">
+        <div class="chip">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="8.3"/>
+            <circle cx="12" cy="12" r="2.2"/>
+            <path d="M12 3.7v3M12 17.3v3M3.7 12h3M17.3 12h3"/>
+          </svg>
+          <span>眉峰已定位</span>
+        </div>
+        <div class="chip">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 19h13M7 17.5l8.5-11M7 17.5h7.8"/>
+          </svg>
+          <span>睫毛夹角</span>
+          <span class="strong">42°</span>
+        </div>
+        <div class="chip">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 10v4M9 6v12M13 8v8M17 4v16M21 9v6"/>
+          </svg>
+          <span>实时播报</span>
+          <i class="live-dot" aria-hidden="true"></i>
+        </div>
+      </div>
+
+      <article class="voice" aria-label="实时播报">
+        <div class="avatar" aria-hidden="true"></div>
+        <p>左眼睫毛外侧已经够翘，<br>下一步只补内侧空隙。</p>
+        <div class="wave" aria-hidden="true">
+          <i style="--h: .35"></i><i style="--h: .7"></i><i style="--h: 1.1"></i><i style="--h: 2.1"></i>
+          <i style="--h: 3.4"></i><i style="--h: 4.4"></i><i style="--h: 2.6"></i><i style="--h: 1.4"></i>
+          <i style="--h: .7"></i><i style="--h: 1.6"></i><i style="--h: 3.8"></i><i style="--h: 4.7"></i>
+          <i style="--h: 2.5"></i><i style="--h: 1.1"></i><i style="--h: .45"></i>
+        </div>
+      </article>
+
+      <div class="cards">
+        <article class="card large">
+          <div class="card-title">
+            <span class="mini-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M8.5 5.5v13l10-6.5-10-6.5z"/></svg>
+            </span>
+            <span>睫毛夹角实时提醒演示</span>
+          </div>
+          <div class="thumb lash">
+            <span class="play" aria-hidden="true"></span>
+            <span class="angle-mark">42°</span>
+          </div>
+        </article>
+
+        <article class="card large">
+          <div class="card-title">
+            <span class="mini-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M8 3.5h7l3 3V20H8z"/><path d="M15 3.5v4h4M10.5 12h5M10.5 15h4"/></svg>
+            </span>
+            <span>来自 36 位新手的<br>眉形修正记录</span>
+          </div>
+          <div class="thumb before">
+            <span class="split-btn" aria-hidden="true">›</span>
+            <span class="caption-row"><span>Before</span><span>After</span></span>
+          </div>
+        </article>
+
+        <article class="card small">
+          <div class="card-title">前后对比</div>
+          <div class="thumb compare">
+            <span class="split-btn" aria-hidden="true">›</span>
+          </div>
+        </article>
+
+        <article class="card small">
+          <div class="small-grid">
+            <div>
+              <div class="card-title">局部放大</div>
+              <div class="thumb brow"></div>
+            </div>
+            <div>
+              <p class="small-copy">自然毛流<br>清晰可见</p>
+              <span class="small-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="sr-only">
+      <p>眉峰定位点、眉尾高度对齐线、下一笔方向和睫毛夹角 42 度是当前教学重点。</p>
+      <p>当前状态：眉峰已定位，睫毛夹角 42 度，实时播报开启。</p>
+      <p>播报内容：左眼睫毛外侧已经够翘，下一步只补内侧空隙。</p>
+      <p>下方包含睫毛夹角演示、眉形修正记录、前后对比和眉部局部放大。</p>
+    </section>
+  </main>
+
+  <script src="./assets/gsap.min.js"></script>
+  <script>
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!reduceMotion && window.gsap) {
+      gsap.set([".brand", "h1", ".chip", ".voice", ".card"], { autoAlpha: 0 });
+      gsap.set(".panel", { y: "8%", autoAlpha: 0 });
+      gsap.set(".guide-label, .guide-dot, .magnifier", { autoAlpha: 0 });
+      gsap.set(".draw-line", { strokeDasharray: 1, strokeDashoffset: 1 });
+
+      const timeline = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+      timeline
+        .from(".hero", { scale: 1.035, duration: 0.72, ease: "power2.out" })
+        .to(".panel", { y: 0, autoAlpha: 1, duration: 0.46 }, "-=0.5")
+        .to([".brand", "h1"], { autoAlpha: 1, y: 0, duration: 0.32, stagger: 0.045 }, "-=0.2")
+        .to(".chip", { autoAlpha: 1, y: 0, duration: 0.28, stagger: 0.035 }, "-=0.16")
+        .to(".guide-label, .guide-dot, .magnifier", { autoAlpha: 1, duration: 0.3, stagger: 0.025 }, "-=0.24")
+        .to(".draw-line", { strokeDashoffset: 0, duration: 0.38, stagger: 0.045 }, "-=0.22")
+        .to(".voice", { autoAlpha: 1, y: 0, duration: 0.28 }, "-=0.22")
+        .to(".card", { autoAlpha: 1, y: 0, duration: 0.28, stagger: 0.04 }, "-=0.18");
+
+      gsap.fromTo(
+        ".wave i",
+        { scaleY: 0.45, transformOrigin: "50% 50%" },
+        { scaleY: 1.2, duration: 0.68, yoyo: true, repeat: -1, stagger: { each: 0.045, from: "center" }, ease: "sine.inOut" }
+      );
+    }
+  </script>
+</body>
+</html>
