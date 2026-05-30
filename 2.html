@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="Face Muse 抖音式推荐 feed 卡片，展示眉眼精修路线、眉峰定位和睫毛夹角提示。">
+  <meta name="description" content="Face Muse 抖音式推荐 feed 卡片，帮化妆新手把眉眼位置先找稳，再做精修。">
   <link rel="icon" href="data:,">
   <link rel="preload" as="image" href="./assets/face-muse-2-hero-feed.webp" fetchpriority="high">
   <link rel="preload" as="image" href="./assets/face-muse-2-lash.webp">
-  <title>Face Muse - 眉眼精修路线</title>
+  <title>Face Muse - 眉眼先稳住，再谈精修</title>
   <style>
     :root {
       color-scheme: dark;
@@ -344,33 +344,43 @@
       overflow: hidden;
       border: 1rem solid rgba(255, 255, 255, 0.16);
       border-radius: 34rem;
-      background: linear-gradient(180deg, rgba(66, 112, 76, 0.64), rgba(18, 72, 43, 0.68));
+      background:
+        linear-gradient(115deg, rgba(255, 255, 255, 0.09), transparent 31%),
+        linear-gradient(180deg, rgba(66, 112, 76, 0.64), rgba(18, 72, 43, 0.68));
       box-shadow: 0 22rem 50rem rgba(0, 0, 0, 0.18), inset 0 1rem 0 rgba(255, 255, 255, 0.12);
       backdrop-filter: blur(14rem);
     }
 
+    .info-card-image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
     .stat-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      height: 145rem;
-      background: rgba(255, 255, 255, 0.025);
+      grid-template-columns: 1.28fr 1fr 1fr;
+      height: 104rem;
+      padding: 18rem 24rem 0;
+      gap: 12rem;
     }
 
     .stat {
       display: grid;
       align-content: center;
-      gap: 16rem;
-      padding-left: 36rem;
-      border-right: 1rem solid rgba(255, 255, 255, 0.035);
-    }
-
-    .stat:last-child {
-      border-right: 0;
+      gap: 10rem;
+      min-width: 0;
+      padding: 0 16rem;
+      border: 1rem solid rgba(255, 255, 255, 0.1);
+      border-radius: 14rem;
+      background: rgba(255, 255, 255, 0.07);
     }
 
     .stat span {
-      color: rgba(255, 255, 255, 0.52);
-      font-size: 28rem;
+      color: rgba(255, 255, 255, 0.56);
+      font-size: 24rem;
       line-height: 1;
       font-weight: 600;
       letter-spacing: 0;
@@ -378,128 +388,221 @@
 
     .stat strong {
       color: #fff;
-      font-size: 35rem;
+      font-size: 31rem;
       line-height: 1;
       font-weight: 900;
       letter-spacing: 0;
       white-space: nowrap;
     }
 
-    .card-copy {
+    .solution-map {
       position: relative;
-      min-height: 262rem;
-      padding: 51rem 246rem 34rem 37rem;
-      color: rgba(255, 255, 255, 0.94);
-      font-size: 31rem;
-      line-height: 1.62;
+      display: grid;
+      grid-template-rows: 100rem 108rem;
+      gap: 14rem;
+      padding: 18rem 24rem 23rem;
+    }
+
+    .camera-track {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: start;
+      gap: 14rem;
+      min-width: 0;
+    }
+
+    .map-label {
+      display: inline-flex;
+      align-items: center;
+      width: max-content;
+      height: 38rem;
+      padding: 0 15rem;
+      border: 1rem solid rgba(255, 255, 255, 0.13);
+      border-radius: 8rem;
+      color: rgba(255, 255, 255, 0.72);
+      background: rgba(0, 0, 0, 0.12);
+      font-size: 24rem;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .track-stack {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9rem;
+      min-width: 0;
+    }
+
+    .track-item {
+      display: grid;
+      align-content: center;
+      gap: 7rem;
+      min-height: 78rem;
+      padding: 8rem 10rem;
+      border: 1rem solid rgba(255, 255, 255, 0.08);
+      border-radius: 12rem;
+      background: rgba(255, 255, 255, 0.045);
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 22rem;
+      line-height: 1.12;
+      font-weight: 750;
+      letter-spacing: 0;
+    }
+
+    .track-item:last-child {
+      border-bottom: 1rem solid rgba(255, 255, 255, 0.08);
+    }
+
+    .track-item span {
+      display: inline-grid;
+      place-items: center;
+      width: max-content;
+      height: 27rem;
+      padding: 0 9rem;
+      border-radius: 999rem;
+      color: rgba(255, 255, 255, 0.78);
+      background: rgba(255, 255, 255, 0.11);
+      font-size: 18rem;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .voice-guide {
+      position: relative;
+      min-height: 108rem;
+      padding: 14rem 126rem 13rem 18rem;
+      border: 1rem solid rgba(255, 255, 255, 0.1);
+      border-radius: 16rem;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .voice-wave {
+      position: absolute;
+      right: 27rem;
+      top: 15rem;
+      width: 78rem;
+      height: 78rem;
+      border: 1rem solid rgba(255, 255, 255, 0.18);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle, rgba(255, 255, 255, 0.34) 0 12%, transparent 13% 26%, rgba(255, 255, 255, 0.15) 27% 29%, transparent 30% 45%, rgba(255, 255, 255, 0.1) 46% 49%, transparent 50%),
+        rgba(255, 255, 255, 0.06);
+      box-shadow: inset 0 0 24rem rgba(0, 0, 0, 0.18);
+      animation: voice-pulse 1.1s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+
+    .voice-wave::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 4rem;
+      height: 24rem;
+      border-radius: 999rem;
+      background: #fff;
+      transform: translate(-50%, -50%);
+      box-shadow: -13rem 5rem 0 rgba(255, 255, 255, 0.64), 13rem -5rem 0 rgba(255, 255, 255, 0.64);
+    }
+
+    .voice-wave::after {
+      content: "";
+      position: absolute;
+      inset: 13rem;
+      border: 2rem solid rgba(255, 255, 255, 0.34);
+      border-radius: 50%;
+      box-shadow: 0 0 18rem rgba(255, 255, 255, 0.42);
+    }
+
+    .guide-value {
+      position: absolute;
+      right: 43rem;
+      top: 38rem;
+      color: #fff;
+      font-size: 24rem;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .guide-copy {
+      margin: 9rem 0 0;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 23rem;
+      line-height: 1.32;
       font-weight: 650;
       letter-spacing: 0;
     }
 
-    .spark {
-      display: inline-block;
-      margin-right: 16rem;
-      font-size: 34rem;
-      color: #fff;
-      filter: drop-shadow(0 0 8rem rgba(255, 255, 255, 0.5));
-    }
-
-    .mini-route {
-      position: absolute;
-      right: 45rem;
-      bottom: 35rem;
-      width: 180rem;
-      height: 170rem;
-      opacity: 0.9;
-    }
-
-    .route-path {
-      fill: none;
-      stroke: rgba(255, 255, 255, 0.72);
-      stroke-width: 3;
-      stroke-dasharray: 7 8;
-      stroke-linecap: round;
-    }
-
-    .route-dot {
-      fill: #fff;
-      stroke: rgba(255, 255, 255, 0.26);
-      stroke-width: 12;
-    }
-
-    .route-tag {
-      position: absolute;
+    .voice-icon {
       display: inline-grid;
       place-items: center;
-      min-width: 68rem;
-      height: 39rem;
-      padding: 0 11rem;
-      border-radius: 7rem;
-      color: rgba(255, 255, 255, 0.82);
-      background: rgba(255, 255, 255, 0.13);
-      font-size: 25rem;
+      width: 26rem;
+      height: 26rem;
+      margin-right: 8rem;
+      border-radius: 50%;
+      color: rgba(41, 78, 48, 0.9);
+      background: rgba(255, 255, 255, 0.86);
+      font-size: 16rem;
       line-height: 1;
       font-weight: 900;
-      font-style: italic;
-      letter-spacing: 0;
-      transform: rotate(4deg);
-    }
-
-    .route-tag.first {
-      top: 27rem;
-      right: 0;
-    }
-
-    .route-tag.second {
-      left: 26rem;
-      bottom: 5rem;
-      transform: rotate(-4deg);
     }
 
     .creator-note {
       position: absolute;
       left: 47rem;
       right: 47rem;
-      top: 959rem;
+      top: 940rem;
     }
 
     .note-label {
-      margin: 0 0 26rem;
+      margin: 0 0 18rem;
       color: rgba(255, 255, 255, 0.6);
-      font-size: 31rem;
+      font-size: 29rem;
       line-height: 1;
       letter-spacing: 0;
     }
 
     .quote-list {
       display: grid;
-      gap: 31rem;
+      gap: 18rem;
     }
 
     .quote {
       position: relative;
-      min-height: 171rem;
-      padding: 0 152rem 0 34rem;
-      border-left: 2rem dashed rgba(255, 255, 255, 0.14);
+      min-height: 164rem;
+      padding: 20rem 146rem 18rem 25rem;
+      overflow: hidden;
+      border: 1rem solid rgba(255, 255, 255, 0.11);
+      border-radius: 22rem;
+      background: rgba(255, 255, 255, 0.075);
+      backdrop-filter: blur(10rem);
     }
 
     .quote h2 {
-      margin: 0 0 18rem;
+      margin: 0 0 12rem;
       color: #fff;
-      font-size: 35rem;
-      line-height: 1.18;
+      font-size: 30rem;
+      line-height: 1.22;
       font-weight: 900;
       letter-spacing: 0;
     }
 
     .quote-mark {
-      position: absolute;
-      left: -5rem;
-      top: -10rem;
-      color: rgba(255, 255, 255, 0.42);
-      font-size: 56rem;
+      display: inline-grid;
+      place-items: center;
+      width: 48rem;
+      height: 31rem;
+      margin-bottom: 10rem;
+      border-radius: 999rem;
+      color: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.12);
+      font-size: 21rem;
       line-height: 1;
-      font-family: Georgia, serif;
+      font-family: inherit;
+      font-weight: 900;
     }
 
     .author-row {
@@ -507,7 +610,7 @@
       align-items: center;
       gap: 12rem;
       color: rgba(255, 255, 255, 0.46);
-      font-size: 29rem;
+      font-size: 25rem;
       line-height: 1.35;
       font-weight: 600;
       letter-spacing: 0;
@@ -524,12 +627,12 @@
 
     .thumb {
       position: absolute;
-      right: 0;
-      top: 8rem;
-      width: 121rem;
-      height: 156rem;
+      right: 20rem;
+      top: 20rem;
+      width: 112rem;
+      height: 124rem;
       overflow: hidden;
-      border-radius: 11rem;
+      border-radius: 16rem;
       background: var(--thumb) center / cover no-repeat;
       box-shadow: 0 12rem 28rem rgba(0, 0, 0, 0.22);
     }
@@ -614,11 +717,18 @@
       letter-spacing: 0;
       cursor: pointer;
       backdrop-filter: blur(8rem);
+      transition: transform 0.18s ease;
     }
 
     .action-button.secondary {
       color: rgba(255, 255, 255, 0.55);
       background: rgba(93, 138, 93, 0.44);
+    }
+
+    .action-button:active,
+    .icon-button:active,
+    .bottom-link:active {
+      transform: scale(0.96);
     }
 
     .swipe-tip {
@@ -641,6 +751,8 @@
       position: relative;
       width: 25rem;
       height: 25rem;
+      animation: chevron-rise 0.9s ease-in-out infinite alternate;
+      will-change: transform;
     }
 
     .chevrons::before,
@@ -683,6 +795,7 @@
       line-height: 1;
       font-weight: 800;
       letter-spacing: 0;
+      transition: transform 0.18s ease;
     }
 
     .bottom-link.active {
@@ -738,6 +851,16 @@
         scroll-behavior: auto !important;
       }
     }
+
+    @keyframes voice-pulse {
+      from { transform: scale(0.96); }
+      to { transform: scale(1.04); }
+    }
+
+    @keyframes chevron-rise {
+      from { transform: translateY(0); }
+      to { transform: translateY(-7rem); }
+    }
   </style>
 </head>
 <body>
@@ -772,52 +895,33 @@
 
     <section class="content" aria-label="推荐内容">
       <div class="headline">
-        <h1 id="page-title">眉眼精修路线</h1>
+        <h1 id="page-title">眉眼先稳住，再谈精修</h1>
         <span class="ai-badge">AI推荐</span>
       </div>
 
-      <article class="info-card" aria-label="推荐摘要卡片">
-        <div class="stat-grid">
-          <div class="stat"><span>眉峰</span><strong>已定位</strong></div>
-          <div class="stat"><span>睫毛夹角</span><strong>42°</strong></div>
-          <div class="stat"><span>播报</span><strong>实时</strong></div>
-          <div class="stat"><span>记录</span><strong>36位</strong></div>
-        </div>
-        <div class="card-copy">
-          <span class="spark">✦</span>眉峰定位点、眉尾高度对齐线、下一笔方向和睫毛夹角 42° 是当前教学重点。
-          <div class="mini-route" aria-hidden="true">
-            <svg viewBox="0 0 180 170">
-              <path class="route-path" d="M28 48 C76 30 110 51 116 77 S77 95 95 124 S135 130 152 112"></path>
-              <circle class="route-dot" cx="28" cy="48" r="7"></circle>
-              <circle class="route-dot" cx="116" cy="77" r="7"></circle>
-              <circle class="route-dot" cx="95" cy="124" r="7"></circle>
-              <circle class="route-dot" cx="152" cy="112" r="7"></circle>
-            </svg>
-            <span class="route-tag first">眉峰</span>
-            <span class="route-tag second">42°</span>
-          </div>
-        </div>
+      <article class="info-card" aria-label="AI 眉妆指导示意图">
+        <img class="info-card-image" src="./assets/face-muse-2-brow-coach-card.jpg" width="900" height="458" alt="AI 眉妆教练识别眉笔、眉峰和眉尾的横版相机示意图" loading="eager" decoding="async">
       </article>
 
-      <section class="creator-note" aria-label="美妆博主推荐">
-        <p class="note-label">实时播报</p>
+      <section class="creator-note" aria-label="实时指导">
+        <p class="note-label">实时指导</p>
         <div class="quote-list">
           <article class="quote">
-            <span class="quote-mark">“</span>
-            <h2>左眼睫毛外侧已经够翘，下一步只补内侧空隙。</h2>
+            <span class="quote-mark">气泡</span>
+            <h2>眉笔停在蓝线内，先补眉尾空隙，不要压到镜框。</h2>
             <div class="author-row">
               <span class="avatar" style="--avatar: url('./assets/face-muse-2-avatar.webp')"></span>
-              <span>Face Muse：夹角保持 42°，避免重复夹外侧。</span>
+              <span>同步语音：向外轻扫两笔，力度减半。</span>
             </div>
             <div class="thumb" style="--thumb: url('./assets/face-muse-2-lash.webp')"><span class="play"></span></div>
           </article>
 
           <article class="quote">
-            <span class="quote-mark">“</span>
-            <h2>眉部放大后，自然毛流和眉尾高度对齐线清晰可见。</h2>
+            <span class="quote-mark">镜头</span>
+            <h2>检测到睫毛贴近镜片，夹子角度保持 42°。</h2>
             <div class="author-row">
               <span class="avatar" style="--avatar: url('./assets/portrait-right.jpg')"></span>
-              <span>来自 36 位新手的眉形修正记录。</span>
+              <span>画面自动放大眼尾，给出下一步落点。</span>
             </div>
             <div class="thumb" style="--thumb: url('./assets/face-muse-2-brow.webp')"><span class="play"></span></div>
           </article>
@@ -833,8 +937,8 @@
       </div>
 
       <div class="action-row" aria-label="推荐操作">
-        <button class="action-button secondary" type="button">前后对比</button>
-        <button class="action-button" type="button">局部放大</button>
+        <button class="action-button secondary" type="button">不感兴趣</button>
+        <button class="action-button" type="button">查看详情</button>
       </div>
 
       <div class="swipe-tip" aria-hidden="true">
@@ -857,38 +961,5 @@
     <span class="home-indicator" aria-hidden="true"></span>
   </main>
 
-  <script src="./assets/gsap.min.js"></script>
-  <script>
-    window.addEventListener("DOMContentLoaded", () => {
-      if (!window.gsap) {
-        document.documentElement.dataset.gsapLoaded = "false";
-        return;
-      }
-
-      document.documentElement.dataset.gsapLoaded = "true";
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (reduceMotion) {
-        return;
-      }
-
-      gsap.from(".hero-grain", { scale: 1.08, duration: 1.1, ease: "power2.out" });
-      gsap.from(".status-bar, .top-nav", { y: -16, autoAlpha: 0, duration: 0.42, stagger: 0.08, ease: "power3.out" });
-      gsap.from(".headline", { y: 28, autoAlpha: 0, duration: 0.58, delay: 0.12, ease: "power3.out" });
-      gsap.from(".info-card", { y: 34, autoAlpha: 0, duration: 0.64, delay: 0.24, ease: "power3.out" });
-      gsap.from(".stat", { y: 16, autoAlpha: 0, duration: 0.42, delay: 0.42, stagger: 0.045, ease: "power2.out" });
-      gsap.from(".quote", { x: -18, autoAlpha: 0, duration: 0.5, delay: 0.48, stagger: 0.09, ease: "power3.out" });
-      gsap.from(".progress span, .action-button, .swipe-tip", { y: 16, duration: 0.42, delay: 0.66, stagger: 0.04, ease: "power2.out" });
-      gsap.from(".bottom-link", { y: 16, duration: 0.38, delay: 0.72, stagger: 0.035, ease: "power2.out" });
-      gsap.to(".route-dot", { scale: 1.25, transformOrigin: "50% 50%", duration: 0.9, repeat: -1, yoyo: true, stagger: 0.12, ease: "sine.inOut" });
-      gsap.to(".chevrons", { y: -7, duration: 0.9, repeat: -1, yoyo: true, ease: "sine.inOut" });
-
-      document.querySelectorAll("button, .bottom-link").forEach((item) => {
-        item.addEventListener("click", (event) => {
-          event.preventDefault();
-          gsap.fromTo(item, { scale: 0.96 }, { scale: 1, duration: 0.32, ease: "back.out(2.4)" });
-        });
-      });
-    });
-  </script>
 </body>
 </html>
