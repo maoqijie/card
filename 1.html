@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="Face Muse 抖音式推荐 feed 卡片，展示眉眼精修路线、眉峰定位和睫毛夹角提示。">
+  <meta name="description" content="Face Muse 抖音式推荐 feed 卡片，展示低饱和玫瑰妆的自拍预演与练习步骤。">
   <link rel="icon" href="data:,">
-  <link rel="preload" as="image" href="./assets/face-muse-2-hero-feed.webp" fetchpriority="high">
-  <link rel="preload" as="image" href="./assets/face-muse-2-lash.webp">
-  <title>Face Muse - 眉眼精修路线</title>
+  <link rel="preload" as="image" href="./assets/portrait-left.jpg">
+  <link rel="preload" as="image" href="./assets/portrait-right-feed.webp" fetchpriority="high">
+  <title>Face Muse - 收藏的妆先在自己脸上预演</title>
   <style>
     :root {
       color-scheme: dark;
@@ -22,10 +22,10 @@
       --panel-strong: rgba(31, 80, 52, 0.78);
       --accent: #ffffff;
       --cta: rgba(88, 128, 91, 0.72);
-      --hero-image: url("./assets/face-muse-2-hero-feed.webp");
-      --hero-position: 51% 43%;
+      --hero-image: url("./assets/portrait-right-feed.webp");
+      --hero-position: 50% 34%;
       --hero-size: cover;
-      --headline-size: 57rem;
+      --headline-size: 50rem;
       font-size: calc(min(100vw, calc(100vh * 887 / 1920), 887px) / 887);
     }
 
@@ -772,19 +772,19 @@
 
     <section class="content" aria-label="推荐内容">
       <div class="headline">
-        <h1 id="page-title">眉眼精修路线</h1>
+        <h1 id="page-title">收藏的妆先在自己脸上预演</h1>
         <span class="ai-badge">AI推荐</span>
       </div>
 
       <article class="info-card" aria-label="推荐摘要卡片">
         <div class="stat-grid">
-          <div class="stat"><span>眉峰</span><strong>已定位</strong></div>
-          <div class="stat"><span>睫毛夹角</span><strong>42°</strong></div>
-          <div class="stat"><span>播报</span><strong>实时</strong></div>
-          <div class="stat"><span>记录</span><strong>36位</strong></div>
+          <div class="stat"><span>妆容</span><strong>玫瑰妆</strong></div>
+          <div class="stat"><span>相似度</span><strong>86%</strong></div>
+          <div class="stat"><span>对比</span><strong>双图</strong></div>
+          <div class="stat"><span>步骤</span><strong>4步</strong></div>
         </div>
         <div class="card-copy">
-          <span class="spark">✦</span>眉峰定位点、眉尾高度对齐线、下一笔方向和睫毛夹角 42° 是当前教学重点。
+          <span class="spark">✦</span>已把参考图与自拍叠画对齐，按底妆、眼影、腮红、唇线四步拆解，方便直接保存到练习册。
           <div class="mini-route" aria-hidden="true">
             <svg viewBox="0 0 180 170">
               <path class="route-path" d="M28 48 C76 30 110 51 116 77 S77 95 95 124 S135 130 152 112"></path>
@@ -793,33 +793,33 @@
               <circle class="route-dot" cx="95" cy="124" r="7"></circle>
               <circle class="route-dot" cx="152" cy="112" r="7"></circle>
             </svg>
-            <span class="route-tag first">眉峰</span>
-            <span class="route-tag second">42°</span>
+            <span class="route-tag first">参考图</span>
+            <span class="route-tag second">自拍</span>
           </div>
         </div>
       </article>
 
       <section class="creator-note" aria-label="美妆博主推荐">
-        <p class="note-label">实时播报</p>
+        <p class="note-label">低饱和玫瑰妆</p>
         <div class="quote-list">
           <article class="quote">
             <span class="quote-mark">“</span>
-            <h2>左眼睫毛外侧已经够翘，下一步只补内侧空隙。</h2>
+            <h2>底妆明度拉平，先把脸颊和鼻梁的灰度统一。</h2>
             <div class="author-row">
-              <span class="avatar" style="--avatar: url('./assets/face-muse-2-avatar.webp')"></span>
-              <span>Face Muse：夹角保持 42°，避免重复夹外侧。</span>
+              <span class="avatar" style="--avatar: url('./assets/portrait-left.jpg')"></span>
+              <span>步骤 01：肤色先干净，后续颜色才不显脏。</span>
             </div>
-            <div class="thumb" style="--thumb: url('./assets/face-muse-2-lash.webp')"><span class="play"></span></div>
+            <div class="thumb" style="--thumb: url('./assets/step-01.png')"><span class="play"></span></div>
           </article>
 
           <article class="quote">
             <span class="quote-mark">“</span>
-            <h2>眉部放大后，自然毛流和眉尾高度对齐线清晰可见。</h2>
+            <h2>眼影范围缩小，腮红位置上移，唇线边界柔化。</h2>
             <div class="author-row">
               <span class="avatar" style="--avatar: url('./assets/portrait-right.jpg')"></span>
-              <span>来自 36 位新手的眉形修正记录。</span>
+              <span>练习记录：低饱和玫瑰妆 4 步已生成。</span>
             </div>
-            <div class="thumb" style="--thumb: url('./assets/face-muse-2-brow.webp')"><span class="play"></span></div>
+            <div class="thumb" style="--thumb: url('./assets/step-02.png')"><span class="play"></span></div>
           </article>
         </div>
       </section>
@@ -833,8 +833,8 @@
       </div>
 
       <div class="action-row" aria-label="推荐操作">
-        <button class="action-button secondary" type="button">前后对比</button>
-        <button class="action-button" type="button">局部放大</button>
+        <button class="action-button secondary" type="button">切换对比</button>
+        <button class="action-button" type="button">保存练习册</button>
       </div>
 
       <div class="swipe-tip" aria-hidden="true">
