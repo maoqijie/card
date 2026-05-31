@@ -3,29 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="Face Muse 实时妆容指导 feed 卡片，展示镜头带画、光线校准和眉尾参考线提示。">
-  <link rel="icon" href="data:,">
-  <link rel="preload" as="image" href="./assets/face-muse-2-hero-feed.webp" fetchpriority="high">
-  <link rel="preload" as="image" href="./assets/face-muse-2-brow.webp">
-  <title>Face Muse - 镜头里的实时妆容指导</title>
+  <meta name="description" content="Face Muse 五个页面轮播展示。">
+  <title>Face Muse - 拼接展示</title>
   <style>
     :root {
       color-scheme: dark;
-      --screen-w: 887;
-      --screen-h: 1920;
       --page-bg: #020907;
-      --ink: #ffffff;
-      --muted: rgba(255, 255, 255, 0.56);
-      --soft: rgba(255, 255, 255, 0.78);
-      --line: rgba(255, 255, 255, 0.18);
-      --panel: rgba(36, 85, 56, 0.66);
-      --panel-strong: rgba(31, 80, 52, 0.78);
-      --accent: #ffffff;
-      --cta: rgba(88, 128, 91, 0.72);
-      --hero-position: 50% 40%;
-      --hero-size: cover;
-      --headline-size: 57rem;
-      font-size: calc(min(100vw, calc(100vh * 887 / 1920), 887px) / 887);
+      --control-bg: rgba(7, 20, 14, .72);
+      --control-border: rgba(255, 255, 255, .24);
+      --control-shadow: 0 18px 44px rgba(0, 0, 0, .34);
+      --ink: #fff;
+      --muted: rgba(255, 255, 255, .58);
+      background: var(--page-bg);
     }
 
     * {
@@ -35,763 +24,373 @@
     html,
     body {
       width: 100%;
-      min-height: 100%;
+      height: 100%;
       margin: 0;
+      overflow: hidden;
       background: var(--page-bg);
     }
 
     body {
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      overflow: hidden;
       font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", Arial, sans-serif;
     }
 
-    button,
-    a {
+    button {
+      padding: 0;
+      border: 0;
       font: inherit;
+      color: inherit;
+      background: none;
       -webkit-tap-highlight-color: transparent;
     }
 
-    .feed-screen {
+    .showcase {
       position: relative;
-      width: calc(var(--screen-w) * 1rem);
-      height: calc(var(--screen-h) * 1rem);
+      width: 100%;
+      height: 100svh;
+      min-height: 560px;
       overflow: hidden;
+      background: var(--page-bg);
       isolation: isolate;
-      color: var(--ink);
-      background:
-        linear-gradient(180deg, rgba(1, 15, 9, 0.24) 0%, rgba(5, 61, 34, 0.28) 31%, rgba(3, 52, 30, 0.96) 78%, #03100b 100%);
+      touch-action: pan-y;
     }
 
-    .hero-photo {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
+    .showcase-track {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: var(--hero-position);
-      pointer-events: none;
-    }
-
-    .feed-screen::before,
-    .feed-screen::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .feed-screen::before {
-      background:
-        linear-gradient(180deg, rgba(0, 0, 0, 0.34) 0%, rgba(0, 0, 0, 0.08) 21%, rgba(7, 78, 43, 0.34) 47%, rgba(2, 47, 27, 0.96) 87%, #000 100%),
-        radial-gradient(ellipse at 50% 13%, rgba(255, 255, 255, 0.12), transparent 34%);
-    }
-
-    .feed-screen::after {
-      background:
-        linear-gradient(90deg, rgba(0, 0, 0, 0.32), transparent 20%, transparent 80%, rgba(0, 0, 0, 0.28)),
-        radial-gradient(ellipse at center, transparent 42%, rgba(0, 0, 0, 0.28) 100%);
-    }
-
-    .hero-grain {
-      position: absolute;
-      inset: -28rem;
-      z-index: 0;
-      overflow: hidden;
-      transform: scale(1.02);
-    }
-
-    .hero-grain::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.08), transparent 18%),
-        radial-gradient(circle at 78% 38%, rgba(159, 217, 165, 0.12), transparent 20%);
-    }
-
-    .content {
-      position: absolute;
-      inset: 0;
-      z-index: 3;
-    }
-
-    .headline {
-      position: absolute;
-      left: 47rem;
-      right: 44rem;
-      top: 286rem;
       display: flex;
-      align-items: center;
-      gap: 24rem;
+      transition: transform 560ms cubic-bezier(.22, .8, .22, 1);
+      will-change: transform;
     }
 
-    h1 {
-      flex: 1;
-      margin: 0;
-      color: #fff;
-      font-size: var(--headline-size);
-      line-height: 1.16;
-      font-weight: 900;
-      letter-spacing: 0;
-      text-shadow: 0 8rem 28rem rgba(0, 0, 0, 0.42);
+    .showcase.is-dragging .showcase-track {
+      transition: none;
     }
 
-    .ai-badge {
-      flex: 0 0 auto;
-      padding: 11rem 16rem 12rem;
-      border: 1rem solid rgba(255, 255, 255, 0.28);
-      border-radius: 8rem;
-      color: rgba(255, 255, 255, 0.72);
-      background: rgba(255, 255, 255, 0.08);
-      font-size: 26rem;
-      line-height: 1;
-      letter-spacing: 0;
-      backdrop-filter: blur(8rem);
-      cursor: pointer;
+    .showcase-slide {
+      flex: 0 0 100%;
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      background: var(--page-bg);
     }
 
-    .info-card {
-      position: absolute;
-      left: 45rem;
-      right: 45rem;
-      top: 406rem;
-      height: 407rem;
-      overflow: hidden;
-      border: 1rem solid rgba(255, 255, 255, 0.16);
-      border-radius: 34rem;
-      background: linear-gradient(180deg, rgba(66, 112, 76, 0.64), rgba(18, 72, 43, 0.68));
-      box-shadow: 0 22rem 50rem rgba(0, 0, 0, 0.18), inset 0 1rem 0 rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14rem);
-    }
-
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      height: 145rem;
-      background: rgba(255, 255, 255, 0.025);
-    }
-
-    .stat {
-      display: grid;
-      align-content: center;
-      gap: 16rem;
-      padding-left: 36rem;
-      border-right: 1rem solid rgba(255, 255, 255, 0.035);
-      cursor: pointer;
-    }
-
-    .stat:last-child {
-      border-right: 0;
-    }
-
-    .stat span {
-      color: rgba(255, 255, 255, 0.52);
-      font-size: 28rem;
-      line-height: 1;
-      font-weight: 600;
-      letter-spacing: 0;
-    }
-
-    .stat strong {
-      color: #fff;
-      font-size: 35rem;
-      line-height: 1;
-      font-weight: 900;
-      letter-spacing: 0;
-      white-space: nowrap;
-      transition: color 0.22s ease, text-shadow 0.22s ease;
-    }
-
-    .stat.is-updated strong {
-      color: #f6ffe9;
-      text-shadow: 0 0 16rem rgba(255, 255, 255, 0.62);
-    }
-
-    .card-copy {
-      position: relative;
-      min-height: 262rem;
-      padding: 51rem 246rem 34rem 37rem;
-      color: rgba(255, 255, 255, 0.94);
-      font-size: 31rem;
-      line-height: 1.62;
-      font-weight: 650;
-      letter-spacing: 0;
-    }
-
-    .spark {
-      display: inline-block;
-      margin-right: 16rem;
-      font-size: 34rem;
-      color: #fff;
-      filter: drop-shadow(0 0 8rem rgba(255, 255, 255, 0.5));
-    }
-
-    .mini-route {
-      position: absolute;
-      right: 45rem;
-      bottom: 35rem;
-      width: 180rem;
-      height: 170rem;
-      opacity: 0.9;
-    }
-
-    .route-path {
-      fill: none;
-      stroke: rgba(255, 255, 255, 0.72);
-      stroke-width: 3;
-      stroke-dasharray: 7 8;
-      stroke-linecap: round;
-    }
-
-    .route-dot {
-      fill: #fff;
-      stroke: rgba(255, 255, 255, 0.26);
-      stroke-width: 12;
-    }
-
-    .route-tag {
-      position: absolute;
-      display: inline-grid;
-      place-items: center;
-      min-width: 68rem;
-      height: 39rem;
-      padding: 0 11rem;
-      border-radius: 7rem;
-      color: rgba(255, 255, 255, 0.82);
-      background: rgba(255, 255, 255, 0.13);
-      font-size: 25rem;
-      line-height: 1;
-      font-weight: 900;
-      font-style: italic;
-      letter-spacing: 0;
-      transform: rotate(4deg);
-    }
-
-    .route-tag.first {
-      top: 27rem;
-      right: 0;
-    }
-
-    .route-tag.second {
-      left: 26rem;
-      bottom: 5rem;
-      transform: rotate(-4deg);
-    }
-
-    .creator-note {
-      position: absolute;
-      left: 47rem;
-      right: 47rem;
-      top: 896rem;
-    }
-
-    .note-label {
-      margin: 0 0 26rem;
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 31rem;
-      line-height: 1;
-      letter-spacing: 0;
-    }
-
-    .quote-list {
-      display: grid;
-      gap: 31rem;
-    }
-
-    .quote {
-      position: relative;
-      min-height: 171rem;
-      padding: 0 152rem 0 34rem;
-      border-left: 2rem dashed rgba(255, 255, 255, 0.14);
-    }
-
-    .quote h2 {
-      margin: 0 0 18rem;
-      color: #fff;
-      font-size: 35rem;
-      line-height: 1.18;
-      font-weight: 900;
-      letter-spacing: 0;
-    }
-
-    .quote-mark {
-      position: absolute;
-      left: -5rem;
-      top: -10rem;
-      color: rgba(255, 255, 255, 0.42);
-      font-size: 56rem;
-      line-height: 1;
-      font-family: Georgia, serif;
-    }
-
-    .author-row {
-      display: flex;
-      align-items: center;
-      gap: 12rem;
-      color: rgba(255, 255, 255, 0.46);
-      font-size: 29rem;
-      line-height: 1.35;
-      font-weight: 600;
-      letter-spacing: 0;
-    }
-
-    .avatar {
-      width: 35rem;
-      height: 35rem;
-      border: 2rem solid rgba(255, 255, 255, 0.58);
-      border-radius: 50%;
-      background: var(--avatar) center / cover no-repeat;
-      box-shadow: 0 0 0 2rem rgba(0, 0, 0, 0.16);
-    }
-
-    .thumb {
-      appearance: none;
-      position: absolute;
-      right: 0;
-      top: 8rem;
-      width: 121rem;
-      height: 156rem;
-      overflow: hidden;
+    .page-frame {
+      width: 100%;
+      height: 100%;
+      display: block;
       border: 0;
-      border-radius: 11rem;
-      background: var(--thumb) center / cover no-repeat;
-      box-shadow: 0 12rem 28rem rgba(0, 0, 0, 0.22);
-      padding: 0;
-      cursor: pointer;
+      background: var(--page-bg);
     }
 
-    .thumb::after {
-      content: "";
+    .nav-button {
       position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.18));
-    }
-
-    .play {
-      position: absolute;
-      left: 50%;
       top: 50%;
-      z-index: 1;
-      width: 39rem;
-      height: 39rem;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.95);
-      transform: translate(-50%, -50%);
-    }
-
-    .play::before {
-      content: "";
-      position: absolute;
-      left: 15rem;
-      top: 10rem;
-      width: 0;
-      height: 0;
-      border-top: 9rem solid transparent;
-      border-bottom: 9rem solid transparent;
-      border-left: 14rem solid rgba(40, 72, 46, 0.92);
-    }
-
-    .thumb.is-playing {
-      outline: 2rem solid rgba(255, 255, 255, 0.58);
-      outline-offset: 3rem;
-    }
-
-    .thumb.is-playing .play::before {
-      left: 11rem;
-      top: 10rem;
-      width: 5rem;
-      height: 18rem;
-      border: 0;
-      border-radius: 2rem;
-      background: rgba(40, 72, 46, 0.92);
-      box-shadow: 12rem 0 0 rgba(40, 72, 46, 0.92);
-    }
-
-    .action-row {
-      position: absolute;
-      left: 46rem;
-      right: 46rem;
-      top: 1584rem;
+      z-index: 3;
+      width: clamp(44px, 6vw, 64px);
+      height: clamp(44px, 6vw, 64px);
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14rem;
-    }
-
-    .action-button {
-      height: 76rem;
-      border: 0;
-      border-radius: 18rem;
-      color: rgba(255, 255, 255, 0.92);
-      background: rgba(99, 139, 97, 0.72);
-      font-size: 29rem;
-      line-height: 1;
-      font-weight: 900;
-      letter-spacing: 0;
+      place-items: center;
+      border: 1px solid var(--control-border);
+      border-radius: 50%;
+      background: var(--control-bg);
+      box-shadow: var(--control-shadow);
+      backdrop-filter: blur(16px);
+      transform: translateY(-50%);
       cursor: pointer;
-      backdrop-filter: blur(8rem);
+      transition: background-color .2s ease, opacity .2s ease, transform .2s ease;
     }
 
-    .action-button.secondary {
-      color: rgba(255, 255, 255, 0.55);
-      background: rgba(93, 138, 93, 0.44);
+    .nav-button::before {
+      content: "";
+      width: 34%;
+      height: 34%;
+      border-top: 2px solid var(--ink);
+      border-left: 2px solid var(--ink);
     }
 
-    .interaction-toast {
+    .nav-button:hover {
+      background: rgba(16, 39, 27, .86);
+      transform: translateY(-50%) scale(1.04);
+    }
+
+    .nav-button:focus-visible {
+      outline: 3px solid rgba(255, 255, 255, .7);
+      outline-offset: 4px;
+    }
+
+    .nav-button[disabled] {
+      opacity: .28;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .nav-button.prev {
+      left: clamp(14px, 4vw, 42px);
+    }
+
+    .nav-button.prev::before {
+      transform: translateX(12%) rotate(-45deg);
+    }
+
+    .nav-button.next {
+      right: clamp(14px, 4vw, 42px);
+    }
+
+    .nav-button.next::before {
+      transform: translateX(-12%) rotate(135deg);
+    }
+
+    .page-indicator {
       position: absolute;
       left: 50%;
-      top: 1508rem;
-      z-index: 4;
-      max-width: 690rem;
-      padding: 16rem 24rem 17rem;
-      border: 1rem solid rgba(255, 255, 255, 0.18);
-      border-radius: 999rem;
-      color: rgba(255, 255, 255, 0.9);
-      background: rgba(20, 62, 39, 0.76);
-      box-shadow: 0 14rem 34rem rgba(0, 0, 0, 0.18);
-      backdrop-filter: blur(10rem);
-      font-size: 25rem;
-      line-height: 1.2;
-      font-weight: 700;
+      top: max(14px, env(safe-area-inset-top));
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 11px;
+      border: 1px solid var(--control-border);
+      border-radius: 999px;
+      background: var(--control-bg);
+      box-shadow: var(--control-shadow);
+      backdrop-filter: blur(16px);
+      transform: translateX(-50%);
+    }
+
+    .page-count {
+      min-width: 34px;
+      color: var(--ink);
+      font-size: 12px;
+      line-height: 1;
       text-align: center;
-      opacity: 0;
-      pointer-events: none;
-      transform: translate(-50%, 10rem);
-      transition: opacity 0.2s ease, transform 0.2s ease;
-      white-space: nowrap;
     }
 
-    .interaction-toast.is-visible {
-      opacity: 1;
-      transform: translate(-50%, 0);
+    .page-dot {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color .22s ease;
     }
 
-    button:focus-visible,
-    a:focus-visible,
-    .stat:focus-visible,
-    .ai-badge:focus-visible {
-      outline: 3rem solid rgba(255, 255, 255, 0.8);
-      outline-offset: 5rem;
+    .page-dot::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--muted);
+      transition: width .22s ease, background-color .22s ease;
     }
 
-    button:active,
-    a:active {
-      transform: scale(0.98);
+    .page-dot.is-active::before {
+      width: 20px;
+      border-radius: 999px;
+      background: var(--ink);
+    }
+
+    .page-dot:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, .72);
+      outline-offset: 2px;
+    }
+
+    @supports not (height: 100svh) {
+      .showcase {
+        height: 100vh;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-button {
+        top: max(12px, env(safe-area-inset-top));
+        bottom: auto;
+        width: 42px;
+        height: 42px;
+        transform: none;
+      }
+
+      .nav-button:hover {
+        transform: scale(1.04);
+      }
+
+      .nav-button.prev {
+        left: 12px;
+      }
+
+      .nav-button.next {
+        right: 12px;
+      }
+
+      .page-indicator {
+        top: max(12px, env(safe-area-inset-top));
+        gap: 2px;
+        padding: 7px 8px;
+      }
+
+      .page-dot {
+        width: 24px;
+        height: 24px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation-duration: 1ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
+      .showcase-track,
+      .nav-button,
+      .page-dot,
+      .page-dot::before {
+        transition: none;
       }
     }
   </style>
 </head>
 <body>
-  <main class="feed-screen" aria-labelledby="page-title">
-    <img class="hero-photo" src="./assets/face-muse-2-hero-feed.webp" width="887" height="1920" alt="" fetchpriority="high" decoding="sync" aria-hidden="true">
-    <div class="hero-grain" aria-hidden="true"></div>
+  <main class="showcase" aria-label="Face Muse 拼接展示">
+    <button class="nav-button prev" type="button" aria-label="上一页"></button>
+    <button class="nav-button next" type="button" aria-label="下一页"></button>
+    <nav class="page-indicator" aria-label="页面导航">
+      <button class="page-dot is-active" type="button" aria-label="第 1 页" aria-current="page"></button>
+      <button class="page-dot" type="button" aria-label="第 2 页"></button>
+      <button class="page-dot" type="button" aria-label="第 3 页"></button>
+      <button class="page-dot" type="button" aria-label="第 4 页"></button>
+      <button class="page-dot" type="button" aria-label="第 5 页"></button>
+      <span class="page-count" aria-live="polite">1 / 5</span>
+    </nav>
 
-    <section class="content" aria-label="推荐内容">
-      <div class="headline">
-        <h1 id="page-title">镜头里的实时妆容指导</h1>
-        <span class="ai-badge" role="button" tabindex="0" aria-pressed="true">AI带画</span>
-      </div>
-
-      <article class="info-card" aria-label="妆容检测状态卡片">
-        <div class="stat-grid">
-          <div class="stat" role="button" tabindex="0" data-stat-card="step" aria-label="查看当前步骤"><span>步骤</span><strong data-stat="step">3/8</strong></div>
-          <div class="stat" role="button" tabindex="0" data-stat-card="light" aria-label="重新校准光线"><span>光线</span><strong data-stat="light">OK</strong></div>
-          <div class="stat" role="button" tabindex="0" data-stat-card="target" aria-label="查看定位提示"><span>定位</span><strong data-stat="target">眉尾锁定</strong></div>
-          <div class="stat" role="button" tabindex="0" data-stat-card="voice" aria-label="切换语音提示"><span>语音</span><strong data-stat="voice">开启</strong></div>
-        </div>
-        <div class="card-copy">
-          <span class="spark">✦</span><span data-copy="guidance">Face Muse 已识别眉峰、眉尾和左侧光线，下一笔沿参考线向外轻扫，保持手腕放松。</span>
-          <div class="mini-route" aria-hidden="true">
-            <svg viewBox="0 0 180 170">
-              <path class="route-path" d="M26 106 C58 70 98 55 151 45"></path>
-              <path class="route-path" d="M40 122 C78 102 115 92 154 80"></path>
-              <circle class="route-dot" cx="50" cy="94" r="7"></circle>
-              <circle class="route-dot" cx="100" cy="65" r="7"></circle>
-              <circle class="route-dot" cx="151" cy="45" r="7"></circle>
-              <circle class="route-dot" cx="154" cy="80" r="7"></circle>
-            </svg>
-            <span class="route-tag first">眉峰</span>
-            <span class="route-tag second">眉尾</span>
-          </div>
-        </div>
-      </article>
-
-      <section class="creator-note" aria-label="实时提示记录">
-        <p class="note-label">实时提示记录</p>
-        <div class="quote-list">
-          <article class="quote">
-            <span class="quote-mark">“</span>
-            <h2>左脸光线偏暗，先把手机向窗边移一点。</h2>
-            <div class="author-row">
-              <span class="avatar" style="--avatar: url('./assets/face-muse-2-avatar.webp')"></span>
-              <span>09:41 光线校准完成，肤色显示更接近真实状态。</span>
-            </div>
-            <button class="thumb" type="button" style="--thumb: url('./assets/step-03.png')" aria-label="播放光线校准示例" aria-pressed="false"><span class="play"></span></button>
-          </article>
-
-          <article class="quote">
-            <span class="quote-mark">“</span>
-            <h2>下一步：眉尾沿参考线轻扫一笔。</h2>
-            <div class="author-row">
-              <span class="avatar" style="--avatar: url('./assets/portrait-right.jpg')"></span>
-              <span>09:42 眉峰定位完成，预计 42 秒进入眼妆步骤。</span>
-            </div>
-            <button class="thumb" type="button" style="--thumb: url('./assets/face-muse-2-brow.webp')" aria-label="播放眉尾参考线示例" aria-pressed="false"><span class="play"></span></button>
-          </article>
-        </div>
+    <div class="showcase-track">
+      <section class="showcase-slide" aria-label="页面一">
+        <iframe class="page-frame" data-src="./1.html" title="Face Muse 首页" loading="eager"></iframe>
       </section>
-
-      <div class="action-row" aria-label="妆容指导操作">
-        <button class="action-button secondary" type="button" data-action="calibrate">重新校准</button>
-        <button class="action-button" type="button" data-action="next">开始下一步</button>
-      </div>
-
-      <div class="interaction-toast" role="status" aria-live="polite" aria-hidden="true"></div>
-    </section>
+      <section class="showcase-slide" aria-label="页面二">
+        <iframe class="page-frame" data-src="./2.html" title="Face Muse 页面二" loading="lazy"></iframe>
+      </section>
+      <section class="showcase-slide" aria-label="页面三">
+        <iframe class="page-frame" data-src="./3.html" title="Face Muse 页面三" loading="lazy"></iframe>
+      </section>
+      <section class="showcase-slide" aria-label="页面四">
+        <iframe class="page-frame" data-src="./4.html" title="Face Muse 页面四" loading="lazy"></iframe>
+      </section>
+      <section class="showcase-slide" aria-label="页面五">
+        <iframe class="page-frame" data-src="./5.html" title="Face Muse 页面五" loading="lazy"></iframe>
+      </section>
+    </div>
   </main>
 
   <script>
     (() => {
-      const root = document.documentElement;
-      const badge = document.querySelector(".ai-badge");
-      const toast = document.querySelector(".interaction-toast");
-      const guidance = document.querySelector("[data-copy='guidance']");
-      const statNodes = {
-        step: document.querySelector("[data-stat='step']"),
-        light: document.querySelector("[data-stat='light']"),
-        target: document.querySelector("[data-stat='target']"),
-        voice: document.querySelector("[data-stat='voice']")
-      };
-      const quoteTitles = Array.from(document.querySelectorAll(".quote h2"));
-      const authorRows = Array.from(document.querySelectorAll(".author-row span:last-child"));
-      const statCards = Array.from(document.querySelectorAll("[data-stat-card]"));
-      const thumbs = Array.from(document.querySelectorAll(".thumb"));
-      const nextButton = document.querySelector("[data-action='next']");
-      const calibrateButton = document.querySelector("[data-action='calibrate']");
-      const steps = [
-        {
-          number: "1/8",
-          target: "肤色采样",
-          guidance: "先把脸部保持在取景框中心，Face Muse 会记录底妆色差和两侧阴影。",
-          quotes: ["底妆区域已锁定，先轻拍鼻翼和下巴边缘。", "下一步：把镜头抬高一点，减少额头阴影。"],
-          meta: ["09:39 肤色采样完成，底妆建议已同步。", "09:40 取景角度已修正，面部轮廓更稳定。"]
-        },
-        {
-          number: "2/8",
-          target: "眉峰定位",
-          guidance: "眉峰参考点已经出现，刷头从眉腰向眉峰轻带，不要压住原本毛流。",
-          quotes: ["眉峰位置已找到，先补浅色区域。", "下一步：眉尾沿参考线轻扫一笔。"],
-          meta: ["09:40 眉峰定位完成，参考线保持可见。", "09:41 毛流方向已识别，建议轻压一层。"]
-        },
-        {
-          number: "3/8",
-          target: "眉尾锁定",
-          guidance: "Face Muse 已识别眉峰、眉尾和左侧光线，下一笔沿参考线向外轻扫，保持手腕放松。",
-          quotes: ["左脸光线偏暗，先把手机向窗边移一点。", "下一步：眉尾沿参考线轻扫一笔。"],
-          meta: ["09:41 光线校准完成，肤色显示更接近真实状态。", "09:42 眉峰定位完成，预计 42 秒进入眼妆步骤。"]
-        },
-        {
-          number: "4/8",
-          target: "眼线预备",
-          guidance: "眼尾位置已对齐，下一步把笔尖贴近睫毛根部，沿外侧参考点短线连接。",
-          quotes: ["眼尾参考点已亮起，先别拉太长。", "下一步：从睫毛根部短线连接到眼尾。"],
-          meta: ["09:43 眼尾角度稳定，建议先画外半段。", "09:43 眨眼检测正常，参考线会自动暂停。"]
-        },
-        {
-          number: "5/8",
-          target: "眼影过渡",
-          guidance: "用浅棕色从眼尾向眼窝轻扫，Face Muse 会在边界过重时提醒你收窄范围。",
-          quotes: ["眼影边界稍重，用干净刷头向外晕开。", "下一步：把亮片点在眼中，不要超过参考圈。"],
-          meta: ["09:44 眼窝范围已标记，晕染半径保持稳定。", "09:45 亮片点位已准备，下一步进入高光。"]
-        }
-      ];
-      let activeStep = 2;
-      let voiceOn = true;
-      let toastTimer = 0;
+      const showcase = document.querySelector(".showcase");
+      const track = document.querySelector(".showcase-track");
+      const prevButton = document.querySelector(".nav-button.prev");
+      const nextButton = document.querySelector(".nav-button.next");
+      const dots = Array.from(document.querySelectorAll(".page-dot"));
+      const frames = Array.from(document.querySelectorAll(".page-frame"));
+      const pageCount = document.querySelector(".page-count");
+      const slideCount = frames.length;
+      let currentIndex = 0;
+      let dragStartX = 0;
+      let dragOffset = 0;
+      let isDragging = false;
 
-      const showToast = (message) => {
-        if (!toast) return;
-
-        toast.textContent = message;
-        toast.setAttribute("aria-hidden", "false");
-        toast.classList.add("is-visible");
-        window.clearTimeout(toastTimer);
-        toastTimer = window.setTimeout(() => {
-          toast.classList.remove("is-visible");
-          toast.setAttribute("aria-hidden", "true");
-        }, 1800);
-      };
-
-      const flashStat = (name) => {
-        const node = statNodes[name];
-        const card = node?.closest(".stat");
-        if (!card) return;
-
-        card.classList.add("is-updated");
-        window.setTimeout(() => card.classList.remove("is-updated"), 520);
-      };
-
-      const setStep = (index, announce = true) => {
-        activeStep = (index + steps.length) % steps.length;
-        const step = steps[activeStep];
-
-        statNodes.step.textContent = step.number;
-        statNodes.target.textContent = step.target;
-        guidance.textContent = step.guidance;
-        quoteTitles.forEach((title, titleIndex) => {
-          title.textContent = step.quotes[titleIndex];
-        });
-        authorRows.forEach((row, rowIndex) => {
-          row.textContent = step.meta[rowIndex];
-        });
-        flashStat("step");
-        flashStat("target");
-
-        if (announce) {
-          showToast(`已切到第 ${step.number.split("/")[0]} 步：${step.target}`);
-        }
-      };
-
-      const nextStep = () => setStep(activeStep + 1);
-
-      const recalibrate = () => {
-        statNodes.light.textContent = "校准中";
-        flashStat("light");
-        showToast("正在重新校准光线与参考线");
-
-        window.setTimeout(() => {
-          statNodes.light.textContent = "OK";
-          flashStat("light");
-          showToast("光线与眉尾参考线已重新校准");
-        }, 720);
-      };
-
-      const toggleVoice = () => {
-        voiceOn = !voiceOn;
-        statNodes.voice.textContent = voiceOn ? "开启" : "静音";
-        badge.setAttribute("aria-pressed", voiceOn ? "true" : "false");
-        flashStat("voice");
-        showToast(voiceOn ? "语音提示已开启" : "语音提示已静音");
-      };
-
-      const activateByKeyboard = (element, handler) => {
-        element.addEventListener("keydown", (event) => {
-          if (event.key !== "Enter" && event.key !== " ") return;
-          event.preventDefault();
-          handler(event);
-        });
-      };
-
-      const initInteractions = () => {
-        setStep(activeStep, false);
-
-        statCards.forEach((card) => {
-          const type = card.dataset.statCard;
-          const handlerMap = {
-            step: nextStep,
-            light: recalibrate,
-            target: () => showToast(`当前定位：${steps[activeStep].target}`),
-            voice: toggleVoice
-          };
-          const handler = handlerMap[type];
-          if (!handler) return;
-
-          card.addEventListener("click", handler);
-          activateByKeyboard(card, handler);
-        });
-
-        nextButton?.addEventListener("click", nextStep);
-        calibrateButton?.addEventListener("click", recalibrate);
-        badge?.addEventListener("click", toggleVoice);
-        if (badge) activateByKeyboard(badge, toggleVoice);
-
-        thumbs.forEach((thumb, index) => {
-          thumb.addEventListener("click", () => {
-            const nextState = !thumb.classList.contains("is-playing");
-            thumbs.forEach((item) => {
-              item.classList.remove("is-playing");
-              item.setAttribute("aria-pressed", "false");
-            });
-
-            if (nextState) {
-              thumb.classList.add("is-playing");
-              thumb.setAttribute("aria-pressed", "true");
-              showToast(index === 0 ? "正在播放光线校准示例" : "正在播放眉尾参考线示例");
-              return;
-            }
-
-            showToast("已暂停预览");
-          });
-        });
-      };
-
-      if (document.readyState === "loading") {
-        window.addEventListener("DOMContentLoaded", initInteractions, { once: true });
-      } else {
-        initInteractions();
-      }
-
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (reduceMotion) {
-        root.dataset.gsapLoaded = "reduced";
+      if (!showcase || !track || !prevButton || !nextButton || !pageCount || !slideCount || dots.length !== slideCount) {
         return;
       }
 
-      const initMotion = () => {
-        if (!window.gsap) {
-          root.dataset.gsapLoaded = "false";
-          return;
+      const clampIndex = (index) => Math.max(0, Math.min(index, slideCount - 1));
+
+      const loadFrame = (index) => {
+        const frame = frames[clampIndex(index)];
+
+        if (frame && !frame.hasAttribute("src")) {
+          frame.src = frame.dataset.src;
         }
+      };
 
-        root.dataset.gsapLoaded = "true";
-        gsap.from(".headline", { y: 28, duration: 0.58, delay: 0.12, ease: "power3.out" });
-        gsap.from(".info-card", { y: 34, duration: 0.64, delay: 0.24, ease: "power3.out" });
-        gsap.from(".stat", { y: 16, duration: 0.42, delay: 0.42, stagger: 0.045, ease: "power2.out" });
-        gsap.from(".quote", { x: -18, duration: 0.5, delay: 0.48, stagger: 0.09, ease: "power3.out" });
-        gsap.from(".action-button", { y: 16, duration: 0.42, delay: 0.66, stagger: 0.04, ease: "power2.out" });
-        gsap.to(".route-dot", { scale: 1.25, transformOrigin: "50% 50%", duration: 0.9, repeat: -1, yoyo: true, stagger: 0.12, ease: "sine.inOut" });
+      const render = (index, offset = 0) => {
+        currentIndex = clampIndex(index);
+        loadFrame(currentIndex);
+        track.style.transform = `translate3d(calc(${-currentIndex * 100}% + ${offset}px), 0, 0)`;
+        prevButton.disabled = currentIndex === 0;
+        nextButton.disabled = currentIndex === slideCount - 1;
+        pageCount.textContent = `${currentIndex + 1} / ${slideCount}`;
+        dots.forEach((dot, dotIndex) => {
+          const isActive = dotIndex === currentIndex;
+          dot.classList.toggle("is-active", isActive);
 
-        document.querySelectorAll("button").forEach((item) => {
-          item.addEventListener("click", (event) => {
-            event.preventDefault();
-            gsap.fromTo(item, { scale: 0.96 }, { scale: 1, duration: 0.32, ease: "back.out(2.4)" });
-          });
+          if (isActive) {
+            dot.setAttribute("aria-current", "page");
+          } else {
+            dot.removeAttribute("aria-current");
+          }
         });
       };
 
-      const loadMotion = () => {
-        const script = document.createElement("script");
-        script.src = "./assets/gsap.min.js";
-        script.async = true;
-        script.onload = () => requestAnimationFrame(initMotion);
-        script.onerror = () => {
-          root.dataset.gsapLoaded = "false";
-        };
-        document.head.appendChild(script);
+      const goTo = (index) => {
+        const nextIndex = clampIndex(index);
+        loadFrame(nextIndex);
+        render(nextIndex);
       };
 
-      const scheduleMotion = () => {
-        window.setTimeout(loadMotion, 3200);
+      prevButton.addEventListener("click", () => goTo(currentIndex - 1));
+      nextButton.addEventListener("click", () => goTo(currentIndex + 1));
+      dots.forEach((dot, dotIndex) => {
+        dot.addEventListener("click", () => goTo(dotIndex));
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowLeft") {
+          goTo(currentIndex - 1);
+        }
+
+        if (event.key === "ArrowRight") {
+          goTo(currentIndex + 1);
+        }
+      });
+
+      showcase.addEventListener("pointerdown", (event) => {
+        if (event.target instanceof Element && event.target.closest("button")) {
+          return;
+        }
+
+        if (event.pointerType === "mouse" && event.button !== 0) {
+          return;
+        }
+
+        isDragging = true;
+        dragStartX = event.clientX;
+        dragOffset = 0;
+        showcase.classList.add("is-dragging");
+        showcase.setPointerCapture(event.pointerId);
+      });
+
+      showcase.addEventListener("pointermove", (event) => {
+        if (!isDragging) {
+          return;
+        }
+
+        dragOffset = event.clientX - dragStartX;
+        render(currentIndex, dragOffset);
+      });
+
+      const finishDrag = () => {
+        if (!isDragging) {
+          return;
+        }
+
+        const threshold = Math.min(120, showcase.clientWidth * .18);
+        const nextIndex = Math.abs(dragOffset) > threshold
+          ? currentIndex + (dragOffset < 0 ? 1 : -1)
+          : currentIndex;
+
+        isDragging = false;
+        dragOffset = 0;
+        showcase.classList.remove("is-dragging");
+        render(nextIndex);
       };
 
-      if (document.readyState === "loading") {
-        window.addEventListener("DOMContentLoaded", scheduleMotion, { once: true });
-      } else {
-        scheduleMotion();
-      }
+      showcase.addEventListener("pointerup", finishDrag);
+      showcase.addEventListener("pointercancel", finishDrag);
+
+      requestAnimationFrame(() => render(0));
     })();
   </script>
 </body>
