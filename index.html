@@ -114,185 +114,6 @@
         radial-gradient(circle at 78% 38%, rgba(159, 217, 165, 0.12), transparent 20%);
     }
 
-    .status-bar {
-      position: absolute;
-      top: 44rem;
-      left: 80rem;
-      right: 39rem;
-      z-index: 4;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 34rem;
-      line-height: 1;
-      font-weight: 700;
-      letter-spacing: 0;
-    }
-
-    .system-icons {
-      display: flex;
-      align-items: center;
-      gap: 14rem;
-    }
-
-    .signal {
-      display: flex;
-      align-items: end;
-      gap: 5rem;
-      width: 42rem;
-      height: 31rem;
-    }
-
-    .signal span {
-      width: 7rem;
-      border-radius: 7rem;
-      background: #fff;
-    }
-
-    .signal span:nth-child(1) { height: 12rem; }
-    .signal span:nth-child(2) { height: 18rem; }
-    .signal span:nth-child(3) { height: 25rem; }
-    .signal span:nth-child(4) { height: 31rem; }
-
-    .wifi {
-      position: relative;
-      width: 39rem;
-      height: 31rem;
-    }
-
-    .wifi::before,
-    .wifi::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      border: 6rem solid transparent;
-      border-top-color: #fff;
-      border-radius: 50%;
-      transform: translateX(-50%);
-    }
-
-    .wifi::before {
-      top: 1rem;
-      width: 36rem;
-      height: 36rem;
-    }
-
-    .wifi::after {
-      top: 11rem;
-      width: 18rem;
-      height: 18rem;
-    }
-
-    .wifi i {
-      position: absolute;
-      left: 50%;
-      bottom: 0;
-      width: 8rem;
-      height: 8rem;
-      border-radius: 50%;
-      background: #fff;
-      transform: translateX(-50%);
-    }
-
-    .battery {
-      position: relative;
-      width: 51rem;
-      height: 28rem;
-      border: 3rem solid rgba(255, 255, 255, 0.92);
-      border-radius: 7rem;
-    }
-
-    .battery::before {
-      content: "";
-      position: absolute;
-      inset: 5rem 7rem;
-      border-radius: 3rem;
-      background: #fff;
-    }
-
-    .battery::after {
-      content: "";
-      position: absolute;
-      right: -8rem;
-      top: 8rem;
-      width: 4rem;
-      height: 11rem;
-      border-radius: 0 4rem 4rem 0;
-      background: rgba(255, 255, 255, 0.86);
-    }
-
-    .top-nav {
-      position: absolute;
-      top: 127rem;
-      left: 38rem;
-      right: 38rem;
-      z-index: 4;
-      display: grid;
-      grid-template-columns: 58rem 1fr 58rem;
-      align-items: center;
-      gap: 24rem;
-    }
-
-    .icon-button {
-      display: grid;
-      place-items: center;
-      width: 58rem;
-      height: 58rem;
-      border: 0;
-      padding: 0;
-      color: #fff;
-      background: transparent;
-      cursor: pointer;
-    }
-
-    .icon-button svg {
-      width: 54rem;
-      height: 54rem;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 4.4;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .channels {
-      min-width: 0;
-      display: grid;
-      grid-template-columns: repeat(6, max-content);
-      justify-content: space-between;
-      align-items: center;
-      gap: 15rem;
-      color: rgba(255, 255, 255, 0.54);
-      font-size: 31rem;
-      line-height: 1;
-      font-weight: 700;
-      letter-spacing: 0;
-    }
-
-    .channel {
-      position: relative;
-      white-space: nowrap;
-      cursor: pointer;
-    }
-
-    .channel.active {
-      color: #fff;
-      font-size: 39rem;
-      text-shadow: 0 4rem 18rem rgba(0, 0, 0, 0.24);
-    }
-
-    .channel.active::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      bottom: -24rem;
-      width: 70rem;
-      height: 5rem;
-      border-radius: 999rem;
-      background: #fff;
-      transform: translateX(-50%);
-    }
-
     .content {
       position: absolute;
       inset: 0;
@@ -303,7 +124,7 @@
       position: absolute;
       left: 47rem;
       right: 44rem;
-      top: 397rem;
+      top: 286rem;
       display: flex;
       align-items: center;
       gap: 24rem;
@@ -338,7 +159,7 @@
       position: absolute;
       left: 45rem;
       right: 45rem;
-      top: 508rem;
+      top: 406rem;
       height: 407rem;
       overflow: hidden;
       border: 1rem solid rgba(255, 255, 255, 0.16);
@@ -466,7 +287,7 @@
       position: absolute;
       left: 47rem;
       right: 47rem;
-      top: 959rem;
+      top: 896rem;
     }
 
     .note-label {
@@ -591,59 +412,23 @@
       box-shadow: 12rem 0 0 rgba(40, 72, 46, 0.92);
     }
 
-    .progress {
-      position: absolute;
-      left: 46rem;
-      right: 46rem;
-      top: 1554rem;
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 10rem;
-    }
-
-    .progress-step {
-      appearance: none;
-      position: relative;
-      height: 6rem;
-      overflow: hidden;
-      border: 0;
-      border-radius: 999rem;
-      background: rgba(255, 255, 255, 0.16);
-      padding: 0;
-      cursor: pointer;
-    }
-
-    .progress-step::before {
-      content: "";
-      position: absolute;
-      inset: 0 auto 0 0;
-      width: var(--fill, 0%);
-      border-radius: inherit;
-      background: rgba(255, 255, 255, 0.68);
-      transition: width 0.28s ease;
-    }
-
-    .progress-step.is-active {
-      background: rgba(255, 255, 255, 0.25);
-    }
-
     .action-row {
       position: absolute;
       left: 46rem;
       right: 46rem;
-      top: 1595rem;
+      top: 1584rem;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20rem;
+      gap: 14rem;
     }
 
     .action-button {
-      height: 99rem;
+      height: 76rem;
       border: 0;
-      border-radius: 17rem;
+      border-radius: 18rem;
       color: rgba(255, 255, 255, 0.92);
       background: rgba(99, 139, 97, 0.72);
-      font-size: 34rem;
+      font-size: 29rem;
       line-height: 1;
       font-weight: 900;
       letter-spacing: 0;
@@ -656,27 +441,10 @@
       background: rgba(93, 138, 93, 0.44);
     }
 
-    .swipe-tip {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 1732rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10rem;
-      color: rgba(255, 255, 255, 0.53);
-      font-size: 27rem;
-      line-height: 1;
-      font-weight: 700;
-      letter-spacing: 0;
-      cursor: pointer;
-    }
-
     .interaction-toast {
       position: absolute;
       left: 50%;
-      top: 1485rem;
+      top: 1508rem;
       z-index: 4;
       max-width: 690rem;
       padding: 16rem 24rem 17rem;
@@ -702,98 +470,10 @@
       transform: translate(-50%, 0);
     }
 
-    .chevrons {
-      position: relative;
-      width: 25rem;
-      height: 25rem;
-    }
-
-    .chevrons::before,
-    .chevrons::after {
-      content: "";
-      position: absolute;
-      left: 5rem;
-      width: 16rem;
-      height: 16rem;
-      border-left: 4rem solid rgba(255, 255, 255, 0.55);
-      border-top: 4rem solid rgba(255, 255, 255, 0.55);
-      transform: rotate(45deg);
-    }
-
-    .chevrons::before { top: 6rem; }
-    .chevrons::after { top: -3rem; opacity: 0.7; }
-
-    .bottom-nav {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 5;
-      height: 190rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1.08fr 1fr 1fr;
-      align-items: start;
-      padding: 35rem 34rem 0;
-      background: #000;
-      box-shadow: 0 -20rem 40rem rgba(0, 0, 0, 0.22);
-    }
-
-    .bottom-link {
-      display: grid;
-      justify-items: center;
-      gap: 11rem;
-      color: rgba(255, 255, 255, 0.46);
-      text-decoration: none;
-      font-size: 33rem;
-      line-height: 1;
-      font-weight: 800;
-      letter-spacing: 0;
-    }
-
-    .bottom-link.active {
-      color: #fff;
-    }
-
-    .plus-button {
-      display: grid;
-      place-items: center;
-      justify-self: center;
-      width: 82rem;
-      height: 58rem;
-      margin-top: -9rem;
-      border: 6rem solid #fff;
-      border-radius: 20rem;
-      color: #fff;
-      background: #000;
-      box-shadow: -5rem 0 0 #21f4ee, 5rem 0 0 #fe2c55;
-    }
-
-    .plus-button svg {
-      width: 38rem;
-      height: 38rem;
-      stroke: currentColor;
-      stroke-width: 5;
-      stroke-linecap: round;
-    }
-
-    .home-indicator {
-      position: absolute;
-      left: 50%;
-      bottom: 17rem;
-      z-index: 6;
-      width: 298rem;
-      height: 7rem;
-      border-radius: 999rem;
-      background: #fff;
-      transform: translateX(-50%);
-    }
-
     button:focus-visible,
     a:focus-visible,
-    .channel:focus-visible,
     .stat:focus-visible,
-    .ai-badge:focus-visible,
-    .swipe-tip:focus-visible {
+    .ai-badge:focus-visible {
       outline: 3rem solid rgba(255, 255, 255, 0.8);
       outline-offset: 5rem;
     }
@@ -818,32 +498,6 @@
   <main class="feed-screen" aria-labelledby="page-title">
     <img class="hero-photo" src="./assets/face-muse-2-hero-feed.webp" width="887" height="1920" alt="" fetchpriority="high" decoding="sync" aria-hidden="true">
     <div class="hero-grain" aria-hidden="true"></div>
-
-    <div class="status-bar" aria-hidden="true">
-      <span>9:41</span>
-      <div class="system-icons">
-        <span class="signal"><span></span><span></span><span></span><span></span></span>
-        <span class="wifi"><i></i></span>
-        <span class="battery"></span>
-      </div>
-    </div>
-
-    <nav class="top-nav" aria-label="频道导航">
-      <button class="icon-button" type="button" aria-label="打开菜单">
-        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 14h34M7 24h34M7 34h34"></path></svg>
-      </button>
-      <div class="channels" aria-label="内容频道">
-        <span class="channel">团购</span>
-        <span class="channel">经验</span>
-        <span class="channel">北京</span>
-        <span class="channel">关注</span>
-        <span class="channel">商城</span>
-        <span class="channel active">推荐</span>
-      </div>
-      <button class="icon-button" type="button" aria-label="搜索">
-        <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="21" cy="21" r="13"></circle><path d="M31.5 31.5 42 42"></path></svg>
-      </button>
-    </nav>
 
     <section class="content" aria-label="推荐内容">
       <div class="headline">
@@ -900,45 +554,18 @@
         </div>
       </section>
 
-      <div class="progress" aria-label="步骤进度">
-        <button class="progress-step" type="button" style="--fill: 100%" aria-label="切换到第 1 段"></button>
-        <button class="progress-step is-active" type="button" style="--fill: 63%" aria-label="切换到第 2 段"></button>
-        <button class="progress-step" type="button" aria-label="切换到第 3 段"></button>
-        <button class="progress-step" type="button" aria-label="切换到第 4 段"></button>
-        <button class="progress-step" type="button" aria-label="切换到第 5 段"></button>
-      </div>
-
       <div class="action-row" aria-label="妆容指导操作">
         <button class="action-button secondary" type="button" data-action="calibrate">重新校准</button>
         <button class="action-button" type="button" data-action="next">开始下一步</button>
       </div>
 
-      <div class="swipe-tip" role="button" tabindex="0" aria-label="查看下一步">
-        <span class="chevrons"></span>
-        <span>上滑查看下一步</span>
-      </div>
-
       <div class="interaction-toast" role="status" aria-live="polite" aria-hidden="true"></div>
     </section>
-
-    <nav class="bottom-nav" aria-label="底部导航">
-      <a class="bottom-link active" href="#" aria-current="page">首页</a>
-      <a class="bottom-link" href="#">朋友</a>
-      <a class="bottom-link" href="#" aria-label="发布">
-        <span class="plus-button" aria-hidden="true">
-          <svg viewBox="0 0 48 48"><path d="M24 10v28M10 24h28"></path></svg>
-        </span>
-      </a>
-      <a class="bottom-link" href="#">消息</a>
-      <a class="bottom-link" href="#">我</a>
-    </nav>
-    <span class="home-indicator" aria-hidden="true"></span>
   </main>
 
   <script>
     (() => {
       const root = document.documentElement;
-      const pageTitle = document.querySelector("#page-title");
       const badge = document.querySelector(".ai-badge");
       const toast = document.querySelector(".interaction-toast");
       const guidance = document.querySelector("[data-copy='guidance']");
@@ -951,13 +578,9 @@
       const quoteTitles = Array.from(document.querySelectorAll(".quote h2"));
       const authorRows = Array.from(document.querySelectorAll(".author-row span:last-child"));
       const statCards = Array.from(document.querySelectorAll("[data-stat-card]"));
-      const progressSteps = Array.from(document.querySelectorAll(".progress-step"));
-      const channels = Array.from(document.querySelectorAll(".channel"));
       const thumbs = Array.from(document.querySelectorAll(".thumb"));
-      const bottomLinks = Array.from(document.querySelectorAll(".bottom-link"));
       const nextButton = document.querySelector("[data-action='next']");
       const calibrateButton = document.querySelector("[data-action='calibrate']");
-      const swipeTip = document.querySelector(".swipe-tip");
       const steps = [
         {
           number: "1/8",
@@ -1021,15 +644,6 @@
         window.setTimeout(() => card.classList.remove("is-updated"), 520);
       };
 
-      const updateProgress = () => {
-        progressSteps.forEach((item, index) => {
-          const fill = index < activeStep ? 100 : index === activeStep ? 63 : 0;
-          item.style.setProperty("--fill", `${fill}%`);
-          item.classList.toggle("is-active", index === activeStep);
-          item.setAttribute("aria-pressed", index === activeStep ? "true" : "false");
-        });
-      };
-
       const setStep = (index, announce = true) => {
         activeStep = (index + steps.length) % steps.length;
         const step = steps[activeStep];
@@ -1043,7 +657,6 @@
         authorRows.forEach((row, rowIndex) => {
           row.textContent = step.meta[rowIndex];
         });
-        updateProgress();
         flashStat("step");
         flashStat("target");
 
@@ -1085,30 +698,6 @@
       const initInteractions = () => {
         setStep(activeStep, false);
 
-        channels.forEach((channel) => {
-          channel.tabIndex = 0;
-          channel.setAttribute("role", "button");
-          channel.setAttribute("aria-pressed", channel.classList.contains("active") ? "true" : "false");
-
-          const activateChannel = () => {
-            channels.forEach((item) => {
-              item.classList.toggle("active", item === channel);
-              item.setAttribute("aria-pressed", item === channel ? "true" : "false");
-            });
-            if (pageTitle && channel.textContent.trim() !== "推荐") {
-              pageTitle.textContent = "镜头里的实时妆容指导";
-            }
-            showToast(`已切换到${channel.textContent.trim()}频道`);
-          };
-
-          channel.addEventListener("click", activateChannel);
-          activateByKeyboard(channel, activateChannel);
-        });
-
-        progressSteps.forEach((item, index) => {
-          item.addEventListener("click", () => setStep(index));
-        });
-
         statCards.forEach((card) => {
           const type = card.dataset.statCard;
           const handlerMap = {
@@ -1126,8 +715,6 @@
 
         nextButton?.addEventListener("click", nextStep);
         calibrateButton?.addEventListener("click", recalibrate);
-        swipeTip?.addEventListener("click", nextStep);
-        if (swipeTip) activateByKeyboard(swipeTip, nextStep);
         badge?.addEventListener("click", toggleVoice);
         if (badge) activateByKeyboard(badge, toggleVoice);
 
@@ -1147,21 +734,6 @@
             }
 
             showToast("已暂停预览");
-          });
-        });
-
-        bottomLinks.forEach((link) => {
-          link.addEventListener("click", (event) => {
-            event.preventDefault();
-            bottomLinks.forEach((item) => {
-              item.classList.toggle("active", item === link);
-              if (item === link) {
-                item.setAttribute("aria-current", "page");
-              } else {
-                item.removeAttribute("aria-current");
-              }
-            });
-            showToast(link.getAttribute("aria-label") === "发布" ? "打开发布入口" : `已切换到${link.textContent.trim()}`);
           });
         });
       };
@@ -1185,17 +757,14 @@
         }
 
         root.dataset.gsapLoaded = "true";
-        gsap.from(".status-bar, .top-nav", { y: -16, duration: 0.42, stagger: 0.08, ease: "power3.out" });
         gsap.from(".headline", { y: 28, duration: 0.58, delay: 0.12, ease: "power3.out" });
         gsap.from(".info-card", { y: 34, duration: 0.64, delay: 0.24, ease: "power3.out" });
         gsap.from(".stat", { y: 16, duration: 0.42, delay: 0.42, stagger: 0.045, ease: "power2.out" });
         gsap.from(".quote", { x: -18, duration: 0.5, delay: 0.48, stagger: 0.09, ease: "power3.out" });
-        gsap.from(".progress-step, .action-button, .swipe-tip", { y: 16, duration: 0.42, delay: 0.66, stagger: 0.04, ease: "power2.out" });
-        gsap.from(".bottom-link", { y: 16, duration: 0.38, delay: 0.72, stagger: 0.035, ease: "power2.out" });
+        gsap.from(".action-button", { y: 16, duration: 0.42, delay: 0.66, stagger: 0.04, ease: "power2.out" });
         gsap.to(".route-dot", { scale: 1.25, transformOrigin: "50% 50%", duration: 0.9, repeat: -1, yoyo: true, stagger: 0.12, ease: "sine.inOut" });
-        gsap.to(".chevrons", { y: -7, duration: 0.9, repeat: -1, yoyo: true, ease: "sine.inOut" });
 
-        document.querySelectorAll("button, .bottom-link").forEach((item) => {
+        document.querySelectorAll("button").forEach((item) => {
           item.addEventListener("click", (event) => {
             event.preventDefault();
             gsap.fromTo(item, { scale: 0.96 }, { scale: 1, duration: 0.32, ease: "back.out(2.4)" });
@@ -1215,12 +784,7 @@
       };
 
       const scheduleMotion = () => {
-        if ("requestIdleCallback" in window) {
-          window.requestIdleCallback(loadMotion, { timeout: 5000 });
-          return;
-        }
-
-        window.setTimeout(loadMotion, 3000);
+        window.setTimeout(loadMotion, 3200);
       };
 
       if (document.readyState === "loading") {

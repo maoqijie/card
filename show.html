@@ -143,12 +143,12 @@
     .page-indicator {
       position: absolute;
       left: 50%;
-      bottom: max(18px, env(safe-area-inset-bottom));
+      top: max(14px, env(safe-area-inset-top));
       z-index: 3;
       display: flex;
       align-items: center;
-      gap: 9px;
-      padding: 10px 13px;
+      gap: 5px;
+      padding: 8px 11px;
       border: 1px solid var(--control-border);
       border-radius: 999px;
       background: var(--control-bg);
@@ -166,6 +166,17 @@
     }
 
     .page-dot {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color .22s ease;
+    }
+
+    .page-dot::before {
+      content: "";
       width: 7px;
       height: 7px;
       border-radius: 50%;
@@ -173,10 +184,15 @@
       transition: width .22s ease, background-color .22s ease;
     }
 
-    .page-dot.is-active {
-      width: 24px;
+    .page-dot.is-active::before {
+      width: 20px;
       border-radius: 999px;
       background: var(--ink);
+    }
+
+    .page-dot:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, .72);
+      outline-offset: 2px;
     }
 
     @supports not (height: 100svh) {
@@ -187,25 +203,42 @@
 
     @media (max-width: 640px) {
       .nav-button {
-        top: auto;
-        bottom: max(18px, env(safe-area-inset-bottom));
-        width: 48px;
-        height: 48px;
+        top: max(12px, env(safe-area-inset-top));
+        bottom: auto;
+        width: 42px;
+        height: 42px;
+        transform: none;
+      }
+
+      .nav-button:hover {
+        transform: scale(1.04);
       }
 
       .nav-button.prev {
-        left: 16px;
+        left: 12px;
       }
 
       .nav-button.next {
-        right: 16px;
+        right: 12px;
+      }
+
+      .page-indicator {
+        top: max(12px, env(safe-area-inset-top));
+        gap: 2px;
+        padding: 7px 8px;
+      }
+
+      .page-dot {
+        width: 24px;
+        height: 24px;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
       .showcase-track,
       .nav-button,
-      .page-dot {
+      .page-dot,
+      .page-dot::before {
         transition: none;
       }
     }
@@ -215,14 +248,14 @@
   <main class="showcase" aria-label="Face Muse 拼接展示">
     <button class="nav-button prev" type="button" aria-label="上一页"></button>
     <button class="nav-button next" type="button" aria-label="下一页"></button>
-    <div class="page-indicator" aria-label="当前页">
-      <span class="page-dot is-active" aria-hidden="true"></span>
-      <span class="page-dot" aria-hidden="true"></span>
-      <span class="page-dot" aria-hidden="true"></span>
-      <span class="page-dot" aria-hidden="true"></span>
-      <span class="page-dot" aria-hidden="true"></span>
+    <nav class="page-indicator" aria-label="页面导航">
+      <button class="page-dot is-active" type="button" aria-label="第 1 页" aria-current="page"></button>
+      <button class="page-dot" type="button" aria-label="第 2 页"></button>
+      <button class="page-dot" type="button" aria-label="第 3 页"></button>
+      <button class="page-dot" type="button" aria-label="第 4 页"></button>
+      <button class="page-dot" type="button" aria-label="第 5 页"></button>
       <span class="page-count" aria-live="polite">1 / 5</span>
-    </div>
+    </nav>
 
     <div class="showcase-track">
       <section class="showcase-slide" aria-label="页面一">
@@ -252,11 +285,15 @@
       const dots = Array.from(document.querySelectorAll(".page-dot"));
       const frames = Array.from(document.querySelectorAll(".page-frame"));
       const pageCount = document.querySelector(".page-count");
-      const slideCount = dots.length;
+      const slideCount = frames.length;
       let currentIndex = 0;
       let dragStartX = 0;
       let dragOffset = 0;
       let isDragging = false;
+
+      if (!showcase || !track || !prevButton || !nextButton || !pageCount || !slideCount || dots.length !== slideCount) {
+        return;
+      }
 
       const clampIndex = (index) => Math.max(0, Math.min(index, slideCount - 1));
 
@@ -275,7 +312,16 @@
         prevButton.disabled = currentIndex === 0;
         nextButton.disabled = currentIndex === slideCount - 1;
         pageCount.textContent = `${currentIndex + 1} / ${slideCount}`;
-        dots.forEach((dot, dotIndex) => dot.classList.toggle("is-active", dotIndex === currentIndex));
+        dots.forEach((dot, dotIndex) => {
+          const isActive = dotIndex === currentIndex;
+          dot.classList.toggle("is-active", isActive);
+
+          if (isActive) {
+            dot.setAttribute("aria-current", "page");
+          } else {
+            dot.removeAttribute("aria-current");
+          }
+        });
       };
 
       const goTo = (index) => {
@@ -286,6 +332,9 @@
 
       prevButton.addEventListener("click", () => goTo(currentIndex - 1));
       nextButton.addEventListener("click", () => goTo(currentIndex + 1));
+      dots.forEach((dot, dotIndex) => {
+        dot.addEventListener("click", () => goTo(dotIndex));
+      });
 
       window.addEventListener("keydown", (event) => {
         if (event.key === "ArrowLeft") {
@@ -298,6 +347,10 @@
       });
 
       showcase.addEventListener("pointerdown", (event) => {
+        if (event.target instanceof Element && event.target.closest("button")) {
+          return;
+        }
+
         if (event.pointerType === "mouse" && event.button !== 0) {
           return;
         }

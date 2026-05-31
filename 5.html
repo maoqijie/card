@@ -8,7 +8,6 @@
   <link rel="preload" as="image" href="./assets/face-muse-5-card-1.webp" fetchpriority="high">
   <link rel="preload" as="image" href="./assets/face-muse-5-card-2.webp">
   <link rel="preload" as="image" href="./assets/face-muse-5-archive-stack.webp">
-  <link rel="stylesheet" href="./assets/feed-components.css">
   <title>Face Muse - 高分化妆师与妆造档案</title>
   <style>
     :root {
@@ -23,6 +22,32 @@
       --hero-position: 48% 37%;
       --headline-size: 50rem;
       font-size: calc(min(100vw, calc(100vh * 887 / 1920), 887px) / 887);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      background: var(--page-bg);
+    }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", Arial, sans-serif;
+    }
+
+    button,
+    a {
+      font: inherit;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .feed-screen {
@@ -77,11 +102,59 @@
       will-change: transform;
     }
 
+    @keyframes hero-breathe {
+      from { transform: scale(1.015); }
+      to { transform: scale(1.045); }
+    }
+
+    .content {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+    }
+
+    .headline {
+      position: absolute;
+      left: 47rem;
+      right: 44rem;
+      top: 286rem;
+      display: flex;
+      align-items: center;
+      gap: 24rem;
+    }
+
+    .headline h1 {
+      flex: 1;
+      margin: 0;
+      color: #fff;
+      font-size: var(--headline-size);
+      line-height: 1.16;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-shadow: 0 8rem 28rem rgba(0, 0, 0, .42);
+    }
+
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      height: 43rem;
+      margin-top: 18rem;
+      padding: 0 18rem;
+      border: 1rem solid rgba(255, 255, 255, .34);
+      border-radius: 999rem;
+      color: rgba(255, 255, 255, .78);
+      background: rgba(255, 255, 255, .12);
+      backdrop-filter: blur(16rem);
+      font-size: 22rem;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
     .discover-panel {
       position: absolute;
       left: 45rem;
       right: 45rem;
-      top: 508rem;
+      top: 386rem;
       height: 352rem;
       display: grid;
       align-content: start;
@@ -188,7 +261,7 @@
       position: absolute;
       left: 47rem;
       right: 47rem;
-      top: 900rem;
+      top: 778rem;
       display: grid;
       gap: 18rem;
     }
@@ -217,6 +290,11 @@
     .studio-card.primary {
       min-height: 205rem;
       background: linear-gradient(135deg, rgba(255, 255, 255, .14), rgba(255, 255, 255, .06));
+    }
+    .studio-card.is-selected,
+    .archive-card.is-selected {
+      border-color: rgba(245, 215, 154, .56);
+      box-shadow: 0 18rem 42rem rgba(0, 0, 0, .2), 0 0 0 2rem rgba(245, 215, 154, .12);
     }
     .studio-photo {
       position: relative;
@@ -307,7 +385,7 @@
       position: absolute;
       left: 47rem;
       right: 47rem;
-      top: 1358rem;
+      top: 1254rem;
       height: 158rem;
       display: grid;
       grid-template-columns: 1fr 186rem;
@@ -361,16 +439,84 @@
       background: url("./assets/face-muse-5-archive-stack.webp") center / cover no-repeat;
       box-shadow: 0 12rem 28rem rgba(0, 0, 0, .22);
     }
+
+    .demo-panel {
+      position: absolute;
+      left: 47rem;
+      right: 47rem;
+      top: 1496rem;
+      display: grid;
+      gap: 14rem;
+      padding: 20rem;
+      border: 1rem solid rgba(255, 255, 255, .14);
+      border-radius: 26rem;
+      background: rgba(7, 35, 24, .58);
+      box-shadow: 0 18rem 40rem rgba(0, 0, 0, .18);
+      backdrop-filter: blur(14rem);
+    }
+
+    .demo-panel strong {
+      color: #fff;
+      font-size: 27rem;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .demo-actions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10rem;
+    }
+
+    .demo-button {
+      height: 62rem;
+      border: 1rem solid rgba(255, 255, 255, .13);
+      border-radius: 16rem;
+      color: rgba(255, 255, 255, .72);
+      background: rgba(255, 255, 255, .08);
+      font-size: 23rem;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0;
+      cursor: pointer;
+    }
+
+    .demo-button.is-active {
+      color: rgba(21, 54, 34, .96);
+      background: rgba(245, 215, 154, .94);
+    }
+
+    .demo-note {
+      min-height: 40rem;
+      margin: 0;
+      color: rgba(255, 255, 255, .62);
+      font-size: 22rem;
+      line-height: 1.35;
+      font-weight: 650;
+      letter-spacing: 0;
+    }
+
+    button:focus-visible,
+    a:focus-visible {
+      outline: 3rem solid rgba(255, 255, 255, .8);
+      outline-offset: 5rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+    }
   </style>
-  <script src="./assets/feed-components.js" defer></script>
 </head>
 <body>
   <main class="feed-screen" aria-labelledby="page-title">
     <div class="hero-grain" aria-hidden="true"></div>
-
-    <feed-status></feed-status>
-
-    <feed-top-nav active="推荐"></feed-top-nav>
 
     <section class="content" aria-label="推荐内容">
       <div class="headline">
@@ -448,42 +594,95 @@
         <div class="archive-image" aria-hidden="true"></div>
       </section>
 
-      <feed-progress fills="100,100,100,100,88"></feed-progress>
-
-      <feed-actions label="推荐操作" primary="不感兴趣" secondary="查看详情" order="primary-secondary"></feed-actions>
-
-      <feed-swipe-tip text="人流热度 · 平台评分 · 作品风格"></feed-swipe-tip>
+      <section class="demo-panel" aria-label="匹配状态操作">
+        <strong>妆造匹配状态</strong>
+        <div class="demo-actions">
+          <button class="demo-button is-active" type="button" data-demo-action="match" aria-pressed="true">重新匹配</button>
+          <button class="demo-button" type="button" data-demo-action="studio" aria-pressed="false">锁定工作室</button>
+          <button class="demo-button" type="button" data-demo-action="archive" aria-pressed="false">查看档案</button>
+        </div>
+        <p class="demo-note" aria-live="polite">根据距离、评分和历史妆造偏好，实时更新推荐顺序。</p>
+      </section>
     </section>
-
-    <feed-bottom-nav></feed-bottom-nav>
-    <feed-home-indicator></feed-home-indicator>
   </main>
 
   <script src="./assets/gsap.min.js"></script>
   <script>
     window.addEventListener("DOMContentLoaded", () => {
+      const notes = {
+        match: "根据距离、评分和历史妆造偏好，实时更新推荐顺序。",
+        studio: "已锁定云朵造型工作室，推荐理由会同步到当前卡片。",
+        archive: "妆造档案记录 7 次历史妆造和 3 条避坑建议。"
+      };
+      const note = document.querySelector(".demo-note");
+      const primaryStudio = document.querySelector(".studio-card.primary");
+      const archiveCard = document.querySelector(".archive-card");
+      const actionButtons = Array.from(document.querySelectorAll("[data-demo-action]"));
+      const setDemo = (action) => {
+        actionButtons.forEach((button) => {
+          const isActive = button.dataset.demoAction === action;
+          button.classList.toggle("is-active", isActive);
+          button.setAttribute("aria-pressed", String(isActive));
+        });
+        if (note) {
+          note.textContent = notes[action] || notes.match;
+        }
+        primaryStudio?.classList.toggle("is-selected", action === "studio");
+        archiveCard?.classList.toggle("is-selected", action === "archive");
+      };
+
+      actionButtons.forEach((button) => {
+        button.addEventListener("click", () => setDemo(button.dataset.demoAction));
+      });
+
       if (!window.gsap) {
         document.documentElement.dataset.gsapLoaded = "false";
         return;
       }
       document.documentElement.dataset.gsapLoaded = "true";
 
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        gsap.set([".headline", ".discover-panel", ".studio-card", ".archive-card", ".progress span", ".action-button", ".swipe-tip", ".bottom-link"], { opacity: 1, clearProps: "transform" });
+      const find = (selector) => Array.from(document.querySelectorAll(selector));
+      const present = (...items) => items.flat().filter(Boolean);
+      const targets = {
+        hero: document.querySelector(".hero-grain"),
+        headline: document.querySelector(".headline"),
+        discover: document.querySelector(".discover-panel"),
+        studios: find(".studio-card"),
+        archive: archiveCard,
+        demo: document.querySelector(".demo-panel"),
+        pressables: find("button, .studio-card, .archive-card")
+      };
+      const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const entranceTargets = present(targets.headline, targets.discover, targets.studios, targets.archive, targets.demo);
+
+      if (reduceMotion) {
+        if (entranceTargets.length) {
+          gsap.set(entranceTargets, { autoAlpha: 1, clearProps: "transform" });
+        }
         return;
       }
 
-      gsap.from(".hero-grain", { scale: 1.08, duration: 1.1, ease: "power2.out" });
-      gsap.from(".status-bar, .top-nav", { y: -16, autoAlpha: 0, duration: 0.42, stagger: 0.08, ease: "power3.out" });
-      gsap.from(".headline", { y: 28, autoAlpha: 0, duration: 0.58, delay: 0.12, ease: "power3.out" });
-      gsap.from(".discover-panel", { y: 34, autoAlpha: 0, duration: 0.64, delay: 0.24, ease: "power3.out" });
-      gsap.from(".studio-card", { x: -22, autoAlpha: 0, duration: 0.5, delay: 0.44, stagger: 0.08, ease: "power3.out" });
-      gsap.from(".archive-card", { y: 18, autoAlpha: 0, duration: 0.42, delay: 0.62, ease: "power2.out" });
-      gsap.from(".progress span, .action-button, .swipe-tip", { y: 16, duration: 0.42, delay: 0.72, stagger: 0.04, ease: "power2.out" });
-      gsap.from(".bottom-link", { y: 16, duration: 0.38, delay: 0.78, stagger: 0.035, ease: "power2.out" });
-      gsap.to(".hero-grain", { scale: 1.045, duration: 7, repeat: -1, yoyo: true, ease: "sine.inOut" });
+      if (targets.hero) {
+        gsap.from(targets.hero, { scale: 1.08, duration: 1.1, ease: "power2.out" });
+        gsap.to(targets.hero, { scale: 1.045, duration: 7, repeat: -1, yoyo: true, ease: "sine.inOut" });
+      }
+      if (targets.headline) {
+        gsap.from(targets.headline, { y: 28, autoAlpha: 0, duration: 0.58, delay: 0.12, ease: "power3.out" });
+      }
+      if (targets.discover) {
+        gsap.from(targets.discover, { y: 34, autoAlpha: 0, duration: 0.64, delay: 0.24, ease: "power3.out" });
+      }
+      if (targets.studios.length) {
+        gsap.from(targets.studios, { x: -22, autoAlpha: 0, duration: 0.5, delay: 0.44, stagger: 0.08, ease: "power3.out" });
+      }
+      if (targets.archive) {
+        gsap.from(targets.archive, { y: 18, autoAlpha: 0, duration: 0.42, delay: 0.62, ease: "power2.out" });
+      }
+      if (targets.demo) {
+        gsap.from(targets.demo, { y: 18, autoAlpha: 0, duration: 0.38, delay: 0.7, ease: "power2.out" });
+      }
 
-      document.querySelectorAll("button, .bottom-link").forEach((item) => {
+      targets.pressables.forEach((item) => {
         item.addEventListener("click", (event) => {
           event.preventDefault();
           gsap.fromTo(item, { scale: 0.94 }, { scale: 1, duration: 0.34, ease: "back.out(2.2)" });

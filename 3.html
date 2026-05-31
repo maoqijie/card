@@ -6,7 +6,6 @@
   <meta name="description" content="Face Muse 抖音式推荐 feed 卡片，把收藏的妆先试成你的样子，看看合不合脸。">
   <link rel="icon" href="data:,">
   <link rel="preload" as="image" href="./assets/face-muse-person-feed.webp" fetchpriority="high">
-  <link rel="stylesheet" href="./assets/feed-components.css">
   <title>Face Muse - 把收藏的妆试成你的样子</title>
   <style>
     :root {
@@ -21,9 +20,35 @@
       --panel: rgba(36, 85, 56, 0.66);
       --panel-strong: rgba(31, 80, 52, 0.78);
       --accent: #ffffff;
-      --cta: rgba(88, 128, 91, 0.72);
       --hero-position: 50% 34%;
       font-size: calc(min(100vw, calc(100vh * 887 / 1920), 887px) / 887);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      background: var(--page-bg);
+    }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", Arial, sans-serif;
+    }
+
+    button,
+    a {
+      font: inherit;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     .feed-screen {
@@ -82,11 +107,54 @@
       animation: tap-pulse 0.24s ease-out;
     }
 
+    .content {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+    }
+
+    .headline {
+      position: absolute;
+      left: 47rem;
+      right: 44rem;
+      top: 284rem;
+      display: flex;
+      align-items: center;
+      gap: 24rem;
+    }
+
+    .headline h1 {
+      flex: 1;
+      margin: 0;
+      color: #fff;
+      font-size: var(--headline-size, 57rem);
+      line-height: 1.16;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-shadow: 0 8rem 28rem rgba(0, 0, 0, 0.42);
+    }
+
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      height: 43rem;
+      margin-top: 18rem;
+      padding: 0 18rem;
+      border: 1rem solid rgba(255, 255, 255, 0.34);
+      border-radius: 999rem;
+      color: rgba(255, 255, 255, 0.78);
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(16rem);
+      font-size: 22rem;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
     .info-card {
       position: absolute;
       left: 45rem;
       right: 45rem;
-      top: 508rem;
+      top: 386rem;
       height: 425rem;
       display: grid;
       grid-template-columns: 304rem 1fr;
@@ -464,7 +532,7 @@
       position: absolute;
       left: 47rem;
       right: 47rem;
-      top: 959rem;
+      top: 842rem;
     }
 
     .note-label {
@@ -573,7 +641,7 @@
       position: absolute;
       left: 47rem;
       right: 47rem;
-      top: 1394rem;
+      top: 1288rem;
       display: grid;
       gap: 10rem;
     }
@@ -699,10 +767,7 @@
     }
 
     .action-feedback {
-      position: absolute;
-      left: 46rem;
-      right: 46rem;
-      top: 1680rem;
+      position: static;
       display: flex;
       justify-content: center;
       pointer-events: none;
@@ -732,9 +797,56 @@
       transform: translateY(0);
     }
 
-    .swipe-tip.is-muted {
-      opacity: 0;
-      visibility: hidden;
+    .demo-panel {
+      position: absolute;
+      left: 47rem;
+      right: 47rem;
+      top: 1592rem;
+      display: grid;
+      gap: 14rem;
+      padding: 20rem;
+      border: 1rem solid rgba(255, 255, 255, 0.14);
+      border-radius: 26rem;
+      background: rgba(7, 35, 24, 0.58);
+      box-shadow: 0 18rem 40rem rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(14rem);
+    }
+
+    .demo-title {
+      margin: 0;
+      color: #fff;
+      font-size: 27rem;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .demo-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10rem;
+    }
+
+    .demo-actions .action-button {
+      height: 62rem;
+      border-radius: 16rem;
+      font-size: 23rem;
+    }
+
+    .action-button {
+      border: 0;
+      color: rgba(255, 255, 255, 0.92);
+      background: rgba(99, 139, 97, 0.72);
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0;
+      cursor: pointer;
+      backdrop-filter: blur(8rem);
+    }
+
+    .action-button.secondary {
+      color: rgba(255, 255, 255, 0.55);
+      background: rgba(93, 138, 93, 0.44);
     }
 
     @keyframes tap-pulse {
@@ -749,16 +861,12 @@
       outline-offset: 5rem;
     }
   </style>
-  <script src="./assets/feed-components.js" defer></script>
+  <script src="./assets/gsap.min.js" defer></script>
 </head>
 <body>
   <main class="feed-screen" aria-labelledby="page-title">
     <img class="hero-photo" src="./assets/face-muse-person-feed.webp" alt="" width="887" height="1920" fetchpriority="high" decoding="sync" loading="eager" aria-hidden="true">
     <div class="hero-grain" aria-hidden="true"></div>
-
-    <feed-status></feed-status>
-
-    <feed-top-nav active="推荐"></feed-top-nav>
 
     <section class="content" aria-label="推荐内容">
       <div class="headline">
@@ -878,32 +986,18 @@
         </div>
       </section>
 
-      <div class="progress" aria-hidden="true">
-        <span style="--fill: 100%"></span>
-        <span style="--fill: 55%"></span>
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-
-      <div class="action-row" aria-label="推荐操作">
-        <button class="action-button secondary" type="button" data-action="dismiss">不感兴趣</button>
-        <button class="action-button" type="button" data-action="save" aria-pressed="false">保存到练习册</button>
-        <button class="action-button secondary" type="button" data-action="detail">查看详情</button>
-      </div>
-
-      <div class="action-feedback" aria-live="polite">
-        <span class="action-toast"></span>
-      </div>
-
-      <div class="swipe-tip" aria-live="polite">
-        <span class="chevrons" aria-hidden="true"></span>
-        <span class="swipe-copy">上滑继续看推荐</span>
-      </div>
+      <section class="demo-panel" aria-label="试妆练习操作">
+        <p class="demo-title">试妆练习状态</p>
+        <div class="demo-actions" aria-label="推荐操作">
+          <button class="action-button secondary" type="button" data-action="dismiss">减少推荐</button>
+          <button class="action-button" type="button" data-action="save" aria-pressed="false">保存练习</button>
+          <button class="action-button secondary" type="button" data-action="detail">查看拆解</button>
+        </div>
+        <div class="action-feedback" aria-live="polite">
+          <span class="action-toast"></span>
+        </div>
+      </section>
     </section>
-
-    <feed-bottom-nav></feed-bottom-nav>
-    <feed-home-indicator></feed-home-indicator>
   </main>
 
   <script>
@@ -914,9 +1008,15 @@
       const practiceSteps = Array.from(document.querySelectorAll(".practice-step"));
       const practiceNote = document.querySelector(".practice-note");
       const flowCurrent = document.querySelector(".flow-current");
-      const progressBars = Array.from(document.querySelectorAll(".progress span"));
       const toast = document.querySelector(".action-toast");
-      const swipeCopy = document.querySelector(".swipe-copy");
+      const heroPhoto = document.querySelector(".hero-photo");
+      const headline = document.querySelector(".headline");
+      const infoCard = document.querySelector(".info-card");
+      const quotes = Array.from(document.querySelectorAll(".quote"));
+      const practicePreview = document.querySelector(".practice-preview");
+      const demoPanel = document.querySelector(".demo-panel");
+      const blendHandle = document.querySelector(".blend-handle");
+      const hasGsap = Boolean(window.gsap && !reduceMotion);
 
       let isSaved = false;
       let toastTimer = 0;
@@ -937,34 +1037,11 @@
         }
 
         toast.textContent = message;
-        const swipeTip = document.querySelector(".swipe-tip");
         window.clearTimeout(toastTimer);
         toast.classList.add("is-visible");
-        if (swipeTip) {
-          swipeTip.classList.add("is-muted");
-        }
         toastTimer = window.setTimeout(() => {
           toast.classList.remove("is-visible");
-          if (swipeTip) {
-            swipeTip.classList.remove("is-muted");
-          }
         }, 1500);
-      };
-
-      const setProgress = (activeIndex) => {
-        progressBars.forEach((bar, index) => {
-          if (index < activeIndex) {
-            bar.style.setProperty("--fill", "100%");
-            return;
-          }
-
-          if (index === activeIndex) {
-            bar.style.setProperty("--fill", "64%");
-            return;
-          }
-
-          bar.style.removeProperty("--fill");
-        });
       };
 
       const activateButton = (item, handler) => {
@@ -1000,7 +1077,6 @@
       };
 
       const selectStep = (activeStep) => {
-        const activeIndex = practiceSteps.indexOf(activeStep);
         practiceSteps.forEach((step) => {
           const isSelected = step === activeStep;
           step.classList.toggle("is-selected", isSelected);
@@ -1015,11 +1091,6 @@
           flowCurrent.textContent = activeStep.dataset.flow;
         }
 
-        if (swipeCopy && activeStep.dataset.flow) {
-          swipeCopy.textContent = `${activeStep.dataset.flow} 已预览，可继续上滑`;
-        }
-
-        setProgress(activeIndex);
         showToast(`${activeStep.dataset.flow} 已选中`);
 
         pulse(activeStep);
@@ -1042,14 +1113,14 @@
             isSaved = !isSaved;
             button.classList.toggle("is-saved", isSaved);
             button.setAttribute("aria-pressed", String(isSaved));
-            button.textContent = isSaved ? "已保存到练习册" : "保存到练习册";
+            button.textContent = isSaved ? "已保存练习" : "保存练习";
             showToast(isSaved ? "已保存，练习册会保留 4 步拆解" : "已取消保存");
             return;
           }
 
           if (action === "detail") {
             showToast("详情已展开到 4 步练习预览");
-            document.querySelector(".practice-preview")?.classList.add("is-highlight");
+            practicePreview?.classList.add("is-highlight");
             return;
           }
 
@@ -1057,11 +1128,46 @@
         });
       });
 
-      setProgress(0);
+      if (hasGsap) {
+        const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-      document.querySelectorAll(".icon-button, .bottom-link").forEach((item) => {
+        if (heroPhoto) {
+          intro.from(heroPhoto, { scale: 1.04, duration: 0.8 });
+        }
+
+        if (headline) {
+          intro.from(headline, { y: 26, autoAlpha: 0, duration: 0.48 }, "<0.08");
+        }
+
+        if (infoCard) {
+          intro.from(infoCard, { y: 34, autoAlpha: 0, duration: 0.56 }, "<0.1");
+        }
+
+        if (quotes.length) {
+          intro.from(quotes, { x: -20, autoAlpha: 0, duration: 0.42, stagger: 0.07 }, "<0.18");
+        }
+
+        if (practicePreview) {
+          intro.from(practicePreview, { y: 22, autoAlpha: 0, duration: 0.42 }, "<0.12");
+        }
+
+        if (demoPanel) {
+          intro.from(demoPanel, { y: 20, autoAlpha: 0, duration: 0.36 }, "<0.1");
+        }
+
+        if (blendHandle) {
+          gsap.to(blendHandle, { scale: 1.08, duration: 0.9, repeat: -1, yoyo: true, ease: "sine.inOut" });
+        }
+      }
+
+      document.querySelectorAll("button, .preview-card").forEach((item) => {
         item.addEventListener("click", (event) => {
           event.preventDefault();
+          if (hasGsap) {
+            gsap.fromTo(item, { scale: 0.96 }, { scale: 1, duration: 0.24, ease: "back.out(2.2)", overwrite: "auto" });
+            return;
+          }
+
           pulse(item);
         });
       });

@@ -6,7 +6,6 @@
   <meta name="description" content="Face Muse 美力榜和公开妆容激励页，展示连续登录、累计登录、公开妆容使用与拉新奖励。">
   <link rel="icon" href="data:,">
   <link rel="preload" as="image" href="./assets/4/main-face.webp" fetchpriority="high">
-  <link rel="stylesheet" href="./assets/feed-components.css">
   <title>Face Muse - 美力榜和公开妆容</title>
   <style>
     :root {
@@ -26,8 +25,33 @@
       --hero-position: 50% 38%;
       --hero-size: cover;
       --headline-size: 57rem;
-      --swipe-tip-top: 1698rem;
       font-size: calc(min(100vw, calc(100vh * 887 / 1920), 887px) / 887);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      background: var(--page-bg);
+    }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", Arial, sans-serif;
+    }
+
+    button {
+      font: inherit;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     .feed-screen {
@@ -90,12 +114,54 @@
         radial-gradient(circle at 78% 38%, rgba(159, 217, 165, 0.12), transparent 20%);
     }
 
+    .content {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+    }
+
+    .headline {
+      position: absolute;
+      left: 47rem;
+      right: 44rem;
+      top: 286rem;
+      display: flex;
+      align-items: center;
+      gap: 24rem;
+    }
+
+    .headline h1 {
+      flex: 1;
+      margin: 0;
+      color: #fff;
+      font-size: var(--headline-size);
+      line-height: 1.16;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-shadow: 0 8rem 28rem rgba(0, 0, 0, 0.42);
+    }
+
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      height: 43rem;
+      margin-top: 18rem;
+      padding: 0 18rem;
+      border: 1rem solid rgba(255, 255, 255, 0.34);
+      border-radius: 999rem;
+      color: rgba(255, 255, 255, 0.78);
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(16rem);
+      font-size: 22rem;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
 
     .rank-panel {
       position: absolute;
       left: 45rem;
       right: 45rem;
-      top: 508rem;
+      top: 388rem;
       height: 500rem;
       display: grid;
       align-content: start;
@@ -353,7 +419,7 @@
       position: absolute;
       left: 45rem;
       right: 45rem;
-      top: 1028rem;
+      top: 914rem;
       height: 500rem;
       display: grid;
       grid-template-rows: auto 1fr;
@@ -513,18 +579,86 @@
       color: rgba(255, 255, 255, 0.9);
       background: rgba(255, 255, 255, 0.16);
     }
+
+    .demo-panel {
+      position: absolute;
+      left: 47rem;
+      right: 47rem;
+      top: 1530rem;
+      display: grid;
+      gap: 14rem;
+      padding: 20rem;
+      border: 1rem solid rgba(255, 255, 255, 0.14);
+      border-radius: 26rem;
+      background: rgba(7, 35, 24, 0.58);
+      box-shadow: 0 18rem 40rem rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(14rem);
+    }
+
+    .demo-panel strong {
+      color: #fff;
+      font-size: 27rem;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .demo-actions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10rem;
+    }
+
+    .demo-button {
+      height: 62rem;
+      border: 1rem solid rgba(255, 255, 255, 0.13);
+      border-radius: 16rem;
+      color: rgba(255, 255, 255, 0.72);
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 23rem;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0;
+      cursor: pointer;
+    }
+
+    .demo-button.is-active {
+      color: rgba(21, 54, 34, 0.96);
+      background: rgba(245, 215, 154, 0.94);
+    }
+
+    .demo-note {
+      min-height: 40rem;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 22rem;
+      line-height: 1.35;
+      font-weight: 650;
+      letter-spacing: 0;
+    }
+
+    button:focus-visible,
+    .invite-task:focus-visible {
+      outline: 3rem solid rgba(255, 255, 255, 0.8);
+      outline-offset: 5rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+    }
   </style>
-  <script src="./assets/feed-components.js" defer></script>
 </head>
 <body>
   <main class="feed-screen" aria-labelledby="page-title">
     <div class="hero-grain" aria-hidden="true">
       <img class="hero-image" src="./assets/4/main-face.webp" alt="" width="408" height="476" loading="eager" decoding="sync" fetchpriority="high">
     </div>
-
-    <feed-status></feed-status>
-
-    <feed-top-nav active="推荐"></feed-top-nav>
 
     <section class="content" aria-label="推荐内容">
       <div class="headline">
@@ -652,15 +786,16 @@
         </div>
       </section>
 
-      <feed-progress fills="100,100,100,82,0"></feed-progress>
-
-      <feed-actions label="奖励操作" primary="查看规则" secondary="发布妆容" order="primary-secondary"></feed-actions>
-
-      <feed-swipe-tip text="公开妆容被使用，也能持续获得美力值"></feed-swipe-tip>
+      <section class="demo-panel" aria-label="奖励状态操作">
+        <strong>美力值状态</strong>
+        <div class="demo-actions">
+          <button class="demo-button is-active" type="button" data-demo-action="rules" aria-pressed="true">查看规则</button>
+          <button class="demo-button" type="button" data-demo-action="publish" aria-pressed="false">发布妆容</button>
+          <button class="demo-button" type="button" data-demo-action="invite" aria-pressed="false">邀请好友</button>
+        </div>
+        <p class="demo-note" aria-live="polite">连续登录、公开妆容被使用、邀请好友都会累积美力值。</p>
+      </section>
     </section>
-
-    <feed-bottom-nav></feed-bottom-nav>
-    <feed-home-indicator></feed-home-indicator>
   </main>
 
   <script src="./assets/gsap.min.js" defer></script>
@@ -698,6 +833,21 @@
       const state = { scope: "friends", metric: "streak" };
       const title = document.querySelector("[data-rank-title]");
       const rankList = document.querySelector(".rank-list");
+      const demoNotes = {
+        rules: "连续登录、公开妆容被使用、邀请好友都会累积美力值。",
+        publish: "发布妆容后，别人一键使用就会给你持续返还美力值。",
+        invite: "邀请 1 位新朋友完成首次试妆，双方都会获得奖励。"
+      };
+      const demoNote = document.querySelector(".demo-note");
+      const motionMedia = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const getTargets = (selector) => Array.from(document.querySelectorAll(selector));
+      const withTargets = (selector, callback) => {
+        const targets = getTargets(selector);
+        if (targets.length > 0) {
+          callback(targets);
+        }
+      };
+      const canAnimate = () => Boolean(window.gsap && !motionMedia.matches);
       const setActive = (selector, key, value) => {
         document.querySelectorAll(selector).forEach((button) => {
           const isActive = button.dataset[key] === value;
@@ -718,8 +868,10 @@
             <span class="rank-reward">${user.reward}</span>
           </div>
         `).join("");
-        if (animate && window.gsap && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-          gsap.fromTo(".rank-row", { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.28, stagger: 0.04, ease: "power2.out" });
+        if (animate && canAnimate()) {
+          withTargets(".rank-row", (rows) => {
+            gsap.fromTo(rows, { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.28, stagger: 0.04, ease: "power2.out" });
+          });
         }
       };
 
@@ -751,11 +903,38 @@
       });
 
       const inviteTask = document.querySelector(".invite-task");
-      inviteTask.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          inviteTask.click();
+      const playDemo = (action) => {
+        document.querySelectorAll("[data-demo-action]").forEach((button) => {
+          const isActive = button.dataset.demoAction === action;
+          button.classList.toggle("is-active", isActive);
+          button.setAttribute("aria-pressed", String(isActive));
+        });
+        if (demoNote) {
+          demoNote.textContent = demoNotes[action] || demoNotes.rules;
         }
+        if (action === "invite") {
+          inviteTask?.click();
+        }
+        if (action === "publish") {
+          document.querySelector(".public-card .use-button")?.click();
+        }
+      };
+      if (inviteTask) {
+        inviteTask.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            inviteTask.click();
+          }
+        });
+        inviteTask.addEventListener("click", () => {
+          if (demoNote) {
+            demoNote.textContent = demoNotes.invite;
+          }
+        });
+      }
+
+      document.querySelectorAll("[data-demo-action]").forEach((button) => {
+        button.addEventListener("click", () => playDemo(button.dataset.demoAction));
       });
 
       if (!window.gsap) {
@@ -764,28 +943,62 @@
       }
       document.documentElement.dataset.gsapLoaded = "true";
 
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        gsap.set([".headline", ".rank-panel", ".rank-row", ".invite-task", ".public-card", ".progress span", ".action-button", ".swipe-tip", ".bottom-link"], { opacity: 1, clearProps: "transform" });
-        return;
-      }
-
-      gsap.from(".status-bar, .top-nav", { y: -12, duration: 0.32, stagger: 0.05, ease: "power3.out" });
-      gsap.from(".headline", { y: 18, duration: 0.42, delay: 0.04, ease: "power3.out" });
-      gsap.from(".rank-panel", { y: 22, duration: 0.46, delay: 0.1, ease: "power3.out" });
-      gsap.from(".rank-row", { y: 10, duration: 0.3, delay: 0.16, stagger: 0.035, ease: "power2.out" });
-      gsap.from(".invite-task", { y: 10, duration: 0.3, delay: 0.22, ease: "power2.out" });
-      gsap.from(".public-card", { y: 16, duration: 0.38, delay: 0.18, stagger: 0.045, ease: "power3.out" });
-      gsap.from(".progress span, .action-button", { y: 16, duration: 0.42, delay: 0.7, stagger: 0.04, ease: "power2.out" });
-      gsap.from(".swipe-tip", { autoAlpha: 0, duration: 0.36, delay: 0.82, ease: "power2.out" });
-      gsap.from(".bottom-link", { y: 10, duration: 0.3, delay: 0.32, stagger: 0.025, ease: "power2.out" });
-      gsap.to(".hero-image", { scale: 1.035, duration: 7, delay: 2.8, repeat: -1, yoyo: true, ease: "sine.inOut" });
-
-      document.querySelectorAll("button, .bottom-link, .invite-task").forEach((item) => {
-        item.addEventListener("click", (event) => {
-          event.preventDefault();
-          gsap.fromTo(item, { scale: 0.94 }, { scale: 1, duration: 0.34, ease: "back.out(2.2)" });
+      const setStableMotionState = () => {
+        withTargets(".headline, .rank-panel, .rank-row, .invite-task, .public-card, .demo-panel", (items) => {
+          gsap.set(items, { opacity: 1, clearProps: "transform" });
         });
-      });
+      };
+      const playInitialMotion = () => {
+        withTargets(".headline", (items) => {
+          gsap.from(items, { y: 18, duration: 0.42, delay: 0.04, ease: "power3.out" });
+        });
+        withTargets(".rank-panel", (items) => {
+          gsap.from(items, { y: 22, duration: 0.46, delay: 0.1, ease: "power3.out" });
+        });
+        withTargets(".rank-row", (items) => {
+          gsap.from(items, { y: 10, duration: 0.3, delay: 0.16, stagger: 0.035, ease: "power2.out" });
+        });
+        withTargets(".invite-task", (items) => {
+          gsap.from(items, { y: 10, duration: 0.3, delay: 0.22, ease: "power2.out" });
+        });
+        withTargets(".public-card", (items) => {
+          gsap.from(items, { y: 16, duration: 0.38, delay: 0.18, stagger: 0.045, ease: "power3.out" });
+        });
+        withTargets(".demo-panel", (items) => {
+          gsap.from(items, { y: 18, autoAlpha: 0, duration: 0.38, delay: 0.38, ease: "power2.out" });
+        });
+        withTargets(".hero-image", (items) => {
+          gsap.to(items, { scale: 1.035, duration: 7, delay: 2.8, repeat: -1, yoyo: true, ease: "sine.inOut" });
+        });
+      };
+      const bindPressMotion = () => {
+        const handlers = getTargets("button, .invite-task").map((item) => {
+          const handler = () => {
+            if (canAnimate()) {
+              gsap.fromTo(item, { scale: 0.94 }, { scale: 1, duration: 0.34, ease: "back.out(2.2)" });
+            }
+          };
+          item.addEventListener("click", handler);
+          return { item, handler };
+        });
+        return () => {
+          handlers.forEach(({ item, handler }) => item.removeEventListener("click", handler));
+        };
+      };
+
+      if (typeof gsap.matchMedia === "function") {
+        const media = gsap.matchMedia();
+        media.add("(prefers-reduced-motion: reduce)", setStableMotionState);
+        media.add("(prefers-reduced-motion: no-preference)", () => {
+          playInitialMotion();
+          return bindPressMotion();
+        });
+      } else if (motionMedia.matches) {
+        setStableMotionState();
+      } else {
+        playInitialMotion();
+        bindPressMotion();
+      }
     });
   </script>
 </body>

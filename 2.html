@@ -8,7 +8,6 @@
   <link rel="preload" as="image" href="./assets/face-muse-2-hero-feed.webp" fetchpriority="high">
   <link rel="preload" as="image" href="./assets/face-muse-2-brow-coach-card.jpg">
   <link rel="preload" as="image" href="./assets/face-muse-2-lash.webp">
-  <link rel="stylesheet" href="./assets/feed-components.css">
   <title>Face Muse - 眉眼先稳住，再谈精修</title>
   <style>
     :root {
@@ -31,6 +30,32 @@
       font-size: calc(min(100vw, calc(100vh * 887 / 1920), 887px) / 887);
     }
 
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      background: var(--page-bg);
+    }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", Arial, sans-serif;
+    }
+
+    button,
+    a {
+      font: inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+
     .feed-screen {
       position: relative;
       width: calc(var(--screen-w) * 1rem);
@@ -39,8 +64,7 @@
       isolation: isolate;
       color: var(--ink);
       background:
-        linear-gradient(180deg, rgba(1, 15, 9, 0.24) 0%, rgba(5, 61, 34, 0.28) 31%, rgba(3, 52, 30, 0.96) 78%, #03100b 100%),
-        var(--hero-image) var(--hero-position) / var(--hero-size) no-repeat;
+        linear-gradient(180deg, rgba(1, 15, 9, 0.24) 0%, rgba(5, 61, 34, 0.28) 31%, rgba(3, 52, 30, 0.96) 78%, #03100b 100%);
     }
 
     .feed-screen::before,
@@ -65,6 +89,17 @@
         radial-gradient(ellipse at center, transparent 42%, rgba(0, 0, 0, 0.28) 100%);
     }
 
+    .hero-image {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: var(--hero-position);
+    }
+
     .hero-grain {
       position: absolute;
       inset: -28rem;
@@ -82,17 +117,57 @@
       transform-origin: center;
       background:
         radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.08), transparent 18%),
-        radial-gradient(circle at 78% 38%, rgba(159, 217, 165, 0.12), transparent 20%),
-        var(--hero-image) var(--hero-position) / var(--hero-size) no-repeat;
-      animation: hero-breathe 7s 1.1s ease-in-out infinite alternate;
-      will-change: transform;
+        radial-gradient(circle at 78% 38%, rgba(159, 217, 165, 0.12), transparent 20%);
+    }
+
+    .headline {
+      position: absolute;
+      left: 47rem;
+      right: 44rem;
+      top: 288rem;
+      display: flex;
+      align-items: center;
+      gap: 24rem;
+    }
+
+    .headline h1 {
+      flex: 1;
+      margin: 0;
+      color: #fff;
+      font-size: var(--headline-size);
+      line-height: 1.16;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-shadow: 0 8rem 28rem rgba(0, 0, 0, 0.42);
+    }
+
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      height: 43rem;
+      margin-top: 18rem;
+      padding: 0 18rem;
+      border: 1rem solid rgba(255, 255, 255, 0.34);
+      border-radius: 999rem;
+      color: rgba(255, 255, 255, 0.78);
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(16rem);
+      font-size: 22rem;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .content {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
     }
 
     .info-card {
       position: absolute;
       left: 45rem;
       right: 45rem;
-      top: 486rem;
+      top: 392rem;
       height: 404rem;
       overflow: hidden;
       border: 1rem solid rgba(255, 255, 255, 0.16);
@@ -452,7 +527,7 @@
       position: absolute;
       left: 47rem;
       right: 47rem;
-      top: 1040rem;
+      top: 890rem;
     }
 
     .note-label {
@@ -577,16 +652,81 @@
       from { transform: translateY(-42rem); opacity: 0.42; }
       to { transform: translateY(48rem); opacity: 0.82; }
     }
+
+    .product-state-panel {
+      position: absolute;
+      left: 47rem;
+      right: 47rem;
+      top: 1492rem;
+      display: grid;
+      gap: 16rem;
+      padding: 20rem;
+      border: 1rem solid rgba(255, 255, 255, 0.14);
+      border-radius: 26rem;
+      background: rgba(7, 35, 24, 0.58);
+      box-shadow: 0 18rem 40rem rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(14rem);
+    }
+
+    .product-state-panel strong {
+      color: #fff;
+      font-size: 27rem;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .state-actions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10rem;
+    }
+
+    .state-button {
+      height: 62rem;
+      border: 1rem solid rgba(255, 255, 255, 0.13);
+      border-radius: 16rem;
+      color: rgba(255, 255, 255, 0.72);
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 24rem;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0;
+      cursor: pointer;
+      will-change: transform;
+    }
+
+    .state-button.is-active {
+      color: rgba(21, 54, 34, 0.96);
+      background: rgba(245, 215, 154, 0.94);
+    }
+
+    .state-note {
+      min-height: 40rem;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 22rem;
+      line-height: 1.35;
+      font-weight: 650;
+      letter-spacing: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
   </style>
-  <script src="./assets/feed-components.js" defer></script>
 </head>
 <body>
   <main class="feed-screen" aria-labelledby="page-title">
+    <img class="hero-image" src="./assets/face-muse-2-hero-feed.webp" width="887" height="1920" alt="" aria-hidden="true" fetchpriority="high" loading="eager" decoding="async">
     <div class="hero-grain" aria-hidden="true"></div>
-
-    <feed-status></feed-status>
-
-    <feed-top-nav active="推荐"></feed-top-nav>
 
     <section class="content" aria-label="推荐内容">
       <div class="headline">
@@ -645,15 +785,16 @@
         </div>
       </section>
 
-      <feed-progress fills="100,63,0,0,0"></feed-progress>
-
-      <feed-actions label="推荐操作" primary="查看详情" secondary="不感兴趣" order="secondary-primary"></feed-actions>
-
-      <feed-swipe-tip text="上滑继续看推荐"></feed-swipe-tip>
+      <section class="product-state-panel" aria-label="眉眼校准状态">
+        <strong>眉眼校准状态</strong>
+        <div class="state-actions">
+          <button class="state-button is-active" type="button" data-state-mode="position" aria-pressed="true">定位</button>
+          <button class="state-button" type="button" data-state-mode="fill" aria-pressed="false">补空</button>
+          <button class="state-button" type="button" data-state-mode="review" aria-pressed="false">复查</button>
+        </div>
+        <p class="state-note" aria-live="polite">先把眉峰压在蓝线内，确保两侧高度稳定。</p>
+      </section>
     </section>
-
-    <feed-bottom-nav></feed-bottom-nav>
-    <feed-home-indicator></feed-home-indicator>
   </main>
 
   <script>
@@ -691,6 +832,20 @@
       const secondaryGuidance = document.querySelector("#secondary-guidance");
       const cameraGuidance = document.querySelector("#camera-guidance");
       const infoCard = document.querySelector(".info-card");
+      const stateButtons = Array.from(document.querySelectorAll("[data-state-mode]"));
+      const stateNote = document.querySelector(".state-note");
+      const productStatePanel = document.querySelector(".product-state-panel");
+      const headline = document.querySelector(".headline");
+      const quotes = Array.from(document.querySelectorAll(".quote"));
+      const scanLine = document.querySelector(".scan-line");
+      let hasGsap = Boolean(window.gsap && !reduceMotion);
+      let introPlayed = false;
+
+      const setText = (element, value) => {
+        if (element) {
+          element.textContent = value;
+        }
+      };
 
       const setMode = (mode) => {
         const next = modes[mode] || modes.position;
@@ -701,19 +856,31 @@
           tab.setAttribute("aria-pressed", String(isActive));
         });
 
+        stateButtons.forEach((button) => {
+          const isActive = button.dataset.stateMode === mode;
+          button.classList.toggle("is-active", isActive);
+          button.setAttribute("aria-pressed", String(isActive));
+        });
+
         tags.forEach((tag) => tag.classList.toggle("is-active", tag.dataset.tag === mode));
 
-        coachCopy.textContent = next.copy;
-        primaryGuidance.textContent = next.primary;
-        voiceGuidance.textContent = next.voice;
-        secondaryGuidance.textContent = next.secondary;
-        cameraGuidance.textContent = next.camera;
+        setText(coachCopy, next.copy);
+        setText(primaryGuidance, next.primary);
+        setText(voiceGuidance, next.voice);
+        setText(secondaryGuidance, next.secondary);
+        setText(cameraGuidance, next.camera);
+        setText(stateNote, next.copy);
 
-        if (!reduceMotion) {
-          infoCard.animate(
-            [{ transform: "translateY(0)" }, { transform: "translateY(-4rem)" }, { transform: "translateY(0)" }],
-            { duration: 220, easing: "ease-out" }
-          );
+        if (hasGsap) {
+          const activeTag = tags.find((tag) => tag.dataset.tag === mode);
+
+          if (infoCard) {
+            gsap.fromTo(infoCard, { y: -4 }, { y: 0, duration: 0.24, ease: "power2.out", overwrite: "auto" });
+          }
+
+          if (activeTag) {
+            gsap.fromTo(activeTag, { scale: 0.94 }, { scale: 1, duration: 0.28, ease: "back.out(2)", overwrite: "auto" });
+          }
         }
       };
 
@@ -729,20 +896,71 @@
         });
       });
 
-      document.querySelectorAll("button, .bottom-link").forEach((item) => {
-        item.addEventListener("click", (event) => {
-          if (item.tagName === "A") {
-            event.preventDefault();
-          }
+      stateButtons.forEach((button) => {
+        button.addEventListener("click", () => setMode(button.dataset.stateMode));
+      });
 
-          if (reduceMotion) {
+      const playIntro = () => {
+        if (!hasGsap || introPlayed) {
+          return;
+        }
+
+        introPlayed = true;
+        const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        if (headline) {
+          intro.from(headline, { y: 26, autoAlpha: 0, duration: 0.48 });
+        }
+
+        if (infoCard) {
+          intro.from(infoCard, { y: 34, autoAlpha: 0, duration: 0.56 }, "<0.12");
+        }
+
+        if (quotes.length > 0) {
+          intro.from(quotes, { x: -20, autoAlpha: 0, duration: 0.42, stagger: 0.07 }, "<0.2");
+        }
+
+        if (productStatePanel) {
+          intro.from(productStatePanel, { y: 24, autoAlpha: 0, duration: 0.42 }, "<0.12");
+        }
+
+        if (scanLine) {
+          gsap.to(scanLine, { y: 42, duration: 1.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
+        }
+      };
+
+      const loadMotion = () => {
+        if (reduceMotion) {
+          return;
+        }
+
+        if (window.gsap) {
+          hasGsap = true;
+          playIntro();
+          return;
+        }
+
+        const script = document.createElement("script");
+        script.src = "./assets/gsap.min.js";
+        script.async = true;
+        script.onload = () => {
+          hasGsap = Boolean(window.gsap && !reduceMotion);
+          playIntro();
+        };
+        document.head.append(script);
+      };
+
+      window.addEventListener("load", () => {
+        window.setTimeout(loadMotion, 1800);
+      }, { once: true });
+
+      document.querySelectorAll("button").forEach((item) => {
+        item.addEventListener("click", (event) => {
+          if (!hasGsap) {
             return;
           }
 
-          item.animate(
-            [{ transform: "scale(0.96)" }, { transform: "scale(1)" }],
-            { duration: 180, easing: "ease-out" }
-          );
+          gsap.fromTo(item, { scale: 0.96 }, { scale: 1, duration: 0.24, ease: "back.out(2.2)", overwrite: "auto" });
         });
       });
     });
