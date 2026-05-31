@@ -6,7 +6,6 @@
   <meta name="description" content="Face Muse 抖音式推荐 feed 卡片，把收藏的妆先试成你的样子，看看合不合脸。">
   <link rel="icon" href="data:,">
   <link rel="preload" as="image" href="./assets/face-muse-person-feed.webp" fetchpriority="high">
-  <link rel="preload" as="image" href="./assets/portrait-left.jpg">
   <link rel="stylesheet" href="./assets/feed-components.css">
   <title>Face Muse - 把收藏的妆试成你的样子</title>
   <style>
@@ -23,7 +22,6 @@
       --panel-strong: rgba(31, 80, 52, 0.78);
       --accent: #ffffff;
       --cta: rgba(88, 128, 91, 0.72);
-      --hero-image: url("./assets/face-muse-person-feed.webp");
       --hero-position: 50% 34%;
       font-size: calc(min(100vw, calc(100vh * 887 / 1920), 887px) / 887);
     }
@@ -35,9 +33,7 @@
       overflow: hidden;
       isolation: isolate;
       color: var(--ink);
-      background:
-        linear-gradient(180deg, rgba(1, 15, 9, 0.24) 0%, rgba(5, 61, 34, 0.28) 31%, rgba(3, 52, 30, 0.96) 78%, #03100b 100%),
-        var(--hero-image) var(--hero-position) / cover no-repeat;
+      background: linear-gradient(180deg, rgba(1, 15, 9, 0.24) 0%, rgba(5, 61, 34, 0.28) 31%, rgba(3, 52, 30, 0.96) 78%, #03100b 100%);
     }
 
     .feed-screen::before,
@@ -53,7 +49,6 @@
       background:
         linear-gradient(180deg, rgba(0, 0, 0, 0.34) 0%, rgba(0, 0, 0, 0.08) 21%, rgba(7, 78, 43, 0.34) 47%, rgba(2, 47, 27, 0.96) 87%, #000 100%),
         radial-gradient(ellipse at 50% 13%, rgba(255, 255, 255, 0.12), transparent 34%);
-      backdrop-filter: saturate(0.95);
     }
 
     .feed-screen::after {
@@ -68,19 +63,31 @@
       z-index: 0;
       background:
         radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.08), transparent 18%),
-        radial-gradient(circle at 78% 38%, rgba(159, 217, 165, 0.12), transparent 20%),
-        var(--hero-image) var(--hero-position) / cover no-repeat;
-      filter: saturate(0.86) contrast(1.04);
+        radial-gradient(circle at 78% 38%, rgba(159, 217, 165, 0.12), transparent 20%);
       transform: scale(1.02);
     }
 
+    .hero-photo {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: var(--hero-position);
+      opacity: 0.96;
+    }
+
+    .is-pulsing {
+      animation: tap-pulse 0.24s ease-out;
+    }
 
     .info-card {
       position: absolute;
       left: 45rem;
       right: 45rem;
       top: 508rem;
-      height: 407rem;
+      height: 425rem;
       display: grid;
       grid-template-columns: 304rem 1fr;
       gap: 18rem;
@@ -190,7 +197,6 @@
       font-size: 23rem;
       line-height: 1;
       font-weight: 900;
-      backdrop-filter: blur(7rem);
     }
 
     .preview-caption {
@@ -243,8 +249,9 @@
       z-index: 1;
       min-width: 0;
       display: grid;
-      grid-template-rows: auto auto auto 1fr;
-      gap: 12rem;
+      grid-template-rows: auto;
+      align-content: start;
+      gap: 9rem;
     }
 
     .match-kicker {
@@ -292,15 +299,15 @@
     .match-copy {
       margin: 0;
       color: rgba(255, 255, 255, 0.82);
-      font-size: 25rem;
-      line-height: 1.35;
+      font-size: 24rem;
+      line-height: 1.28;
       font-weight: 650;
       letter-spacing: 0;
     }
 
     .fit-board {
       display: grid;
-      grid-template-columns: 104rem 1fr;
+      grid-template-columns: 96rem 1fr;
       align-items: center;
       gap: 14rem;
       min-width: 0;
@@ -310,7 +317,7 @@
       position: relative;
       display: grid;
       place-items: center;
-      width: 104rem;
+      width: 96rem;
       aspect-ratio: 1;
       border-radius: 50%;
       background: conic-gradient(#ffd0c9 0 86%, rgba(255, 255, 255, 0.13) 86% 100%);
@@ -336,15 +343,15 @@
 
     .match-meter strong {
       color: #fff;
-      font-size: 32rem;
+      font-size: 30rem;
       line-height: 1;
       font-weight: 900;
     }
 
     .match-meter small {
-      margin-top: 6rem;
+      margin-top: 5rem;
       color: rgba(255, 255, 255, 0.58);
-      font-size: 17rem;
+      font-size: 16rem;
       line-height: 1;
       font-weight: 700;
     }
@@ -357,7 +364,7 @@
     }
 
     .fit-chip {
-      min-height: 52rem;
+      min-height: 44rem;
       display: flex;
       align-items: center;
       gap: 8rem;
@@ -366,7 +373,7 @@
       border-radius: 12rem;
       color: rgba(255, 255, 255, 0.86);
       background: rgba(255, 255, 255, 0.08);
-      font-size: 21rem;
+      font-size: 19rem;
       line-height: 1;
       font-weight: 800;
       letter-spacing: 0;
@@ -390,7 +397,7 @@
     }
 
     .tap-pill {
-      height: 47rem;
+      height: 40rem;
       display: grid;
       place-items: center;
       padding: 0 12rem;
@@ -398,12 +405,59 @@
       border-radius: 12rem;
       color: rgba(255, 255, 255, 0.78);
       background: rgba(255, 255, 255, 0.08);
-      font-size: 21rem;
+      font-size: 20rem;
       line-height: 1;
       font-weight: 800;
       letter-spacing: 0;
       white-space: nowrap;
       overflow: hidden;
+    }
+
+    .flow-status {
+      display: grid;
+      grid-template-columns: 1.04fr 0.98fr 0.98fr;
+      gap: 8rem;
+    }
+
+    .flow-step {
+      min-width: 0;
+      min-height: 56rem;
+      display: grid;
+      align-content: center;
+      gap: 5rem;
+      padding: 8rem 10rem;
+      border: 1rem solid rgba(255, 255, 255, 0.13);
+      border-radius: 12rem;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .flow-step.is-active {
+      border-color: rgba(255, 208, 201, 0.38);
+      background: rgba(255, 208, 201, 0.13);
+    }
+
+    .flow-step small,
+    .flow-step strong {
+      display: block;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      letter-spacing: 0;
+    }
+
+    .flow-step small {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 17rem;
+      line-height: 1;
+      font-weight: 750;
+    }
+
+    .flow-step strong {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 20rem;
+      line-height: 1;
+      font-weight: 900;
     }
 
     .creator-note {
@@ -515,6 +569,179 @@
       border-left: 14rem solid rgba(40, 72, 46, 0.92);
     }
 
+    .practice-preview {
+      position: absolute;
+      left: 47rem;
+      right: 47rem;
+      top: 1394rem;
+      display: grid;
+      gap: 10rem;
+    }
+
+    .practice-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18rem;
+    }
+
+    .practice-title {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 26rem;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .practice-note {
+      min-width: 0;
+      margin: 0;
+      overflow: hidden;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 20rem;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .practice-steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 11rem;
+    }
+
+    .practice-step {
+      position: relative;
+      min-width: 0;
+      height: 98rem;
+      overflow: hidden;
+      border: 1rem solid rgba(255, 255, 255, 0.16);
+      border-radius: 16rem;
+      color: #fff;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.09)),
+        rgba(20, 66, 41, 0.74);
+      cursor: pointer;
+      box-shadow: 0 12rem 24rem rgba(0, 0, 0, 0.16);
+      transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease;
+    }
+
+    .practice-preview.is-highlight .practice-step.is-selected,
+    .practice-step.is-selected {
+      border-color: rgba(255, 208, 201, 0.62);
+      background:
+        linear-gradient(180deg, rgba(255, 208, 201, 0.18), rgba(255, 255, 255, 0.08)),
+        rgba(38, 88, 57, 0.86);
+      transform: translateY(-5rem);
+    }
+
+    .practice-thumb {
+      position: absolute;
+      inset: 0;
+      background: var(--step-image) center / cover no-repeat;
+      opacity: 0.72;
+      transform: scale(1.02);
+      transition: opacity 0.24s ease, transform 0.24s ease;
+    }
+
+    .practice-step.is-selected .practice-thumb {
+      opacity: 0.92;
+      transform: scale(1.08);
+    }
+
+    .practice-step::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.42));
+    }
+
+    .practice-index,
+    .practice-name {
+      position: absolute;
+      z-index: 1;
+      left: 13rem;
+      right: 13rem;
+      letter-spacing: 0;
+      text-shadow: 0 2rem 10rem rgba(0, 0, 0, 0.42);
+    }
+
+    .practice-index {
+      top: 12rem;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 18rem;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .practice-name {
+      bottom: 13rem;
+      overflow: hidden;
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 20rem;
+      line-height: 1.05;
+      font-weight: 900;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .practice-step:focus-visible {
+      outline: 3rem solid rgba(255, 255, 255, 0.8);
+      outline-offset: 5rem;
+    }
+
+    .action-button.is-saved {
+      color: rgba(42, 50, 37, 0.94);
+      background: linear-gradient(180deg, #ffd8d2, #ebb6ad);
+    }
+
+    .action-feedback {
+      position: absolute;
+      left: 46rem;
+      right: 46rem;
+      top: 1680rem;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .action-toast {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      min-height: 45rem;
+      padding: 0 20rem;
+      border: 1rem solid rgba(255, 255, 255, 0.15);
+      border-radius: 999rem;
+      color: rgba(255, 255, 255, 0.76);
+      background: rgba(0, 0, 0, 0.24);
+      font-size: 22rem;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 0;
+      opacity: 0;
+      transform: translateY(8rem);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .action-toast.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .swipe-tip.is-muted {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    @keyframes tap-pulse {
+      0% { transform: scale(0.96); }
+      100% { transform: scale(1); }
+    }
+
     .preview-card:focus-visible,
     button:focus-visible,
     a:focus-visible {
@@ -526,6 +753,7 @@
 </head>
 <body>
   <main class="feed-screen" aria-labelledby="page-title">
+    <img class="hero-photo" src="./assets/face-muse-person-feed.webp" alt="" width="887" height="1920" fetchpriority="high" decoding="sync" loading="eager" aria-hidden="true">
     <div class="hero-grain" aria-hidden="true"></div>
 
     <feed-status></feed-status>
@@ -575,6 +803,20 @@
               <span class="fit-chip">唇线柔化</span>
             </div>
           </div>
+          <div class="flow-status" aria-label="试妆流程状态" aria-live="polite">
+            <span class="flow-step is-active">
+              <small>当前步骤</small>
+              <strong class="flow-current">01 底妆</strong>
+            </span>
+            <span class="flow-step">
+              <small>推荐依据</small>
+              <strong>眼下留白</strong>
+            </span>
+            <span class="flow-step">
+              <small>妆效标签</small>
+              <strong>低饱和</strong>
+            </span>
+          </div>
           <div class="tap-strip" aria-hidden="true">
             <span class="tap-pill">点卡片切换</span>
             <span class="tap-pill">4 步可保存</span>
@@ -607,29 +849,139 @@
         </div>
       </section>
 
-      <feed-progress fills="100,63,0,0,0"></feed-progress>
+      <section class="practice-preview" aria-label="4 步练习预览">
+        <div class="practice-head">
+          <p class="practice-title">4 步练习预览</p>
+          <p class="practice-note" aria-live="polite">01 底妆明度拉平：先统一脸颊和鼻梁灰度。</p>
+        </div>
+        <div class="practice-steps" role="radiogroup" aria-label="妆容生成步骤">
+          <button class="practice-step is-selected" type="button" role="radio" aria-checked="true" data-flow="01 底妆" data-note="01 底妆明度拉平：先统一脸颊和鼻梁灰度。">
+            <span class="practice-thumb" style="--step-image: url('./assets/step-01.png')" aria-hidden="true"></span>
+            <span class="practice-index">01</span>
+            <span class="practice-name">底妆拉平</span>
+          </button>
+          <button class="practice-step" type="button" role="radio" aria-checked="false" data-flow="02 眼影" data-note="02 眼影范围缩小：保留卧蚕亮点，压低眼尾粉调。">
+            <span class="practice-thumb" style="--step-image: url('./assets/step-02.png')" aria-hidden="true"></span>
+            <span class="practice-index">02</span>
+            <span class="practice-name">眼影缩小</span>
+          </button>
+          <button class="practice-step" type="button" role="radio" aria-checked="false" data-flow="03 腮红" data-note="03 腮红位置上移：避开法令纹，把气色集中在苹果肌上方。">
+            <span class="practice-thumb" style="--step-image: url('./assets/step-03.png')" aria-hidden="true"></span>
+            <span class="practice-index">03</span>
+            <span class="practice-name">腮红上移</span>
+          </button>
+          <button class="practice-step" type="button" role="radio" aria-checked="false" data-flow="04 唇线" data-note="04 唇线边界柔化：降低外扩感，保留原本唇峰形状。">
+            <span class="practice-thumb" style="--step-image: url('./assets/step-04.png')" aria-hidden="true"></span>
+            <span class="practice-index">04</span>
+            <span class="practice-name">唇线柔化</span>
+          </button>
+        </div>
+      </section>
 
-      <feed-actions label="推荐操作" primary="查看详情" secondary="不感兴趣" order="secondary-primary"></feed-actions>
+      <div class="progress" aria-hidden="true">
+        <span style="--fill: 100%"></span>
+        <span style="--fill: 55%"></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
 
-      <feed-swipe-tip text="上滑继续看推荐"></feed-swipe-tip>
+      <div class="action-row" aria-label="推荐操作">
+        <button class="action-button secondary" type="button" data-action="dismiss">不感兴趣</button>
+        <button class="action-button" type="button" data-action="save" aria-pressed="false">保存到练习册</button>
+        <button class="action-button secondary" type="button" data-action="detail">查看详情</button>
+      </div>
+
+      <div class="action-feedback" aria-live="polite">
+        <span class="action-toast"></span>
+      </div>
+
+      <div class="swipe-tip" aria-live="polite">
+        <span class="chevrons" aria-hidden="true"></span>
+        <span class="swipe-copy">上滑继续看推荐</span>
+      </div>
     </section>
 
     <feed-bottom-nav></feed-bottom-nav>
     <feed-home-indicator></feed-home-indicator>
   </main>
 
-  <script src="./assets/gsap.min.js" defer></script>
   <script>
     window.addEventListener("DOMContentLoaded", () => {
-      if (!window.gsap) {
-        document.documentElement.dataset.gsapLoaded = "false";
-        return;
-      }
-
-      document.documentElement.dataset.gsapLoaded = "true";
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const previewCards = Array.from(document.querySelectorAll(".preview-card"));
       const matchCopy = document.querySelector(".match-copy");
+      const practiceSteps = Array.from(document.querySelectorAll(".practice-step"));
+      const practiceNote = document.querySelector(".practice-note");
+      const flowCurrent = document.querySelector(".flow-current");
+      const progressBars = Array.from(document.querySelectorAll(".progress span"));
+      const toast = document.querySelector(".action-toast");
+      const swipeCopy = document.querySelector(".swipe-copy");
+
+      let isSaved = false;
+      let toastTimer = 0;
+
+      const pulse = (target) => {
+        if (!target || reduceMotion) {
+          return;
+        }
+
+        target.classList.remove("is-pulsing");
+        void target.offsetWidth;
+        target.classList.add("is-pulsing");
+      };
+
+      const showToast = (message) => {
+        if (!toast) {
+          return;
+        }
+
+        toast.textContent = message;
+        const swipeTip = document.querySelector(".swipe-tip");
+        window.clearTimeout(toastTimer);
+        toast.classList.add("is-visible");
+        if (swipeTip) {
+          swipeTip.classList.add("is-muted");
+        }
+        toastTimer = window.setTimeout(() => {
+          toast.classList.remove("is-visible");
+          if (swipeTip) {
+            swipeTip.classList.remove("is-muted");
+          }
+        }, 1500);
+      };
+
+      const setProgress = (activeIndex) => {
+        progressBars.forEach((bar, index) => {
+          if (index < activeIndex) {
+            bar.style.setProperty("--fill", "100%");
+            return;
+          }
+
+          if (index === activeIndex) {
+            bar.style.setProperty("--fill", "64%");
+            return;
+          }
+
+          bar.style.removeProperty("--fill");
+        });
+      };
+
+      const activateButton = (item, handler) => {
+        item.addEventListener("click", (event) => {
+          event.preventDefault();
+          handler(event);
+        });
+
+        item.addEventListener("keydown", (event) => {
+          if (event.key !== "Enter" && event.key !== " ") {
+            return;
+          }
+
+          event.preventDefault();
+          handler(event);
+        });
+      };
 
       const selectPreview = (activeCard) => {
         previewCards.forEach((card) => {
@@ -642,49 +994,75 @@
           matchCopy.textContent = activeCard.dataset.copy;
         }
 
-        if (reduceMotion) {
-          return;
+        showToast(activeCard.classList.contains("self") ? "已切到自拍视频预演" : "已切到参考图灵感");
+
+        pulse(activeCard);
+      };
+
+      const selectStep = (activeStep) => {
+        const activeIndex = practiceSteps.indexOf(activeStep);
+        practiceSteps.forEach((step) => {
+          const isSelected = step === activeStep;
+          step.classList.toggle("is-selected", isSelected);
+          step.setAttribute("aria-checked", String(isSelected));
+        });
+
+        if (practiceNote && activeStep.dataset.note) {
+          practiceNote.textContent = activeStep.dataset.note;
         }
 
-        gsap.fromTo(activeCard.querySelector(".preview-image"), { scale: 1.04 }, { scale: 1.1, duration: 0.32, repeat: 1, yoyo: true, ease: "power2.out" });
-        gsap.fromTo(".fit-chip", { y: 5, autoAlpha: 0.72 }, { y: 0, autoAlpha: 1, duration: 0.28, stagger: 0.035, ease: "power2.out" });
-        gsap.fromTo(".blend-handle span", { x: -5 }, { x: 5, duration: 0.32, repeat: 1, yoyo: true, ease: "sine.inOut" });
+        if (flowCurrent && activeStep.dataset.flow) {
+          flowCurrent.textContent = activeStep.dataset.flow;
+        }
+
+        if (swipeCopy && activeStep.dataset.flow) {
+          swipeCopy.textContent = `${activeStep.dataset.flow} 已预览，可继续上滑`;
+        }
+
+        setProgress(activeIndex);
+        showToast(`${activeStep.dataset.flow} 已选中`);
+
+        pulse(activeStep);
       };
 
       previewCards.forEach((card) => {
-        card.addEventListener("click", () => selectPreview(card));
-        card.addEventListener("keydown", (event) => {
-          if (event.key !== "Enter" && event.key !== " ") {
+        activateButton(card, () => selectPreview(card));
+      });
+
+      practiceSteps.forEach((step) => {
+        activateButton(step, () => selectStep(step));
+      });
+
+      document.querySelectorAll("[data-action]").forEach((button) => {
+        activateButton(button, () => {
+          const action = button.dataset.action;
+          pulse(button);
+
+          if (action === "save") {
+            isSaved = !isSaved;
+            button.classList.toggle("is-saved", isSaved);
+            button.setAttribute("aria-pressed", String(isSaved));
+            button.textContent = isSaved ? "已保存到练习册" : "保存到练习册";
+            showToast(isSaved ? "已保存，练习册会保留 4 步拆解" : "已取消保存");
             return;
           }
-          event.preventDefault();
-          selectPreview(card);
+
+          if (action === "detail") {
+            showToast("详情已展开到 4 步练习预览");
+            document.querySelector(".practice-preview")?.classList.add("is-highlight");
+            return;
+          }
+
+          showToast("已减少这类推荐");
         });
       });
 
-      if (reduceMotion) {
-        return;
-      }
+      setProgress(0);
 
-      gsap.from(".hero-grain", { scale: 1.08, duration: 1.1, ease: "power2.out" });
-      gsap.from(".status-bar, .top-nav", { y: -16, autoAlpha: 0, duration: 0.42, stagger: 0.08, ease: "power3.out" });
-      gsap.from(".headline", { y: 28, autoAlpha: 0, duration: 0.58, delay: 0.12, ease: "power3.out" });
-      gsap.from(".info-card", { y: 34, autoAlpha: 0, duration: 0.64, delay: 0.24, ease: "power3.out" });
-      gsap.from(".preview-card", { y: 14, autoAlpha: 0, duration: 0.34, delay: 0.38, stagger: 0.05, ease: "power3.out" });
-      gsap.from(".match-panel > *", { y: 10, autoAlpha: 0, duration: 0.32, delay: 0.44, stagger: 0.035, ease: "power2.out" });
-      gsap.from(".fit-chip, .tap-pill", { y: 8, autoAlpha: 0, duration: 0.28, delay: 0.54, stagger: 0.025, ease: "power2.out" });
-      gsap.from(".quote", { x: -18, autoAlpha: 0, duration: 0.5, delay: 0.48, stagger: 0.09, ease: "power3.out" });
-      gsap.from(".progress span, .action-button, .swipe-tip", { y: 16, duration: 0.42, delay: 0.66, stagger: 0.04, ease: "power2.out" });
-      gsap.from(".bottom-link", { y: 16, duration: 0.38, delay: 0.72, stagger: 0.035, ease: "power2.out" });
-      gsap.to(".hero-grain", { scale: 1.045, duration: 7, repeat: -1, yoyo: true, ease: "sine.inOut" });
-      gsap.to(".match-meter", { scale: 1.035, duration: 1.3, repeat: -1, yoyo: true, ease: "sine.inOut" });
-      gsap.to(".blend-handle span", { x: 5, duration: 0.95, repeat: -1, yoyo: true, ease: "sine.inOut" });
-      gsap.to(".chevrons", { y: -7, duration: 0.9, repeat: -1, yoyo: true, ease: "sine.inOut" });
-
-      document.querySelectorAll("button, .bottom-link").forEach((item) => {
+      document.querySelectorAll(".icon-button, .bottom-link").forEach((item) => {
         item.addEventListener("click", (event) => {
           event.preventDefault();
-          gsap.fromTo(item, { scale: 0.96 }, { scale: 1, duration: 0.32, ease: "back.out(2.4)" });
+          pulse(item);
         });
       });
     });

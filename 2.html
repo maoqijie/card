@@ -6,6 +6,7 @@
   <meta name="description" content="Face Muse 抖音式推荐 feed 卡片，帮化妆新手把眉眼位置先找稳，再做精修。">
   <link rel="icon" href="data:,">
   <link rel="preload" as="image" href="./assets/face-muse-2-hero-feed.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="./assets/face-muse-2-brow-coach-card.jpg">
   <link rel="preload" as="image" href="./assets/face-muse-2-lash.webp">
   <link rel="stylesheet" href="./assets/feed-components.css">
   <title>Face Muse - 眉眼先稳住，再谈精修</title>
@@ -53,7 +54,7 @@
 
     .feed-screen::before {
       background:
-        linear-gradient(180deg, rgba(0, 0, 0, 0.34) 0%, rgba(0, 0, 0, 0.08) 21%, rgba(7, 78, 43, 0.34) 47%, rgba(2, 47, 27, 0.96) 87%, #000 100%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.28) 0%, rgba(0, 0, 0, 0.06) 21%, rgba(7, 78, 43, 0.28) 47%, rgba(2, 47, 27, 0.9) 87%, #000 100%),
         radial-gradient(ellipse at 50% 13%, rgba(255, 255, 255, 0.12), transparent 34%);
       backdrop-filter: saturate(0.95);
     }
@@ -87,16 +88,15 @@
       will-change: transform;
     }
 
-
     .info-card {
       position: absolute;
       left: 45rem;
       right: 45rem;
-      top: 508rem;
-      height: 407rem;
+      top: 486rem;
+      height: 404rem;
       overflow: hidden;
       border: 1rem solid rgba(255, 255, 255, 0.16);
-      border-radius: 34rem;
+      border-radius: 28rem;
       background:
         linear-gradient(115deg, rgba(255, 255, 255, 0.09), transparent 31%),
         linear-gradient(180deg, rgba(66, 112, 76, 0.64), rgba(18, 72, 43, 0.68));
@@ -105,6 +105,8 @@
     }
 
     .info-card-image {
+      position: absolute;
+      inset: 0;
       display: block;
       width: 100%;
       height: 100%;
@@ -112,40 +114,183 @@
       object-position: center;
     }
 
-    .stat-grid {
-      display: grid;
-      grid-template-columns: 1.28fr 1fr 1fr;
-      height: 104rem;
-      padding: 18rem 24rem 0;
-      gap: 12rem;
+    .scan-stage {
+      position: relative;
+      height: 255rem;
+      overflow: hidden;
+      isolation: isolate;
     }
 
-    .stat {
-      display: grid;
-      align-content: center;
-      gap: 10rem;
-      min-width: 0;
-      padding: 0 16rem;
-      border: 1rem solid rgba(255, 255, 255, 0.1);
-      border-radius: 14rem;
-      background: rgba(255, 255, 255, 0.07);
+    .scan-stage::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.34), transparent 38%, rgba(0, 0, 0, 0.46)),
+        linear-gradient(90deg, rgba(8, 45, 29, 0.4), transparent 32%, rgba(8, 45, 29, 0.25));
+      pointer-events: none;
     }
 
-    .stat span {
-      color: rgba(255, 255, 255, 0.56);
-      font-size: 24rem;
+    .scan-status {
+      position: absolute;
+      left: 18rem;
+      right: 18rem;
+      top: 16rem;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 9rem;
+    }
+
+    .scan-pill {
+      height: 38rem;
+      display: grid;
+      place-items: center;
+      padding: 0 10rem;
+      border: 1rem solid rgba(255, 255, 255, 0.16);
+      border-radius: 10rem;
+      color: rgba(255, 255, 255, 0.84);
+      background: rgba(0, 0, 0, 0.34);
+      font-size: 20rem;
       line-height: 1;
-      font-weight: 600;
+      font-weight: 850;
       letter-spacing: 0;
+      white-space: nowrap;
+      backdrop-filter: blur(8rem);
     }
 
-    .stat strong {
+    .scan-tags {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .scan-tag {
+      position: absolute;
+      display: inline-grid;
+      grid-template-columns: 12rem auto;
+      align-items: center;
+      gap: 7rem;
+      min-width: 112rem;
+      height: 39rem;
+      padding: 0 12rem;
+      border: 1rem solid rgba(255, 255, 255, 0.2);
+      border-radius: 11rem;
+      color: rgba(255, 255, 255, 0.76);
+      background: rgba(16, 59, 39, 0.68);
+      box-shadow: 0 8rem 22rem rgba(0, 0, 0, 0.22);
+      font-size: 20rem;
+      line-height: 1;
+      font-weight: 850;
+      letter-spacing: 0;
+      backdrop-filter: blur(8rem);
+      transition: transform 0.2s ease, color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .scan-tag::before {
+      content: "";
+      width: 12rem;
+      height: 12rem;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.76);
+      box-shadow: 0 0 0 6rem rgba(255, 255, 255, 0.12);
+    }
+
+    .scan-tag.is-active {
       color: #fff;
-      font-size: 31rem;
+      background: rgba(92, 132, 91, 0.82);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-3rem);
+    }
+
+    .scan-tag.is-active::before {
+      background: #fff;
+      box-shadow: 0 0 0 7rem rgba(255, 255, 255, 0.22), 0 0 18rem rgba(255, 255, 255, 0.52);
+    }
+
+    .scan-tag.peak {
+      left: 125rem;
+      top: 88rem;
+    }
+
+    .scan-tag.tail {
+      left: 354rem;
+      top: 127rem;
+    }
+
+    .scan-tag.lash {
+      right: 54rem;
+      bottom: 54rem;
+    }
+
+    .scan-line {
+      position: absolute;
+      left: 74rem;
+      right: 74rem;
+      top: 126rem;
+      z-index: 2;
+      height: 2rem;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.82), transparent);
+      box-shadow: 0 0 16rem rgba(255, 255, 255, 0.35);
+      animation: scan-line 2.2s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    .coach-panel {
+      position: relative;
+      min-height: 149rem;
+      padding: 14rem 18rem 16rem;
+      border-top: 1rem solid rgba(255, 255, 255, 0.1);
+      background:
+        linear-gradient(180deg, rgba(12, 55, 36, 0.54), rgba(4, 28, 19, 0.64)),
+        rgba(0, 0, 0, 0.18);
+    }
+
+    .mode-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8rem;
+      margin-bottom: 11rem;
+    }
+
+    .mode-tab {
+      height: 42rem;
+      border: 1rem solid rgba(255, 255, 255, 0.13);
+      border-radius: 10rem;
+      color: rgba(255, 255, 255, 0.62);
+      background: rgba(255, 255, 255, 0.06);
+      font-size: 20rem;
       line-height: 1;
       font-weight: 900;
       letter-spacing: 0;
-      white-space: nowrap;
+      cursor: pointer;
+      transition: transform 0.18s ease, color 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+    }
+
+    .mode-tab.is-active {
+      color: rgba(31, 65, 43, 0.96);
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(255, 255, 255, 0.9);
+    }
+
+    .mode-tab:active {
+      transform: scale(0.96);
+    }
+
+    .coach-copy {
+      min-height: 0;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 22rem;
+      line-height: 1.28;
+      font-weight: 650;
+      letter-spacing: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .solution-map {
@@ -307,11 +452,11 @@
       position: absolute;
       left: 47rem;
       right: 47rem;
-      top: 940rem;
+      top: 1040rem;
     }
 
     .note-label {
-      margin: 0 0 18rem;
+      margin: 0 0 14rem;
       color: rgba(255, 255, 255, 0.6);
       font-size: 29rem;
       line-height: 1;
@@ -320,24 +465,24 @@
 
     .quote-list {
       display: grid;
-      gap: 18rem;
+      gap: 14rem;
     }
 
     .quote {
       position: relative;
-      min-height: 164rem;
-      padding: 20rem 146rem 18rem 25rem;
+      min-height: 144rem;
+      padding: 16rem 138rem 15rem 22rem;
       overflow: hidden;
       border: 1rem solid rgba(255, 255, 255, 0.11);
-      border-radius: 22rem;
+      border-radius: 18rem;
       background: rgba(255, 255, 255, 0.075);
       backdrop-filter: blur(10rem);
     }
 
     .quote h2 {
-      margin: 0 0 12rem;
+      margin: 0 0 10rem;
       color: #fff;
-      font-size: 30rem;
+      font-size: 27rem;
       line-height: 1.22;
       font-weight: 900;
       letter-spacing: 0;
@@ -346,13 +491,15 @@
     .quote-mark {
       display: inline-grid;
       place-items: center;
-      width: 48rem;
-      height: 31rem;
-      margin-bottom: 10rem;
+      width: max-content;
+      min-width: 48rem;
+      height: 29rem;
+      margin-bottom: 8rem;
+      padding: 0 12rem;
       border-radius: 999rem;
       color: rgba(255, 255, 255, 0.8);
       background: rgba(255, 255, 255, 0.12);
-      font-size: 21rem;
+      font-size: 19rem;
       line-height: 1;
       font-family: inherit;
       font-weight: 900;
@@ -363,7 +510,7 @@
       align-items: center;
       gap: 12rem;
       color: rgba(255, 255, 255, 0.46);
-      font-size: 25rem;
+      font-size: 22rem;
       line-height: 1.35;
       font-weight: 600;
       letter-spacing: 0;
@@ -380,12 +527,12 @@
 
     .thumb {
       position: absolute;
-      right: 20rem;
-      top: 20rem;
-      width: 112rem;
-      height: 124rem;
+      right: 17rem;
+      top: 17rem;
+      width: 105rem;
+      height: 110rem;
       overflow: hidden;
-      border-radius: 16rem;
+      border-radius: 14rem;
       background: var(--thumb) center / cover no-repeat;
       box-shadow: 0 12rem 28rem rgba(0, 0, 0, 0.22);
     }
@@ -425,6 +572,11 @@
       from { transform: scale(0.96); }
       to { transform: scale(1.04); }
     }
+
+    @keyframes scan-line {
+      from { transform: translateY(-42rem); opacity: 0.42; }
+      to { transform: translateY(48rem); opacity: 0.82; }
+    }
   </style>
   <script src="./assets/feed-components.js" defer></script>
 </head>
@@ -442,29 +594,51 @@
         <span class="ai-badge">AI推荐</span>
       </div>
 
-      <article class="info-card" aria-label="AI 眉妆指导示意图">
-        <img class="info-card-image" src="./assets/face-muse-2-brow-coach-card.jpg" width="900" height="458" alt="AI 眉妆教练识别眉笔、眉峰和眉尾的横版相机示意图" loading="eager" decoding="async">
+      <article class="info-card" aria-label="AI 眉眼实时校准卡">
+        <div class="scan-stage">
+          <img class="info-card-image" src="./assets/face-muse-2-brow-coach-card.jpg" width="900" height="458" alt="AI 眉妆教练识别眉笔、眉峰和眉尾的横版相机示意图" loading="eager" decoding="async">
+          <div class="scan-status" aria-label="当前检测状态">
+            <span class="scan-pill">实时校准中</span>
+            <span class="scan-pill">镜框距离偏近</span>
+            <span class="scan-pill">建议力度 -30%</span>
+          </div>
+          <div class="scan-tags" aria-hidden="true">
+            <span class="scan-tag peak is-active" data-tag="position">眉峰定位</span>
+            <span class="scan-tag tail" data-tag="fill">眉尾空隙 2mm</span>
+            <span class="scan-tag lash" data-tag="review">睫毛角度 42°</span>
+          </div>
+          <span class="scan-line" aria-hidden="true"></span>
+        </div>
+
+        <div class="coach-panel">
+          <div class="mode-tabs" role="group" aria-label="眉眼校准模式">
+            <button class="mode-tab is-active" type="button" aria-pressed="true" data-mode="position">定位</button>
+            <button class="mode-tab" type="button" aria-pressed="false" data-mode="fill">补空</button>
+            <button class="mode-tab" type="button" aria-pressed="false" data-mode="review">复查</button>
+          </div>
+          <p class="coach-copy" id="coach-copy">先把眉峰压在蓝线内，眉笔横向轻扫，保证两侧高度稳定后再补颜色。</p>
+        </div>
       </article>
 
       <section class="creator-note" aria-label="实时指导">
         <p class="note-label">实时指导</p>
         <div class="quote-list">
           <article class="quote">
-            <span class="quote-mark">气泡</span>
-            <h2>眉笔停在蓝线内，先补眉尾空隙，不要压到镜框。</h2>
+            <span class="quote-mark">AI 语音</span>
+            <h2 id="primary-guidance">眉笔停在蓝线内，先定眉峰高度，不要急着拉长眉尾。</h2>
             <div class="author-row">
               <span class="avatar" style="--avatar: url('./assets/face-muse-2-avatar.webp')"></span>
-              <span>同步语音：向外轻扫两笔，力度减半。</span>
+              <span id="voice-guidance">同步语音：从眉峰向外轻扫两笔，力度减半。</span>
             </div>
             <div class="thumb" style="--thumb: url('./assets/face-muse-2-lash.webp')"><span class="play"></span></div>
           </article>
 
           <article class="quote">
             <span class="quote-mark">镜头</span>
-            <h2>检测到睫毛贴近镜片，夹子角度保持 42°。</h2>
+            <h2 id="secondary-guidance">镜头已锁定眉峰，保持脸部正对屏幕 2 秒。</h2>
             <div class="author-row">
               <span class="avatar" style="--avatar: url('./assets/portrait-right.jpg')"></span>
-              <span>画面自动放大眼尾，给出下一步落点。</span>
+              <span id="camera-guidance">画面自动放大眉峰，确认两侧高度差小于 1mm。</span>
             </div>
             <div class="thumb" style="--thumb: url('./assets/face-muse-2-brow.webp')"><span class="play"></span></div>
           </article>
@@ -482,5 +656,96 @@
     <feed-home-indicator></feed-home-indicator>
   </main>
 
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const modes = {
+        position: {
+          copy: "先把眉峰压在蓝线内，眉笔横向轻扫，保证两侧高度稳定后再补颜色。",
+          primary: "眉笔停在蓝线内，先定眉峰高度，不要急着拉长眉尾。",
+          voice: "同步语音：从眉峰向外轻扫两笔，力度减半。",
+          secondary: "镜头已锁定眉峰，保持脸部正对屏幕 2 秒。",
+          camera: "画面自动放大眉峰，确认两侧高度差小于 1mm。"
+        },
+        fill: {
+          copy: "眉尾空隙还剩 2mm，先用短线补形，再用刷头把边缘扫开。",
+          primary: "眉尾缺口在镜框上方，向外补两笔就停，不要继续加粗。",
+          voice: "同步语音：笔尖抬高 15°，从空隙内侧往外带。",
+          secondary: "AI 已避开镜框遮挡区，当前建议力度降低 30%。",
+          camera: "画面自动跟踪眉尾，补色后会提示是否需要柔化。"
+        },
+        review: {
+          copy: "眉尾完成后复查睫毛角度，夹子保持 42°，避免睫毛贴近镜片。",
+          primary: "检测到睫毛贴近镜片，先复查夹翘角度，再进入眼线精修。",
+          voice: "同步语音：夹子停在睫毛根部 1 秒，向上轻压。",
+          secondary: "镜头已切到眼尾，睫毛与镜片距离恢复到安全范围。",
+          camera: "画面自动放大眼尾，给出睫毛和镜框间距。"
+        }
+      };
+
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const tabs = Array.from(document.querySelectorAll(".mode-tab"));
+      const tags = Array.from(document.querySelectorAll(".scan-tag"));
+      const coachCopy = document.querySelector("#coach-copy");
+      const primaryGuidance = document.querySelector("#primary-guidance");
+      const voiceGuidance = document.querySelector("#voice-guidance");
+      const secondaryGuidance = document.querySelector("#secondary-guidance");
+      const cameraGuidance = document.querySelector("#camera-guidance");
+      const infoCard = document.querySelector(".info-card");
+
+      const setMode = (mode) => {
+        const next = modes[mode] || modes.position;
+
+        tabs.forEach((tab) => {
+          const isActive = tab.dataset.mode === mode;
+          tab.classList.toggle("is-active", isActive);
+          tab.setAttribute("aria-pressed", String(isActive));
+        });
+
+        tags.forEach((tag) => tag.classList.toggle("is-active", tag.dataset.tag === mode));
+
+        coachCopy.textContent = next.copy;
+        primaryGuidance.textContent = next.primary;
+        voiceGuidance.textContent = next.voice;
+        secondaryGuidance.textContent = next.secondary;
+        cameraGuidance.textContent = next.camera;
+
+        if (!reduceMotion) {
+          infoCard.animate(
+            [{ transform: "translateY(0)" }, { transform: "translateY(-4rem)" }, { transform: "translateY(0)" }],
+            { duration: 220, easing: "ease-out" }
+          );
+        }
+      };
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => setMode(tab.dataset.mode));
+        tab.addEventListener("keydown", (event) => {
+          if (event.key !== "Enter" && event.key !== " ") {
+            return;
+          }
+
+          event.preventDefault();
+          setMode(tab.dataset.mode);
+        });
+      });
+
+      document.querySelectorAll("button, .bottom-link").forEach((item) => {
+        item.addEventListener("click", (event) => {
+          if (item.tagName === "A") {
+            event.preventDefault();
+          }
+
+          if (reduceMotion) {
+            return;
+          }
+
+          item.animate(
+            [{ transform: "scale(0.96)" }, { transform: "scale(1)" }],
+            { duration: 180, easing: "ease-out" }
+          );
+        });
+      });
+    });
+  </script>
 </body>
 </html>

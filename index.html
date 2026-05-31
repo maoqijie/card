@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="Face Muse 抖音式推荐 feed 卡片，展示今晚第一套完整妆的实时带画提示。">
+  <meta name="description" content="Face Muse 实时妆容指导 feed 卡片，展示镜头带画、光线校准和眉尾参考线提示。">
   <link rel="icon" href="data:,">
-  <link rel="preload" as="image" href="./assets/face-muse-person-feed.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="./assets/face-muse-2-hero-feed.webp" fetchpriority="high">
   <link rel="preload" as="image" href="./assets/face-muse-2-brow.webp">
-  <title>Face Muse - 今晚的第一套完整妆</title>
+  <title>Face Muse - 镜头里的实时妆容指导</title>
   <style>
     :root {
       color-scheme: dark;
@@ -22,9 +22,8 @@
       --panel-strong: rgba(31, 80, 52, 0.78);
       --accent: #ffffff;
       --cta: rgba(88, 128, 91, 0.72);
-      --hero-image: url("./assets/face-muse-person-feed.webp");
-      --hero-position: 50% 128rem;
-      --hero-size: 112% auto;
+      --hero-position: 50% 40%;
+      --hero-size: cover;
       --headline-size: 57rem;
       font-size: calc(min(100vw, calc(100vh * 887 / 1920), 887px) / 887);
     }
@@ -63,8 +62,18 @@
       isolation: isolate;
       color: var(--ink);
       background:
-        linear-gradient(180deg, rgba(1, 15, 9, 0.24) 0%, rgba(5, 61, 34, 0.28) 31%, rgba(3, 52, 30, 0.96) 78%, #03100b 100%),
-        var(--hero-image) var(--hero-position) / var(--hero-size) no-repeat;
+        linear-gradient(180deg, rgba(1, 15, 9, 0.24) 0%, rgba(5, 61, 34, 0.28) 31%, rgba(3, 52, 30, 0.96) 78%, #03100b 100%);
+    }
+
+    .hero-photo {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: var(--hero-position);
+      pointer-events: none;
     }
 
     .feed-screen::before,
@@ -80,7 +89,6 @@
       background:
         linear-gradient(180deg, rgba(0, 0, 0, 0.34) 0%, rgba(0, 0, 0, 0.08) 21%, rgba(7, 78, 43, 0.34) 47%, rgba(2, 47, 27, 0.96) 87%, #000 100%),
         radial-gradient(ellipse at 50% 13%, rgba(255, 255, 255, 0.12), transparent 34%);
-      backdrop-filter: saturate(0.95);
     }
 
     .feed-screen::after {
@@ -94,7 +102,6 @@
       inset: -28rem;
       z-index: 0;
       overflow: hidden;
-      filter: saturate(0.86) contrast(1.04);
       transform: scale(1.02);
     }
 
@@ -102,19 +109,9 @@
       content: "";
       position: absolute;
       inset: 0;
-      transform: scale(1.015);
-      transform-origin: center;
       background:
         radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.08), transparent 18%),
-        radial-gradient(circle at 78% 38%, rgba(159, 217, 165, 0.12), transparent 20%),
-        var(--hero-image) var(--hero-position) / var(--hero-size) no-repeat;
-      animation: hero-breathe 7s 1.1s ease-in-out infinite alternate;
-      will-change: transform;
-    }
-
-    @keyframes hero-breathe {
-      from { transform: scale(1.015); }
-      to { transform: scale(1.045); }
+        radial-gradient(circle at 78% 38%, rgba(159, 217, 165, 0.12), transparent 20%);
     }
 
     .status-bar {
@@ -275,6 +272,7 @@
     .channel {
       position: relative;
       white-space: nowrap;
+      cursor: pointer;
     }
 
     .channel.active {
@@ -333,6 +331,7 @@
       line-height: 1;
       letter-spacing: 0;
       backdrop-filter: blur(8rem);
+      cursor: pointer;
     }
 
     .info-card {
@@ -362,6 +361,7 @@
       gap: 16rem;
       padding-left: 36rem;
       border-right: 1rem solid rgba(255, 255, 255, 0.035);
+      cursor: pointer;
     }
 
     .stat:last-child {
@@ -383,6 +383,12 @@
       font-weight: 900;
       letter-spacing: 0;
       white-space: nowrap;
+      transition: color 0.22s ease, text-shadow 0.22s ease;
+    }
+
+    .stat.is-updated strong {
+      color: #f6ffe9;
+      text-shadow: 0 0 16rem rgba(255, 255, 255, 0.62);
     }
 
     .card-copy {
@@ -523,15 +529,19 @@
     }
 
     .thumb {
+      appearance: none;
       position: absolute;
       right: 0;
       top: 8rem;
       width: 121rem;
       height: 156rem;
       overflow: hidden;
+      border: 0;
       border-radius: 11rem;
       background: var(--thumb) center / cover no-repeat;
       box-shadow: 0 12rem 28rem rgba(0, 0, 0, 0.22);
+      padding: 0;
+      cursor: pointer;
     }
 
     .thumb::after {
@@ -565,6 +575,22 @@
       border-left: 14rem solid rgba(40, 72, 46, 0.92);
     }
 
+    .thumb.is-playing {
+      outline: 2rem solid rgba(255, 255, 255, 0.58);
+      outline-offset: 3rem;
+    }
+
+    .thumb.is-playing .play::before {
+      left: 11rem;
+      top: 10rem;
+      width: 5rem;
+      height: 18rem;
+      border: 0;
+      border-radius: 2rem;
+      background: rgba(40, 72, 46, 0.92);
+      box-shadow: 12rem 0 0 rgba(40, 72, 46, 0.92);
+    }
+
     .progress {
       position: absolute;
       left: 46rem;
@@ -575,21 +601,30 @@
       gap: 10rem;
     }
 
-    .progress span {
+    .progress-step {
+      appearance: none;
       position: relative;
       height: 6rem;
       overflow: hidden;
+      border: 0;
       border-radius: 999rem;
       background: rgba(255, 255, 255, 0.16);
+      padding: 0;
+      cursor: pointer;
     }
 
-    .progress span::before {
+    .progress-step::before {
       content: "";
       position: absolute;
       inset: 0 auto 0 0;
       width: var(--fill, 0%);
       border-radius: inherit;
       background: rgba(255, 255, 255, 0.68);
+      transition: width 0.28s ease;
+    }
+
+    .progress-step.is-active {
+      background: rgba(255, 255, 255, 0.25);
     }
 
     .action-row {
@@ -635,6 +670,36 @@
       line-height: 1;
       font-weight: 700;
       letter-spacing: 0;
+      cursor: pointer;
+    }
+
+    .interaction-toast {
+      position: absolute;
+      left: 50%;
+      top: 1485rem;
+      z-index: 4;
+      max-width: 690rem;
+      padding: 16rem 24rem 17rem;
+      border: 1rem solid rgba(255, 255, 255, 0.18);
+      border-radius: 999rem;
+      color: rgba(255, 255, 255, 0.9);
+      background: rgba(20, 62, 39, 0.76);
+      box-shadow: 0 14rem 34rem rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(10rem);
+      font-size: 25rem;
+      line-height: 1.2;
+      font-weight: 700;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 10rem);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .interaction-toast.is-visible {
+      opacity: 1;
+      transform: translate(-50%, 0);
     }
 
     .chevrons {
@@ -724,9 +789,18 @@
     }
 
     button:focus-visible,
-    a:focus-visible {
+    a:focus-visible,
+    .channel:focus-visible,
+    .stat:focus-visible,
+    .ai-badge:focus-visible,
+    .swipe-tip:focus-visible {
       outline: 3rem solid rgba(255, 255, 255, 0.8);
       outline-offset: 5rem;
+    }
+
+    button:active,
+    a:active {
+      transform: scale(0.98);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -742,6 +816,7 @@
 </head>
 <body>
   <main class="feed-screen" aria-labelledby="page-title">
+    <img class="hero-photo" src="./assets/face-muse-2-hero-feed.webp" width="887" height="1920" alt="" fetchpriority="high" decoding="sync" aria-hidden="true">
     <div class="hero-grain" aria-hidden="true"></div>
 
     <div class="status-bar" aria-hidden="true">
@@ -772,75 +847,78 @@
 
     <section class="content" aria-label="推荐内容">
       <div class="headline">
-        <h1 id="page-title">今晚的第一套完整妆</h1>
-        <span class="ai-badge">AI推荐</span>
+        <h1 id="page-title">镜头里的实时妆容指导</h1>
+        <span class="ai-badge" role="button" tabindex="0" aria-pressed="true">AI带画</span>
       </div>
 
-      <article class="info-card" aria-label="推荐摘要卡片">
+      <article class="info-card" aria-label="妆容检测状态卡片">
         <div class="stat-grid">
-          <div class="stat"><span>方式</span><strong>摄像头带画</strong></div>
-          <div class="stat"><span>时长</span><strong>28分钟</strong></div>
-          <div class="stat"><span>难度</span><strong>新手友好</strong></div>
-          <div class="stat"><span>提示</span><strong>文字+语音</strong></div>
+          <div class="stat" role="button" tabindex="0" data-stat-card="step" aria-label="查看当前步骤"><span>步骤</span><strong data-stat="step">3/8</strong></div>
+          <div class="stat" role="button" tabindex="0" data-stat-card="light" aria-label="重新校准光线"><span>光线</span><strong data-stat="light">OK</strong></div>
+          <div class="stat" role="button" tabindex="0" data-stat-card="target" aria-label="查看定位提示"><span>定位</span><strong data-stat="target">眉尾锁定</strong></div>
+          <div class="stat" role="button" tabindex="0" data-stat-card="voice" aria-label="切换语音提示"><span>语音</span><strong data-stat="voice">开启</strong></div>
         </div>
         <div class="card-copy">
-          <span class="spark">✦</span>Face Muse 会把镜头里的光线、参考线和下一笔动作合成实时提示，今晚按 8 步完成第一套完整妆。
+          <span class="spark">✦</span><span data-copy="guidance">Face Muse 已识别眉峰、眉尾和左侧光线，下一笔沿参考线向外轻扫，保持手腕放松。</span>
           <div class="mini-route" aria-hidden="true">
             <svg viewBox="0 0 180 170">
-              <path class="route-path" d="M28 48 C76 30 110 51 116 77 S77 95 95 124 S135 130 152 112"></path>
-              <circle class="route-dot" cx="28" cy="48" r="7"></circle>
-              <circle class="route-dot" cx="116" cy="77" r="7"></circle>
-              <circle class="route-dot" cx="95" cy="124" r="7"></circle>
-              <circle class="route-dot" cx="152" cy="112" r="7"></circle>
+              <path class="route-path" d="M26 106 C58 70 98 55 151 45"></path>
+              <path class="route-path" d="M40 122 C78 102 115 92 154 80"></path>
+              <circle class="route-dot" cx="50" cy="94" r="7"></circle>
+              <circle class="route-dot" cx="100" cy="65" r="7"></circle>
+              <circle class="route-dot" cx="151" cy="45" r="7"></circle>
+              <circle class="route-dot" cx="154" cy="80" r="7"></circle>
             </svg>
-            <span class="route-tag first">光线</span>
+            <span class="route-tag first">眉峰</span>
             <span class="route-tag second">眉尾</span>
           </div>
         </div>
       </article>
 
-      <section class="creator-note" aria-label="美妆博主推荐">
-        <p class="note-label">实时带画提示</p>
+      <section class="creator-note" aria-label="实时提示记录">
+        <p class="note-label">实时提示记录</p>
         <div class="quote-list">
           <article class="quote">
             <span class="quote-mark">“</span>
             <h2>左脸光线偏暗，先把手机向窗边移一点。</h2>
             <div class="author-row">
               <span class="avatar" style="--avatar: url('./assets/face-muse-2-avatar.webp')"></span>
-              <span>Face Muse：先校准光线，再开始上妆更稳。</span>
+              <span>09:41 光线校准完成，肤色显示更接近真实状态。</span>
             </div>
-            <div class="thumb" style="--thumb: url('./assets/face-muse-person-cutout.png')"><span class="play"></span></div>
+            <button class="thumb" type="button" style="--thumb: url('./assets/step-03.png')" aria-label="播放光线校准示例" aria-pressed="false"><span class="play"></span></button>
           </article>
 
           <article class="quote">
             <span class="quote-mark">“</span>
-            <h2>下一步：眉尾沿参考线补一笔。</h2>
+            <h2>下一步：眉尾沿参考线轻扫一笔。</h2>
             <div class="author-row">
               <span class="avatar" style="--avatar: url('./assets/portrait-right.jpg')"></span>
-              <span>步骤 3 / 8：看 42 秒镜头带画示例。</span>
+              <span>09:42 眉峰定位完成，预计 42 秒进入眼妆步骤。</span>
             </div>
-            <div class="thumb" style="--thumb: url('./assets/face-muse-2-brow.webp')"><span class="play"></span></div>
+            <button class="thumb" type="button" style="--thumb: url('./assets/face-muse-2-brow.webp')" aria-label="播放眉尾参考线示例" aria-pressed="false"><span class="play"></span></button>
           </article>
         </div>
       </section>
 
-      <div class="progress" aria-hidden="true">
-        <span style="--fill: 100%"></span>
-        <span style="--fill: 63%"></span>
-        <span></span>
-        <span></span>
-        <span></span>
+      <div class="progress" aria-label="步骤进度">
+        <button class="progress-step" type="button" style="--fill: 100%" aria-label="切换到第 1 段"></button>
+        <button class="progress-step is-active" type="button" style="--fill: 63%" aria-label="切换到第 2 段"></button>
+        <button class="progress-step" type="button" aria-label="切换到第 3 段"></button>
+        <button class="progress-step" type="button" aria-label="切换到第 4 段"></button>
+        <button class="progress-step" type="button" aria-label="切换到第 5 段"></button>
       </div>
 
-      <div class="action-row" aria-label="推荐操作">
-        <button class="action-button secondary" type="button">不感兴趣</button>
-        <button class="action-button" type="button">查看详情</button>
+      <div class="action-row" aria-label="妆容指导操作">
+        <button class="action-button secondary" type="button" data-action="calibrate">重新校准</button>
+        <button class="action-button" type="button" data-action="next">开始下一步</button>
       </div>
 
-      <div class="swipe-tip" aria-hidden="true">
+      <div class="swipe-tip" role="button" tabindex="0" aria-label="查看下一步">
         <span class="chevrons"></span>
-        <span>上滑继续看推荐</span>
+        <span>上滑查看下一步</span>
       </div>
+
+      <div class="interaction-toast" role="status" aria-live="polite" aria-hidden="true"></div>
     </section>
 
     <nav class="bottom-nav" aria-label="底部导航">
@@ -857,38 +935,300 @@
     <span class="home-indicator" aria-hidden="true"></span>
   </main>
 
-  <script src="./assets/gsap.min.js"></script>
   <script>
-    window.addEventListener("DOMContentLoaded", () => {
-      if (!window.gsap) {
-        document.documentElement.dataset.gsapLoaded = "false";
-        return;
+    (() => {
+      const root = document.documentElement;
+      const pageTitle = document.querySelector("#page-title");
+      const badge = document.querySelector(".ai-badge");
+      const toast = document.querySelector(".interaction-toast");
+      const guidance = document.querySelector("[data-copy='guidance']");
+      const statNodes = {
+        step: document.querySelector("[data-stat='step']"),
+        light: document.querySelector("[data-stat='light']"),
+        target: document.querySelector("[data-stat='target']"),
+        voice: document.querySelector("[data-stat='voice']")
+      };
+      const quoteTitles = Array.from(document.querySelectorAll(".quote h2"));
+      const authorRows = Array.from(document.querySelectorAll(".author-row span:last-child"));
+      const statCards = Array.from(document.querySelectorAll("[data-stat-card]"));
+      const progressSteps = Array.from(document.querySelectorAll(".progress-step"));
+      const channels = Array.from(document.querySelectorAll(".channel"));
+      const thumbs = Array.from(document.querySelectorAll(".thumb"));
+      const bottomLinks = Array.from(document.querySelectorAll(".bottom-link"));
+      const nextButton = document.querySelector("[data-action='next']");
+      const calibrateButton = document.querySelector("[data-action='calibrate']");
+      const swipeTip = document.querySelector(".swipe-tip");
+      const steps = [
+        {
+          number: "1/8",
+          target: "肤色采样",
+          guidance: "先把脸部保持在取景框中心，Face Muse 会记录底妆色差和两侧阴影。",
+          quotes: ["底妆区域已锁定，先轻拍鼻翼和下巴边缘。", "下一步：把镜头抬高一点，减少额头阴影。"],
+          meta: ["09:39 肤色采样完成，底妆建议已同步。", "09:40 取景角度已修正，面部轮廓更稳定。"]
+        },
+        {
+          number: "2/8",
+          target: "眉峰定位",
+          guidance: "眉峰参考点已经出现，刷头从眉腰向眉峰轻带，不要压住原本毛流。",
+          quotes: ["眉峰位置已找到，先补浅色区域。", "下一步：眉尾沿参考线轻扫一笔。"],
+          meta: ["09:40 眉峰定位完成，参考线保持可见。", "09:41 毛流方向已识别，建议轻压一层。"]
+        },
+        {
+          number: "3/8",
+          target: "眉尾锁定",
+          guidance: "Face Muse 已识别眉峰、眉尾和左侧光线，下一笔沿参考线向外轻扫，保持手腕放松。",
+          quotes: ["左脸光线偏暗，先把手机向窗边移一点。", "下一步：眉尾沿参考线轻扫一笔。"],
+          meta: ["09:41 光线校准完成，肤色显示更接近真实状态。", "09:42 眉峰定位完成，预计 42 秒进入眼妆步骤。"]
+        },
+        {
+          number: "4/8",
+          target: "眼线预备",
+          guidance: "眼尾位置已对齐，下一步把笔尖贴近睫毛根部，沿外侧参考点短线连接。",
+          quotes: ["眼尾参考点已亮起，先别拉太长。", "下一步：从睫毛根部短线连接到眼尾。"],
+          meta: ["09:43 眼尾角度稳定，建议先画外半段。", "09:43 眨眼检测正常，参考线会自动暂停。"]
+        },
+        {
+          number: "5/8",
+          target: "眼影过渡",
+          guidance: "用浅棕色从眼尾向眼窝轻扫，Face Muse 会在边界过重时提醒你收窄范围。",
+          quotes: ["眼影边界稍重，用干净刷头向外晕开。", "下一步：把亮片点在眼中，不要超过参考圈。"],
+          meta: ["09:44 眼窝范围已标记，晕染半径保持稳定。", "09:45 亮片点位已准备，下一步进入高光。"]
+        }
+      ];
+      let activeStep = 2;
+      let voiceOn = true;
+      let toastTimer = 0;
+
+      const showToast = (message) => {
+        if (!toast) return;
+
+        toast.textContent = message;
+        toast.setAttribute("aria-hidden", "false");
+        toast.classList.add("is-visible");
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => {
+          toast.classList.remove("is-visible");
+          toast.setAttribute("aria-hidden", "true");
+        }, 1800);
+      };
+
+      const flashStat = (name) => {
+        const node = statNodes[name];
+        const card = node?.closest(".stat");
+        if (!card) return;
+
+        card.classList.add("is-updated");
+        window.setTimeout(() => card.classList.remove("is-updated"), 520);
+      };
+
+      const updateProgress = () => {
+        progressSteps.forEach((item, index) => {
+          const fill = index < activeStep ? 100 : index === activeStep ? 63 : 0;
+          item.style.setProperty("--fill", `${fill}%`);
+          item.classList.toggle("is-active", index === activeStep);
+          item.setAttribute("aria-pressed", index === activeStep ? "true" : "false");
+        });
+      };
+
+      const setStep = (index, announce = true) => {
+        activeStep = (index + steps.length) % steps.length;
+        const step = steps[activeStep];
+
+        statNodes.step.textContent = step.number;
+        statNodes.target.textContent = step.target;
+        guidance.textContent = step.guidance;
+        quoteTitles.forEach((title, titleIndex) => {
+          title.textContent = step.quotes[titleIndex];
+        });
+        authorRows.forEach((row, rowIndex) => {
+          row.textContent = step.meta[rowIndex];
+        });
+        updateProgress();
+        flashStat("step");
+        flashStat("target");
+
+        if (announce) {
+          showToast(`已切到第 ${step.number.split("/")[0]} 步：${step.target}`);
+        }
+      };
+
+      const nextStep = () => setStep(activeStep + 1);
+
+      const recalibrate = () => {
+        statNodes.light.textContent = "校准中";
+        flashStat("light");
+        showToast("正在重新校准光线与参考线");
+
+        window.setTimeout(() => {
+          statNodes.light.textContent = "OK";
+          flashStat("light");
+          showToast("光线与眉尾参考线已重新校准");
+        }, 720);
+      };
+
+      const toggleVoice = () => {
+        voiceOn = !voiceOn;
+        statNodes.voice.textContent = voiceOn ? "开启" : "静音";
+        badge.setAttribute("aria-pressed", voiceOn ? "true" : "false");
+        flashStat("voice");
+        showToast(voiceOn ? "语音提示已开启" : "语音提示已静音");
+      };
+
+      const activateByKeyboard = (element, handler) => {
+        element.addEventListener("keydown", (event) => {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          handler(event);
+        });
+      };
+
+      const initInteractions = () => {
+        setStep(activeStep, false);
+
+        channels.forEach((channel) => {
+          channel.tabIndex = 0;
+          channel.setAttribute("role", "button");
+          channel.setAttribute("aria-pressed", channel.classList.contains("active") ? "true" : "false");
+
+          const activateChannel = () => {
+            channels.forEach((item) => {
+              item.classList.toggle("active", item === channel);
+              item.setAttribute("aria-pressed", item === channel ? "true" : "false");
+            });
+            if (pageTitle && channel.textContent.trim() !== "推荐") {
+              pageTitle.textContent = "镜头里的实时妆容指导";
+            }
+            showToast(`已切换到${channel.textContent.trim()}频道`);
+          };
+
+          channel.addEventListener("click", activateChannel);
+          activateByKeyboard(channel, activateChannel);
+        });
+
+        progressSteps.forEach((item, index) => {
+          item.addEventListener("click", () => setStep(index));
+        });
+
+        statCards.forEach((card) => {
+          const type = card.dataset.statCard;
+          const handlerMap = {
+            step: nextStep,
+            light: recalibrate,
+            target: () => showToast(`当前定位：${steps[activeStep].target}`),
+            voice: toggleVoice
+          };
+          const handler = handlerMap[type];
+          if (!handler) return;
+
+          card.addEventListener("click", handler);
+          activateByKeyboard(card, handler);
+        });
+
+        nextButton?.addEventListener("click", nextStep);
+        calibrateButton?.addEventListener("click", recalibrate);
+        swipeTip?.addEventListener("click", nextStep);
+        if (swipeTip) activateByKeyboard(swipeTip, nextStep);
+        badge?.addEventListener("click", toggleVoice);
+        if (badge) activateByKeyboard(badge, toggleVoice);
+
+        thumbs.forEach((thumb, index) => {
+          thumb.addEventListener("click", () => {
+            const nextState = !thumb.classList.contains("is-playing");
+            thumbs.forEach((item) => {
+              item.classList.remove("is-playing");
+              item.setAttribute("aria-pressed", "false");
+            });
+
+            if (nextState) {
+              thumb.classList.add("is-playing");
+              thumb.setAttribute("aria-pressed", "true");
+              showToast(index === 0 ? "正在播放光线校准示例" : "正在播放眉尾参考线示例");
+              return;
+            }
+
+            showToast("已暂停预览");
+          });
+        });
+
+        bottomLinks.forEach((link) => {
+          link.addEventListener("click", (event) => {
+            event.preventDefault();
+            bottomLinks.forEach((item) => {
+              item.classList.toggle("active", item === link);
+              if (item === link) {
+                item.setAttribute("aria-current", "page");
+              } else {
+                item.removeAttribute("aria-current");
+              }
+            });
+            showToast(link.getAttribute("aria-label") === "发布" ? "打开发布入口" : `已切换到${link.textContent.trim()}`);
+          });
+        });
+      };
+
+      if (document.readyState === "loading") {
+        window.addEventListener("DOMContentLoaded", initInteractions, { once: true });
+      } else {
+        initInteractions();
       }
 
-      document.documentElement.dataset.gsapLoaded = "true";
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (reduceMotion) {
+        root.dataset.gsapLoaded = "reduced";
         return;
       }
 
-      gsap.from(".hero-grain", { scale: 1.08, duration: 1.1, ease: "power2.out" });
-      gsap.from(".status-bar, .top-nav", { y: -16, autoAlpha: 0, duration: 0.42, stagger: 0.08, ease: "power3.out" });
-      gsap.from(".headline", { y: 28, autoAlpha: 0, duration: 0.58, delay: 0.12, ease: "power3.out" });
-      gsap.from(".info-card", { y: 34, autoAlpha: 0, duration: 0.64, delay: 0.24, ease: "power3.out" });
-      gsap.from(".stat", { y: 16, autoAlpha: 0, duration: 0.42, delay: 0.42, stagger: 0.045, ease: "power2.out" });
-      gsap.from(".quote", { x: -18, autoAlpha: 0, duration: 0.5, delay: 0.48, stagger: 0.09, ease: "power3.out" });
-      gsap.from(".progress span, .action-button, .swipe-tip", { y: 16, duration: 0.42, delay: 0.66, stagger: 0.04, ease: "power2.out" });
-      gsap.from(".bottom-link", { y: 16, duration: 0.38, delay: 0.72, stagger: 0.035, ease: "power2.out" });
-      gsap.to(".route-dot", { scale: 1.25, transformOrigin: "50% 50%", duration: 0.9, repeat: -1, yoyo: true, stagger: 0.12, ease: "sine.inOut" });
-      gsap.to(".chevrons", { y: -7, duration: 0.9, repeat: -1, yoyo: true, ease: "sine.inOut" });
+      const initMotion = () => {
+        if (!window.gsap) {
+          root.dataset.gsapLoaded = "false";
+          return;
+        }
 
-      document.querySelectorAll("button, .bottom-link").forEach((item) => {
-        item.addEventListener("click", (event) => {
-          event.preventDefault();
-          gsap.fromTo(item, { scale: 0.96 }, { scale: 1, duration: 0.32, ease: "back.out(2.4)" });
+        root.dataset.gsapLoaded = "true";
+        gsap.from(".status-bar, .top-nav", { y: -16, duration: 0.42, stagger: 0.08, ease: "power3.out" });
+        gsap.from(".headline", { y: 28, duration: 0.58, delay: 0.12, ease: "power3.out" });
+        gsap.from(".info-card", { y: 34, duration: 0.64, delay: 0.24, ease: "power3.out" });
+        gsap.from(".stat", { y: 16, duration: 0.42, delay: 0.42, stagger: 0.045, ease: "power2.out" });
+        gsap.from(".quote", { x: -18, duration: 0.5, delay: 0.48, stagger: 0.09, ease: "power3.out" });
+        gsap.from(".progress-step, .action-button, .swipe-tip", { y: 16, duration: 0.42, delay: 0.66, stagger: 0.04, ease: "power2.out" });
+        gsap.from(".bottom-link", { y: 16, duration: 0.38, delay: 0.72, stagger: 0.035, ease: "power2.out" });
+        gsap.to(".route-dot", { scale: 1.25, transformOrigin: "50% 50%", duration: 0.9, repeat: -1, yoyo: true, stagger: 0.12, ease: "sine.inOut" });
+        gsap.to(".chevrons", { y: -7, duration: 0.9, repeat: -1, yoyo: true, ease: "sine.inOut" });
+
+        document.querySelectorAll("button, .bottom-link").forEach((item) => {
+          item.addEventListener("click", (event) => {
+            event.preventDefault();
+            gsap.fromTo(item, { scale: 0.96 }, { scale: 1, duration: 0.32, ease: "back.out(2.4)" });
+          });
         });
-      });
-    });
+      };
+
+      const loadMotion = () => {
+        const script = document.createElement("script");
+        script.src = "./assets/gsap.min.js";
+        script.async = true;
+        script.onload = () => requestAnimationFrame(initMotion);
+        script.onerror = () => {
+          root.dataset.gsapLoaded = "false";
+        };
+        document.head.appendChild(script);
+      };
+
+      const scheduleMotion = () => {
+        if ("requestIdleCallback" in window) {
+          window.requestIdleCallback(loadMotion, { timeout: 5000 });
+          return;
+        }
+
+        window.setTimeout(loadMotion, 3000);
+      };
+
+      if (document.readyState === "loading") {
+        window.addEventListener("DOMContentLoaded", scheduleMotion, { once: true });
+      } else {
+        scheduleMotion();
+      }
+    })();
   </script>
 </body>
 </html>
