@@ -722,6 +722,7 @@
       }
     }
   </style>
+  <script src="./assets/gsap.min.js" defer></script>
 </head>
 <body>
   <main class="feed-screen" aria-labelledby="page-title">
@@ -835,6 +836,7 @@
       const stateButtons = Array.from(document.querySelectorAll("[data-state-mode]"));
       const stateNote = document.querySelector(".state-note");
       const productStatePanel = document.querySelector(".product-state-panel");
+      const heroImage = document.querySelector(".hero-image");
       const headline = document.querySelector(".headline");
       const quotes = Array.from(document.querySelectorAll(".quote"));
       const scanLine = document.querySelector(".scan-line");
@@ -906,14 +908,23 @@
         }
 
         introPlayed = true;
+        document.documentElement.dataset.gsapLoaded = "true";
         const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
 
+        if (heroImage) {
+          intro.from(heroImage, { scale: 1.08, autoAlpha: 0.72, duration: 0.78, ease: "power2.out" });
+        }
+
         if (headline) {
-          intro.from(headline, { y: 26, autoAlpha: 0, duration: 0.48 });
+          intro.from(headline, { y: 30, autoAlpha: 0, duration: 0.48 }, "<0.08");
         }
 
         if (infoCard) {
           intro.from(infoCard, { y: 34, autoAlpha: 0, duration: 0.56 }, "<0.12");
+        }
+
+        if (tags.length > 0) {
+          intro.from(tags, { y: 10, autoAlpha: 0, duration: 0.28, stagger: 0.045, ease: "power2.out" }, "<0.2");
         }
 
         if (quotes.length > 0) {
@@ -927,10 +938,17 @@
         if (scanLine) {
           gsap.to(scanLine, { y: 42, duration: 1.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
         }
+
+        gsap.to(".scan-pill", { y: -4, duration: 1.45, delay: 0.8, repeat: -1, yoyo: true, stagger: 0.14, ease: "sine.inOut" });
+
+        if (heroImage) {
+          gsap.to(heroImage, { scale: 1.045, duration: 7, delay: 0.9, repeat: -1, yoyo: true, ease: "sine.inOut" });
+        }
       };
 
       const loadMotion = () => {
         if (reduceMotion) {
+          document.documentElement.dataset.gsapLoaded = "reduced";
           return;
         }
 
@@ -940,19 +958,25 @@
           return;
         }
 
+        if (document.querySelector("script[data-gsap-loader]")) {
+          return;
+        }
+
         const script = document.createElement("script");
         script.src = "./assets/gsap.min.js";
         script.async = true;
+        script.dataset.gsapLoader = "true";
         script.onload = () => {
           hasGsap = Boolean(window.gsap && !reduceMotion);
           playIntro();
         };
+        script.onerror = () => {
+          document.documentElement.dataset.gsapLoaded = "false";
+        };
         document.head.append(script);
       };
 
-      window.addEventListener("load", () => {
-        window.setTimeout(loadMotion, 1800);
-      }, { once: true });
+      requestAnimationFrame(loadMotion);
 
       document.querySelectorAll("button").forEach((item) => {
         item.addEventListener("click", (event) => {

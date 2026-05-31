@@ -493,6 +493,7 @@
       }
     }
   </style>
+  <script src="./assets/gsap.min.js" defer></script>
 </head>
 <body>
   <main class="feed-screen" aria-labelledby="page-title">
@@ -579,6 +580,7 @@
       const authorRows = Array.from(document.querySelectorAll(".author-row span:last-child"));
       const statCards = Array.from(document.querySelectorAll("[data-stat-card]"));
       const thumbs = Array.from(document.querySelectorAll(".thumb"));
+      const heroPhoto = document.querySelector(".hero-photo");
       const nextButton = document.querySelector("[data-action='next']");
       const calibrateButton = document.querySelector("[data-action='calibrate']");
       const steps = [
@@ -757,12 +759,26 @@
         }
 
         root.dataset.gsapLoaded = "true";
-        gsap.from(".headline", { y: 28, duration: 0.58, delay: 0.12, ease: "power3.out" });
-        gsap.from(".info-card", { y: 34, duration: 0.64, delay: 0.24, ease: "power3.out" });
-        gsap.from(".stat", { y: 16, duration: 0.42, delay: 0.42, stagger: 0.045, ease: "power2.out" });
-        gsap.from(".quote", { x: -18, duration: 0.5, delay: 0.48, stagger: 0.09, ease: "power3.out" });
-        gsap.from(".action-button", { y: 16, duration: 0.42, delay: 0.66, stagger: 0.04, ease: "power2.out" });
+        const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        if (heroPhoto) {
+          intro.from(heroPhoto, { scale: 1.08, autoAlpha: 0.72, duration: 0.78, ease: "power2.out" });
+        }
+
+        intro
+          .from(".headline", { y: 34, autoAlpha: 0, duration: 0.5 }, "<0.08")
+          .from(".info-card", { y: 38, autoAlpha: 0, duration: 0.58 }, "<0.1")
+          .from(".stat", { y: 18, autoAlpha: 0, duration: 0.34, stagger: 0.045, ease: "power2.out" }, "<0.18")
+          .from(".route-path", { autoAlpha: 0, duration: 0.38, stagger: 0.08, ease: "power2.out" }, "<0.08")
+          .from(".quote", { x: -22, autoAlpha: 0, duration: 0.42, stagger: 0.08 }, "<0.12")
+          .from(".action-button", { y: 18, autoAlpha: 0, duration: 0.36, stagger: 0.05, ease: "power2.out" }, "<0.16");
+
         gsap.to(".route-dot", { scale: 1.25, transformOrigin: "50% 50%", duration: 0.9, repeat: -1, yoyo: true, stagger: 0.12, ease: "sine.inOut" });
+        gsap.to(".ai-badge", { scale: 1.05, transformOrigin: "50% 50%", duration: 1.35, delay: 0.8, repeat: -1, yoyo: true, ease: "sine.inOut" });
+
+        if (heroPhoto) {
+          gsap.to(heroPhoto, { scale: 1.045, duration: 7, delay: 0.9, repeat: -1, yoyo: true, ease: "sine.inOut" });
+        }
 
         document.querySelectorAll("button").forEach((item) => {
           item.addEventListener("click", (event) => {
@@ -773,9 +789,19 @@
       };
 
       const loadMotion = () => {
+        if (window.gsap) {
+          requestAnimationFrame(initMotion);
+          return;
+        }
+
+        if (document.querySelector("script[data-gsap-loader]")) {
+          return;
+        }
+
         const script = document.createElement("script");
         script.src = "./assets/gsap.min.js";
         script.async = true;
+        script.dataset.gsapLoader = "true";
         script.onload = () => requestAnimationFrame(initMotion);
         script.onerror = () => {
           root.dataset.gsapLoaded = "false";
@@ -784,7 +810,7 @@
       };
 
       const scheduleMotion = () => {
-        window.setTimeout(loadMotion, 3200);
+        requestAnimationFrame(loadMotion);
       };
 
       if (document.readyState === "loading") {
