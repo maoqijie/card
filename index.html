@@ -208,10 +208,14 @@
       const nextButton = document.querySelector(".nav-button.next");
       const frames = Array.from(document.querySelectorAll(".page-frame"));
       const slideCount = frames.length;
+      const wheelThreshold = 36;
+      const wheelCooldown = 640;
       let currentIndex = 0;
       let dragStartX = 0;
       let dragOffset = 0;
       let isDragging = false;
+      let lastWheelTime = 0;
+      const boundFrameDocuments = new WeakSet();
 
       if (!showcase || !track || !prevButton || !nextButton || !slideCount) {
         return;
@@ -219,11 +223,75 @@
 
       const clampIndex = (index) => Math.max(0, Math.min(index, slideCount - 1));
 
+      const normalizeWheelDelta = (event) => {
+        const dominantDelta = Math.abs(event.deltaY) >= Math.abs(event.deltaX)
+          ? event.deltaY
+          : event.deltaX;
+
+        if (event.deltaMode === 1) {
+          return dominantDelta * 16;
+        }
+
+        if (event.deltaMode === 2) {
+          return dominantDelta * window.innerHeight;
+        }
+
+        return dominantDelta;
+      };
+
+      const handleWheel = (event) => {
+        if (event.ctrlKey || isDragging) {
+          return;
+        }
+
+        const delta = normalizeWheelDelta(event);
+
+        if (Math.abs(delta) < wheelThreshold) {
+          return;
+        }
+
+        event.preventDefault();
+
+        const now = window.performance.now();
+
+        if (now - lastWheelTime < wheelCooldown) {
+          return;
+        }
+
+        const nextIndex = clampIndex(currentIndex + (delta > 0 ? 1 : -1));
+
+        if (nextIndex === currentIndex) {
+          return;
+        }
+
+        lastWheelTime = now;
+        goTo(nextIndex);
+      };
+
+      const bindFrameWheel = (frame) => {
+        try {
+          const frameDocument = frame.contentDocument;
+
+          if (!frameDocument || boundFrameDocuments.has(frameDocument)) {
+            return;
+          }
+
+          frameDocument.addEventListener("wheel", handleWheel, { passive: false });
+          boundFrameDocuments.add(frameDocument);
+        } catch {
+          // 未来页面若指向跨域地址，则跳过 iframe 内部滚轮绑定。
+        }
+      };
+
       const loadFrame = (index) => {
         const frame = frames[clampIndex(index)];
 
         if (frame && !frame.hasAttribute("src")) {
           frame.src = frame.dataset.src;
+        }
+
+        if (frame) {
+          requestAnimationFrame(() => bindFrameWheel(frame));
         }
       };
 
@@ -259,6 +327,12 @@
         if (event.key === "ArrowRight") {
           goTo(currentIndex + 1);
         }
+      });
+
+      showcase.addEventListener("wheel", handleWheel, { passive: false });
+
+      frames.forEach((frame) => {
+        frame.addEventListener("load", () => bindFrameWheel(frame));
       });
 
       showcase.addEventListener("pointerdown", (event) => {
