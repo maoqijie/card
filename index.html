@@ -97,6 +97,7 @@
       backdrop-filter: blur(16px);
       transform: translateY(-50%);
       cursor: pointer;
+      touch-action: manipulation;
       transition: background-color .2s ease, opacity .2s ease, transform .2s ease;
     }
 
@@ -203,15 +204,15 @@
 
     @media (max-width: 640px) {
       .nav-button {
-        top: max(12px, env(safe-area-inset-top));
+        top: 50%;
         bottom: auto;
         width: 42px;
         height: 42px;
-        transform: none;
+        transform: translateY(-50%);
       }
 
       .nav-button:hover {
-        transform: scale(1.04);
+        transform: translateY(-50%) scale(1.04);
       }
 
       .nav-button.prev {
@@ -330,8 +331,15 @@
         render(nextIndex);
       };
 
-      prevButton.addEventListener("click", () => goTo(currentIndex - 1));
-      nextButton.addEventListener("click", () => goTo(currentIndex + 1));
+      prevButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        goTo(currentIndex - 1);
+      });
+
+      nextButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        goTo(currentIndex + 1);
+      });
       dots.forEach((dot, dotIndex) => {
         dot.addEventListener("click", () => goTo(dotIndex));
       });
